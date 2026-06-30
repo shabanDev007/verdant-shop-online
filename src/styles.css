@@ -123,4 +123,14 @@
     font-family: var(--font-display);
     letter-spacing: -0.02em;
   }
+  /* Arabic / RTL: swap to Cairo for both body and display text */
+  html[dir="rtl"] body,
+  html[dir="rtl"] h1,
+  html[dir="rtl"] h2,
+  html[dir="rtl"] h3,
+  html[dir="rtl"] h4 {
+    font-family: var(--font-arabic);
+    letter-spacing: 0;
+  }
 }
+
