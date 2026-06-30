@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { useCart, deliveryFor } from "@/context/CartContext";
 import { OrderSummary } from "@/components/OrderSummary";
 import { createOrder } from "@/services/api";
-import { formatPrice } from "@/lib/format";
+import { usePrice } from "@/lib/usePrice";
 
 export const Route = createFileRoute("/checkout")({
   head: () => ({ meta: [{ title: "Checkout — Verdura" }] }),

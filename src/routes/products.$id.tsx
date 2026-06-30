@@ -7,7 +7,7 @@ import { getProductById, getRelatedProducts } from "@/services/api";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { ProductCard } from "@/components/ProductCard";
-import { formatPrice } from "@/lib/format";
+import { usePrice } from "@/lib/usePrice";
 
 export const Route = createFileRoute("/products/$id")({
   component: ProductDetailPage,
