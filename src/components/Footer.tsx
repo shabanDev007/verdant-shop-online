@@ -1,7 +1,9 @@
 import { Link } from "@tanstack/react-router";
 import { Leaf, Instagram, Facebook, Twitter, Mail } from "lucide-react";
+import { useT } from "@/i18n/LanguageContext";
 
 export function Footer() {
+  const t = useT();
   return (
     <footer className="mt-24 border-t border-border bg-secondary/50">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-4 lg:px-8">
@@ -10,11 +12,9 @@ export function Footer() {
             <span className="grid h-9 w-9 place-items-center rounded-full bg-primary text-primary-foreground">
               <Leaf className="h-5 w-5" />
             </span>
-            <span className="font-display text-xl font-semibold">Verdura</span>
+            <span className="font-display text-xl font-semibold">{t("brand.name")}</span>
           </Link>
-          <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-            Premium plants delivered with care. Greener homes, happier humans.
-          </p>
+          <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{t("footer.tagline")}</p>
           <div className="mt-5 flex gap-2">
             {[Instagram, Facebook, Twitter, Mail].map((Icon, i) => (
               <a
@@ -29,28 +29,28 @@ export function Footer() {
           </div>
         </div>
 
-        <FooterCol title="Shop">
-          <FLink to="/products">All Plants</FLink>
-          <FLink to="/categories">Categories</FLink>
-          <FLink to="/products">New Arrivals</FLink>
-          <FLink to="/products">Best Sellers</FLink>
+        <FooterCol title={t("footer.col.shop")}>
+          <FLink to="/products">{t("footer.shop.all")}</FLink>
+          <FLink to="/categories">{t("footer.shop.categories")}</FLink>
+          <FLink to="/products">{t("footer.shop.new")}</FLink>
+          <FLink to="/products">{t("footer.shop.best")}</FLink>
         </FooterCol>
-        <FooterCol title="Company">
-          <FLink to="/about">About Us</FLink>
-          <FLink to="/contact">Contact</FLink>
-          <FLink to="/about">Plant Care Promise</FLink>
-          <FLink to="/contact">Help Center</FLink>
+        <FooterCol title={t("footer.col.company")}>
+          <FLink to="/about">{t("footer.company.about")}</FLink>
+          <FLink to="/contact">{t("footer.company.contact")}</FLink>
+          <FLink to="/about">{t("footer.company.promise")}</FLink>
+          <FLink to="/contact">{t("footer.company.help")}</FLink>
         </FooterCol>
-        <FooterCol title="Support">
+        <FooterCol title={t("footer.col.support")}>
           <p className="text-sm text-muted-foreground">hello@verdura.shop</p>
-          <p className="text-sm text-muted-foreground">+1 (555) 010-9090</p>
-          <p className="text-sm text-muted-foreground">Mon–Sat · 9am–6pm</p>
+          <p className="text-sm text-muted-foreground" dir="ltr">+20 100 000 0000</p>
+          <p className="text-sm text-muted-foreground">{t("footer.support.hours")}</p>
         </FooterCol>
       </div>
       <div className="border-t border-border/60">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-4 py-5 text-xs text-muted-foreground sm:flex-row sm:px-6 lg:px-8">
-          <p>© {new Date().getFullYear()} Verdura. All rights reserved.</p>
-          <p>Grown with love · Shipped with care 🌿</p>
+          <p>© {new Date().getFullYear()} {t("brand.name")}. {t("footer.rights")}</p>
+          <p>{t("footer.grown")}</p>
         </div>
       </div>
     </footer>

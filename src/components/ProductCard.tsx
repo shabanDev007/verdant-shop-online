@@ -4,7 +4,8 @@ import { toast } from "sonner";
 import type { Product } from "@/types";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
-import { formatPrice } from "@/lib/format";
+import { usePrice } from "@/lib/usePrice";
+import { useT } from "@/i18n/LanguageContext";
 
 const badgeStyles: Record<string, string> = {
   new: "bg-leaf text-primary-foreground",
@@ -12,16 +13,18 @@ const badgeStyles: Record<string, string> = {
   "low-stock": "bg-destructive text-destructive-foreground",
 };
 
-const badgeLabels: Record<string, string> = {
-  new: "New",
-  "best-seller": "Best Seller",
-  "low-stock": "Low Stock",
-};
-
 export function ProductCard({ product }: { product: Product }) {
+  const t = useT();
+  const price = usePrice();
   const { add } = useCart();
   const { toggle, has } = useWishlist();
   const wished = has(product.id);
+
+  const badgeLabels: Record<string, string> = {
+    new: t("product.badge.new"),
+    "best-seller": t("product.badge.bestSeller"),
+    "low-stock": t("product.badge.lowStock"),
+  };
 
   return (
     <article className="group relative flex flex-col overflow-hidden rounded-3xl border border-border/60 bg-card transition hover:shadow-[var(--shadow-card)]">
@@ -37,7 +40,7 @@ export function ProductCard({ product }: { product: Product }) {
           className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
         />
         {product.badges.length > 0 && (
-          <div className="absolute left-3 top-3 flex flex-wrap gap-1.5">
+          <div className="absolute start-3 top-3 flex flex-wrap gap-1.5">
             {product.badges.map((b) => (
               <span
                 key={b}
@@ -54,10 +57,10 @@ export function ProductCard({ product }: { product: Product }) {
         type="button"
         onClick={() => {
           toggle(product.id);
-          toast.success(wished ? "Removed from wishlist" : "Added to wishlist");
+          toast.success(wished ? t("product.removedFromWishlist") : t("product.addedToWishlist"));
         }}
-        aria-label="Toggle wishlist"
-        className="absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-full bg-background/90 text-foreground/70 shadow-sm transition hover:text-clay"
+        aria-label={t("nav.wishlist")}
+        className="absolute end-3 top-3 grid h-9 w-9 place-items-center rounded-full bg-background/90 text-foreground/70 shadow-sm transition hover:text-clay"
       >
         <Heart className={`h-4 w-4 ${wished ? "fill-clay text-clay" : ""}`} />
       </button>
@@ -73,23 +76,19 @@ export function ProductCard({ product }: { product: Product }) {
         </Link>
         <div className="flex items-center gap-1 text-xs text-muted-foreground">
           <Star className="h-3.5 w-3.5 fill-clay text-clay" />
-          {product.rating.toFixed(1)} · {product.reviewsCount} reviews
+          {product.rating.toFixed(1)} · {product.reviewsCount} {t("product.reviews")}
         </div>
 
         <div className="mt-auto flex items-end justify-between gap-2 pt-3">
           <div className="flex flex-col">
-            <span className="text-lg font-semibold text-primary">{formatPrice(product.price)}</span>
+            <span className="text-lg font-semibold text-primary">{price(product.price)}</span>
             {product.oldPrice && (
-              <span className="text-xs text-muted-foreground line-through">
-                {formatPrice(product.oldPrice)}
-              </span>
+              <span className="text-xs text-muted-foreground line-through">{price(product.oldPrice)}</span>
             )}
             <span
-              className={`text-[11px] font-medium ${
-                product.stock > 0 ? "text-moss" : "text-destructive"
-              }`}
+              className={`text-[11px] font-medium ${product.stock > 0 ? "text-moss" : "text-destructive"}`}
             >
-              {product.stock > 0 ? `In stock · ${product.stock}` : "Out of stock"}
+              {product.stock > 0 ? `${t("product.inStock")} · ${product.stock}` : t("product.outOfStock")}
             </span>
           </div>
           <button
@@ -97,10 +96,10 @@ export function ProductCard({ product }: { product: Product }) {
             disabled={product.stock === 0}
             onClick={() => {
               add(product);
-              toast.success(`${product.name} added to cart`);
+              toast.success(t("product.addedToCart", { name: product.name }));
             }}
             className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground transition hover:scale-105 disabled:opacity-40"
-            aria-label="Add to cart"
+            aria-label={t("product.addToCart")}
           >
             <ShoppingBag className="h-4 w-4" />
           </button>
