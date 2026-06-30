@@ -3,20 +3,23 @@ import { Leaf, Menu, Search, ShoppingBag, X, Heart } from "lucide-react";
 import { useState } from "react";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
-
-const links = [
-  { to: "/", label: "Home" },
-  { to: "/products", label: "Shop" },
-  { to: "/categories", label: "Categories" },
-  { to: "/about", label: "About" },
-  { to: "/contact", label: "Contact" },
-] as const;
+import { useT } from "@/i18n/LanguageContext";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
 export function Navbar() {
+  const t = useT();
   const { itemCount } = useCart();
   const { ids } = useWishlist();
   const [open, setOpen] = useState(false);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+
+  const links = [
+    { to: "/", label: t("nav.home") },
+    { to: "/products", label: t("nav.shop") },
+    { to: "/categories", label: t("nav.categories") },
+    { to: "/about", label: t("nav.about") },
+    { to: "/contact", label: t("nav.contact") },
+  ] as const;
 
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur-md">
@@ -25,7 +28,7 @@ export function Navbar() {
           <span className="grid h-9 w-9 place-items-center rounded-full bg-primary text-primary-foreground">
             <Leaf className="h-5 w-5" />
           </span>
-          <span className="font-display text-xl font-semibold tracking-tight">Verdura</span>
+          <span className="font-display text-xl font-semibold tracking-tight">{t("brand.name")}</span>
         </Link>
 
         <nav className="hidden items-center justify-center gap-8 md:flex">
@@ -46,40 +49,43 @@ export function Navbar() {
         </nav>
 
         <div className="flex items-center gap-1.5 sm:gap-2">
+          <div className="hidden sm:block">
+            <LanguageSwitcher />
+          </div>
           <Link
             to="/products"
-            aria-label="Search"
+            aria-label={t("nav.search")}
             className="hidden h-10 w-10 place-items-center rounded-full text-foreground/70 transition hover:bg-accent hover:text-primary sm:grid"
           >
             <Search className="h-5 w-5" />
           </Link>
           <Link
             to="/products"
-            aria-label="Wishlist"
+            aria-label={t("nav.wishlist")}
             className="relative grid h-10 w-10 place-items-center rounded-full text-foreground/70 transition hover:bg-accent hover:text-primary"
           >
             <Heart className="h-5 w-5" />
             {ids.length > 0 && (
-              <span className="absolute -right-0.5 -top-0.5 grid h-4 min-w-4 place-items-center rounded-full bg-clay px-1 text-[10px] font-semibold text-primary-foreground">
+              <span className="absolute -end-0.5 -top-0.5 grid h-4 min-w-4 place-items-center rounded-full bg-clay px-1 text-[10px] font-semibold text-primary-foreground">
                 {ids.length}
               </span>
             )}
           </Link>
           <Link
             to="/cart"
-            aria-label="Cart"
+            aria-label={t("nav.cart")}
             className="relative grid h-10 w-10 place-items-center rounded-full text-foreground/70 transition hover:bg-accent hover:text-primary"
           >
             <ShoppingBag className="h-5 w-5" />
             {itemCount > 0 && (
-              <span className="absolute -right-0.5 -top-0.5 grid h-4 min-w-4 place-items-center rounded-full bg-primary px-1 text-[10px] font-semibold text-primary-foreground">
+              <span className="absolute -end-0.5 -top-0.5 grid h-4 min-w-4 place-items-center rounded-full bg-primary px-1 text-[10px] font-semibold text-primary-foreground">
                 {itemCount}
               </span>
             )}
           </Link>
           <button
             type="button"
-            aria-label="Menu"
+            aria-label={t("nav.menu")}
             onClick={() => setOpen((v) => !v)}
             className="grid h-10 w-10 place-items-center rounded-full text-foreground/70 transition hover:bg-accent md:hidden"
           >
@@ -101,6 +107,9 @@ export function Navbar() {
                 {l.label}
               </Link>
             ))}
+            <div className="border-t border-border/60 px-3 py-3">
+              <LanguageSwitcher />
+            </div>
           </nav>
         </div>
       )}

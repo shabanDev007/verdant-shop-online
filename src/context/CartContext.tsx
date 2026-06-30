@@ -13,8 +13,9 @@ interface CartContextValue {
 
 const CartContext = createContext<CartContextValue | null>(null);
 const STORAGE_KEY = "verdura.cart";
-const DELIVERY_FEE_FREE_THRESHOLD = 75;
-export const DELIVERY_FEE = 8;
+// Egyptian Pound thresholds
+const DELIVERY_FEE_FREE_THRESHOLD = 2000;
+export const DELIVERY_FEE = 50;
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>(() => {

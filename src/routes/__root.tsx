@@ -15,23 +15,23 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { CartProvider } from "@/context/CartContext";
 import { WishlistProvider } from "@/context/WishlistContext";
+import { LanguageProvider, useLanguage, useT } from "@/i18n/LanguageContext";
 import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
+  const t = useT();
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="font-display text-7xl font-bold text-primary">404</h1>
-        <h2 className="mt-4 text-xl font-semibold">Page not found</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          This leaf has fallen. Let's get you back to the garden.
-        </p>
+        <h2 className="mt-4 text-xl font-semibold">{t("404.title")}</h2>
+        <p className="mt-2 text-sm text-muted-foreground">{t("404.subtitle")}</p>
         <div className="mt-6">
           <Link
             to="/"
             className="inline-flex items-center justify-center rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition hover:opacity-90"
           >
-            Go home
+            {t("404.goHome")}
           </Link>
         </div>
       </div>
@@ -97,7 +97,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Cairo:wght@400;500;600;700;800&display=swap",
       },
     ],
   }),
@@ -126,18 +126,27 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <WishlistProvider>
-        <CartProvider>
-          <div className="flex min-h-screen flex-col bg-background">
-            <Navbar />
-            <main className="flex-1">
-              <Outlet />
-            </main>
-            <Footer />
-          </div>
-          <Toaster richColors position="top-right" />
-        </CartProvider>
-      </WishlistProvider>
+      <LanguageProvider>
+        <WishlistProvider>
+          <CartProvider>
+            <AppShell />
+          </CartProvider>
+        </WishlistProvider>
+      </LanguageProvider>
     </QueryClientProvider>
+  );
+}
+
+function AppShell() {
+  const { dir } = useLanguage();
+  return (
+    <div className="flex min-h-screen flex-col bg-background" dir={dir}>
+      <Navbar />
+      <main className="flex-1">
+        <Outlet />
+      </main>
+      <Footer />
+      <Toaster richColors position={dir === "rtl" ? "top-left" : "top-right"} />
+    </div>
   );
 }

@@ -2,10 +2,11 @@ import { Link } from "@tanstack/react-router";
 import { Minus, Plus, Trash2 } from "lucide-react";
 import type { CartItem } from "@/types";
 import { useCart } from "@/context/CartContext";
-import { formatPrice } from "@/lib/format";
+import { usePrice } from "@/lib/usePrice";
 
 export function CartItemRow({ item }: { item: CartItem }) {
   const { updateQty, remove } = useCart();
+  const price = usePrice();
   const { product, quantity } = item;
   return (
     <div className="grid grid-cols-[80px_1fr_auto] gap-4 rounded-2xl border border-border/60 bg-card p-3 sm:grid-cols-[100px_1fr_auto_auto] sm:p-4">
@@ -21,7 +22,7 @@ export function CartItemRow({ item }: { item: CartItem }) {
         >
           {product.name}
         </Link>
-        <p className="mt-1 text-sm font-medium text-primary">{formatPrice(product.price)}</p>
+        <p className="mt-1 text-sm font-medium text-primary">{price(product.price)}</p>
       </div>
       <div className="col-start-3 row-start-1 flex items-center gap-1 self-center rounded-full border border-border bg-background p-1 sm:col-auto sm:row-auto">
         <button

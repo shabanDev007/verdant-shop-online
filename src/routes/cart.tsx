@@ -3,6 +3,7 @@ import { ShoppingBag, ArrowRight } from "lucide-react";
 import { useCart, deliveryFor } from "@/context/CartContext";
 import { CartItemRow } from "@/components/CartItemRow";
 import { OrderSummary } from "@/components/OrderSummary";
+import { useT } from "@/i18n/LanguageContext";
 
 export const Route = createFileRoute("/cart")({
   head: () => ({ meta: [{ title: "Your Cart — Verdura" }] }),
@@ -10,26 +11,33 @@ export const Route = createFileRoute("/cart")({
 });
 
 function CartPage() {
+  const t = useT();
   const { items, subtotal } = useCart();
   const delivery = deliveryFor(subtotal);
+  const subtitle =
+    items.length === 0
+      ? t("cart.empty")
+      : items.length === 1
+        ? t("cart.item")
+        : t("cart.items", { count: items.length });
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-      <h1 className="font-display text-4xl font-semibold tracking-tight sm:text-5xl">Your Cart</h1>
-      <p className="mt-2 text-muted-foreground">{items.length === 0 ? "Empty for now." : `${items.length} item${items.length === 1 ? "" : "s"} ready to grow.`}</p>
+      <h1 className="font-display text-4xl font-semibold tracking-tight sm:text-5xl">{t("cart.title")}</h1>
+      <p className="mt-2 text-muted-foreground">{subtitle}</p>
 
       {items.length === 0 ? (
         <div className="mt-12 rounded-3xl border border-dashed border-border bg-card/50 p-16 text-center">
           <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-accent text-primary">
             <ShoppingBag className="h-7 w-7" />
           </div>
-          <p className="mt-5 font-display text-2xl font-semibold">Your cart is feeling bare</p>
-          <p className="mt-2 text-sm text-muted-foreground">Add a few plants and let's get growing.</p>
+          <p className="mt-5 font-display text-2xl font-semibold">{t("cart.emptyTitle")}</p>
+          <p className="mt-2 text-sm text-muted-foreground">{t("cart.emptySubtitle")}</p>
           <Link
             to="/products"
             className="mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:opacity-90"
           >
-            Browse plants <ArrowRight className="h-4 w-4" />
+            {t("cart.browsePlants")} <ArrowRight className="h-4 w-4 rtl:rotate-180" />
           </Link>
         </div>
       ) : (
@@ -42,10 +50,10 @@ function CartPage() {
               to="/checkout"
               className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
             >
-              Checkout <ArrowRight className="h-4 w-4" />
+              {t("cart.checkout")} <ArrowRight className="h-4 w-4 rtl:rotate-180" />
             </Link>
             <Link to="/products" className="mt-3 block text-center text-xs text-muted-foreground hover:text-primary">
-              or continue shopping
+              {t("cart.continueShopping")}
             </Link>
           </OrderSummary>
         </div>

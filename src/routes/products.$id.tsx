@@ -7,7 +7,7 @@ import { getProductById, getRelatedProducts } from "@/services/api";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { ProductCard } from "@/components/ProductCard";
-import { formatPrice } from "@/lib/format";
+import { usePrice } from "@/lib/usePrice";
 
 export const Route = createFileRoute("/products/$id")({
   component: ProductDetailPage,
@@ -28,6 +28,7 @@ function ProductDetailPage() {
   });
   const { add } = useCart();
   const { toggle, has } = useWishlist();
+  const price = usePrice();
   const [qty, setQty] = useState(1);
 
   if (isLoading) {
@@ -73,9 +74,9 @@ function ProductDetailPage() {
           </div>
 
           <div className="mt-5 flex items-baseline gap-3">
-            <span className="font-display text-3xl font-semibold text-primary">{formatPrice(product.price)}</span>
+            <span className="font-display text-3xl font-semibold text-primary">{price(product.price)}</span>
             {product.oldPrice && (
-              <span className="text-base text-muted-foreground line-through">{formatPrice(product.oldPrice)}</span>
+              <span className="text-base text-muted-foreground line-through">{price(product.oldPrice)}</span>
             )}
           </div>
 

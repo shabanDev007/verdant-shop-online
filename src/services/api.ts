@@ -6,7 +6,8 @@ import { categories as mockCategories, products as mockProducts } from "@/data/m
  * All backend calls are isolated here. Swap the mock implementations
  * for real `fetch(API_BASE_URL + ...)` calls when the Spring Boot backend is ready.
  */
-export const API_BASE_URL = "http://localhost:8080/api";
+export const API_BASE_URL =
+  (import.meta.env.VITE_API_BASE_URL as string | undefined) ?? "http://localhost:8080/api";
 
 // Simulate small network latency for realistic loading states.
 const delay = <T>(data: T, ms = 250): Promise<T> =>
