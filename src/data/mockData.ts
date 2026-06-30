@@ -64,8 +64,8 @@ export const products: Product[] = [
     slug: "monstera-deliciosa",
     categoryId: "cat-indoor",
     categoryName: "Indoor Plants",
-    price: 49,
-    oldPrice: 59,
+    price: 2450,
+    oldPrice: 2950,
     description:
       "The Swiss Cheese Plant, famous for its dramatic split leaves. A true statement piece for any well-lit room.",
     image:
@@ -83,7 +83,7 @@ export const products: Product[] = [
     slug: "fiddle-leaf-fig",
     categoryId: "cat-indoor",
     categoryName: "Indoor Plants",
-    price: 89,
+    price: 4450,
     description:
       "Iconic large violin-shaped leaves. An interior designer favorite that grows into a tree indoors.",
     image:
@@ -101,7 +101,7 @@ export const products: Product[] = [
     slug: "snake-plant",
     categoryId: "cat-office",
     categoryName: "Office Plants",
-    price: 29,
+    price: 1450,
     description:
       "Nearly indestructible and a top air purifier. Perfect for offices and low-light corners.",
     image:
@@ -119,7 +119,7 @@ export const products: Product[] = [
     slug: "golden-pothos",
     categoryId: "cat-indoor",
     categoryName: "Indoor Plants",
-    price: 19,
+    price: 950,
     description: "Trailing heart-shaped leaves with golden marbling. Thrives almost anywhere.",
     image:
       "https://images.unsplash.com/photo-1632207691143-643e2a9a9361?auto=format&fit=crop&w=900&q=80",
@@ -136,7 +136,7 @@ export const products: Product[] = [
     slug: "echeveria-succulent",
     categoryId: "cat-succulents",
     categoryName: "Succulents",
-    price: 14,
+    price: 700,
     description: "Rosette-shaped succulent with pastel tones. Loves sunshine, hates fuss.",
     image:
       "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=900&q=80",
@@ -153,7 +153,7 @@ export const products: Product[] = [
     slug: "peace-lily",
     categoryId: "cat-flowering",
     categoryName: "Flowering Plants",
-    price: 34,
+    price: 1700,
     description: "Elegant white blooms and glossy leaves. Tells you when it needs water.",
     image:
       "https://images.unsplash.com/photo-1593482892290-f54927ae2b7a?auto=format&fit=crop&w=900&q=80",
@@ -170,7 +170,7 @@ export const products: Product[] = [
     slug: "orchid-phalaenopsis",
     categoryId: "cat-flowering",
     categoryName: "Flowering Plants",
-    price: 45,
+    price: 2250,
     description: "Long-lasting, exotic blooms in soft pink. A timeless gift.",
     image:
       "https://images.unsplash.com/photo-1524598171353-ce84a157f1c7?auto=format&fit=crop&w=900&q=80",
@@ -187,7 +187,7 @@ export const products: Product[] = [
     slug: "olive-tree",
     categoryId: "cat-outdoor",
     categoryName: "Outdoor Plants",
-    price: 120,
+    price: 6000,
     description: "Mediterranean elegance with silvery foliage. Loves a sunny patio.",
     image:
       "https://images.unsplash.com/photo-1602491453631-e2a5ad90a131?auto=format&fit=crop&w=900&q=80",
@@ -204,7 +204,7 @@ export const products: Product[] = [
     slug: "zz-plant",
     categoryId: "cat-office",
     categoryName: "Office Plants",
-    price: 39,
+    price: 1950,
     description: "Glossy waxy leaves and incredible drought tolerance. Set-and-forget greenery.",
     image:
       "https://images.unsplash.com/photo-1632321977025-c44e76d3ab9a?auto=format&fit=crop&w=900&q=80",
@@ -221,7 +221,7 @@ export const products: Product[] = [
     slug: "terracotta-planter",
     categoryId: "cat-pots",
     categoryName: "Pots & Accessories",
-    price: 24,
+    price: 1200,
     description: "Hand-thrown terracotta pot with drainage. Pairs beautifully with any plant.",
     image:
       "https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=900&q=80",
@@ -238,7 +238,7 @@ export const products: Product[] = [
     slug: "boston-fern",
     categoryId: "cat-indoor",
     categoryName: "Indoor Plants",
-    price: 32,
+    price: 1600,
     description: "Lush, feathery fronds that love humidity. Perfect for bathrooms.",
     image:
       "https://images.unsplash.com/photo-1509937528035-ad76254b0356?auto=format&fit=crop&w=900&q=80",
@@ -255,7 +255,7 @@ export const products: Product[] = [
     slug: "lavender",
     categoryId: "cat-outdoor",
     categoryName: "Outdoor Plants",
-    price: 18,
+    price: 900,
     description: "Fragrant purple blooms that attract pollinators. A garden classic.",
     image:
       "https://images.unsplash.com/photo-1468327768560-75b778cbb551?auto=format&fit=crop&w=900&q=80",
