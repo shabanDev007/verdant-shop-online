@@ -29,6 +29,7 @@ function CheckoutPage() {
   const { items, subtotal, clear } = useCart();
   const delivery = deliveryFor(subtotal);
   const navigate = useNavigate();
+  const price = usePrice();
   const [form, setForm] = useState<FormState>({
     fullName: "", email: "", phone: "", address: "", city: "", notes: "",
   });
@@ -172,7 +173,7 @@ function CheckoutPage() {
                     <p className="truncate font-medium">{it.product.name}</p>
                     <p className="text-xs text-muted-foreground">Qty {it.quantity}</p>
                   </div>
-                  <span className="text-sm font-semibold">{formatPrice(it.product.price * it.quantity)}</span>
+                  <span className="text-sm font-semibold">{price(it.product.price * it.quantity)}</span>
                 </li>
               ))}
             </ul>
