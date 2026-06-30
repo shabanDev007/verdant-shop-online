@@ -15,8 +15,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { CartProvider } from "@/context/CartContext";
 import { WishlistProvider } from "@/context/WishlistContext";
-import { LanguageProvider, useLanguage } from "@/i18n/LanguageContext";
-import { useT } from "@/i18n/LanguageContext";
+import { LanguageProvider, useLanguage, useT } from "@/i18n/LanguageContext";
 import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
