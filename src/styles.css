@@ -42,6 +42,7 @@
   --color-moss: var(--moss);
   --font-display: "Fraunces", Georgia, serif;
   --font-sans: "Inter", system-ui, sans-serif;
+  --font-arabic: "Cairo", "Tajawal", system-ui, sans-serif;
   --shadow-soft: 0 8px 30px -10px color-mix(in oklab, var(--primary) 18%, transparent);
   --shadow-card: 0 4px 20px -8px oklch(0.3 0.04 150 / 0.18);
   --gradient-hero: linear-gradient(135deg, var(--cream) 0%, oklch(0.96 0.02 130) 100%);
