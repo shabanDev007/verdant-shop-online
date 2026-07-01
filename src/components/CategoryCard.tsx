@@ -5,8 +5,8 @@ import type { Category } from "@/types";
 export function CategoryCard({ category }: { category: Category }) {
   return (
     <Link
-      to="/products"
-      search={{ category: category.id }}
+      to="/c/$"
+      params={{ _splat: category.slug }}
       className="group relative block overflow-hidden rounded-3xl border border-border/60 bg-card transition hover:shadow-[var(--shadow-card)]"
     >
       <div className="relative aspect-[4/5] overflow-hidden">

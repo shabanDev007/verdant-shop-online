@@ -27,7 +27,7 @@ export const Route = createFileRoute("/")({
 function HomePage() {
   const t = useT();
   const price = usePrice();
-  const { data: featured = [] } = useQuery({ queryKey: ["featured"], queryFn: getFeaturedProducts });
+  const { data: featured = [] } = useQuery({ queryKey: ["featured"], queryFn: () => getFeaturedProducts() });
   const { data: cats = [] } = useQuery({ queryKey: ["categories"], queryFn: getCategories });
 
   return (
