@@ -120,6 +120,18 @@ export async function getCategoryChildren(parentId: string): Promise<Category[]>
   return delay(mockCategories.filter((c) => c.parentId === parentId));
 }
 
+// ---------- Reviews ----------
+
+export async function getReviews(productId: string): Promise<Review[]> {
+  return delay(_getReviewsForProduct(productId));
+}
+
+export async function getProductsByIds(ids: string[]): Promise<Product[]> {
+  const set = new Set(ids);
+  const map = new Map(mockProducts.map((p) => [p.id, p]));
+  return delay(ids.map((id) => map.get(id)).filter((p): p is Product => !!p && set.has(p.id)));
+}
+
 // ---------- Orders ----------
 
 export async function createOrder(order: Order): Promise<Order> {
