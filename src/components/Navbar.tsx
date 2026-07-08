@@ -135,6 +135,14 @@ export function Navbar() {
           </nav>
         </div>
       )}
+      {searchOpen && (
+        <div className="fixed inset-0 z-50">
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setSearchOpen(false)} />
+          <div className="relative mx-auto mt-16 max-w-2xl rounded-3xl bg-background p-5 shadow-2xl">
+            <SearchDropdown onClose={() => setSearchOpen(false)} />
+          </div>
+        </div>
+      )}
     </header>
   );
 }
