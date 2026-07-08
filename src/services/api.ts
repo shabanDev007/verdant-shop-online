@@ -1,5 +1,6 @@
-import type { Category, Order, Product, SmartCollection } from "@/types";
+import type { Category, Order, Product, Review, SmartCollection } from "@/types";
 import { categories as mockCategories, products as mockProducts } from "@/data/mockData";
+import { getReviewsForProduct as _getReviewsForProduct } from "@/data/reviewsCoupons";
 
 /**
  * API service layer.
