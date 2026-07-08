@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WishlistRouteImport } from './routes/wishlist'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ProductsRouteImport } from './routes/products'
 import { Route as ContactRouteImport } from './routes/contact'
@@ -21,6 +22,11 @@ import { Route as ProductsIdRouteImport } from './routes/products.$id'
 import { Route as CSplatRouteImport } from './routes/c.$'
 import { Route as BrowseFacetValueRouteImport } from './routes/browse.$facet.$value'
 
+const WishlistRoute = WishlistRouteImport.update({
+  id: '/wishlist',
+  path: '/wishlist',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
@@ -86,6 +92,7 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/products': typeof ProductsRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/wishlist': typeof WishlistRoute
   '/c/$': typeof CSplatRoute
   '/products/$id': typeof ProductsIdRoute
   '/browse/$facet/$value': typeof BrowseFacetValueRoute
@@ -99,6 +106,7 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/products': typeof ProductsRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/wishlist': typeof WishlistRoute
   '/c/$': typeof CSplatRoute
   '/products/$id': typeof ProductsIdRoute
   '/browse/$facet/$value': typeof BrowseFacetValueRoute
@@ -113,6 +121,7 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/products': typeof ProductsRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/wishlist': typeof WishlistRoute
   '/c/$': typeof CSplatRoute
   '/products/$id': typeof ProductsIdRoute
   '/browse/$facet/$value': typeof BrowseFacetValueRoute
@@ -128,6 +137,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/products'
     | '/sitemap.xml'
+    | '/wishlist'
     | '/c/$'
     | '/products/$id'
     | '/browse/$facet/$value'
@@ -141,6 +151,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/products'
     | '/sitemap.xml'
+    | '/wishlist'
     | '/c/$'
     | '/products/$id'
     | '/browse/$facet/$value'
@@ -154,6 +165,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/products'
     | '/sitemap.xml'
+    | '/wishlist'
     | '/c/$'
     | '/products/$id'
     | '/browse/$facet/$value'
@@ -168,12 +180,20 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   ProductsRoute: typeof ProductsRouteWithChildren
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  WishlistRoute: typeof WishlistRoute
   CSplatRoute: typeof CSplatRoute
   BrowseFacetValueRoute: typeof BrowseFacetValueRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/wishlist': {
+      id: '/wishlist'
+      path: '/wishlist'
+      fullPath: '/wishlist'
+      preLoaderRoute: typeof WishlistRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sitemap.xml': {
       id: '/sitemap.xml'
       path: '/sitemap.xml'
@@ -275,6 +295,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   ProductsRoute: ProductsRouteWithChildren,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  WishlistRoute: WishlistRoute,
   CSplatRoute: CSplatRoute,
   BrowseFacetValueRoute: BrowseFacetValueRoute,
 }
