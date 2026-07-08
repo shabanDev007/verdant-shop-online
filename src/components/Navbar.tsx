@@ -1,17 +1,26 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Leaf, Menu, Search, ShoppingBag, X, Heart } from "lucide-react";
-import { useState } from "react";
+import { Leaf, Menu, Search, ShoppingBag, X, Heart, GitCompareArrows } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
+import { useCompare } from "@/context/CompareContext";
 import { useT } from "@/i18n/LanguageContext";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { SearchDropdown } from "@/components/SearchDropdown";
 
 export function Navbar() {
   const t = useT();
   const { itemCount } = useCart();
   const { ids } = useWishlist();
+  const { ids: cmpIds } = useCompare();
   const [open, setOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+
+  useEffect(() => {
+    setSearchOpen(false);
+    setOpen(false);
+  }, [pathname]);
 
   const links = [
     { to: "/", label: t("nav.home") },
