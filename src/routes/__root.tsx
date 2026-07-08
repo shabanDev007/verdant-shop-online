@@ -131,9 +131,15 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <LanguageProvider>
         <WishlistProvider>
-          <CartProvider>
-            <AppShell />
-          </CartProvider>
+          <CompareProvider>
+            <RecentlyViewedProvider>
+              <CouponProvider>
+                <CartProvider>
+                  <AppShell />
+                </CartProvider>
+              </CouponProvider>
+            </RecentlyViewedProvider>
+          </CompareProvider>
         </WishlistProvider>
       </LanguageProvider>
     </QueryClientProvider>
