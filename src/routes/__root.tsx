@@ -15,6 +15,9 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { CartProvider } from "@/context/CartContext";
 import { WishlistProvider } from "@/context/WishlistContext";
+import { CompareProvider } from "@/context/CompareContext";
+import { RecentlyViewedProvider } from "@/context/RecentlyViewedContext";
+import { CouponProvider } from "@/context/CouponContext";
 import { LanguageProvider, useLanguage, useT } from "@/i18n/LanguageContext";
 import { Toaster } from "@/components/ui/sonner";
 
@@ -128,9 +131,15 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <LanguageProvider>
         <WishlistProvider>
-          <CartProvider>
-            <AppShell />
-          </CartProvider>
+          <CompareProvider>
+            <RecentlyViewedProvider>
+              <CouponProvider>
+                <CartProvider>
+                  <AppShell />
+                </CartProvider>
+              </CouponProvider>
+            </RecentlyViewedProvider>
+          </CompareProvider>
         </WishlistProvider>
       </LanguageProvider>
     </QueryClientProvider>

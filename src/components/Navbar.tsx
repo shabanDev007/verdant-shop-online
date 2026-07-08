@@ -1,17 +1,26 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Leaf, Menu, Search, ShoppingBag, X, Heart } from "lucide-react";
-import { useState } from "react";
+import { Leaf, Menu, Search, ShoppingBag, X, Heart, GitCompareArrows } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
+import { useCompare } from "@/context/CompareContext";
 import { useT } from "@/i18n/LanguageContext";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { SearchDropdown } from "@/components/SearchDropdown";
 
 export function Navbar() {
   const t = useT();
   const { itemCount } = useCart();
   const { ids } = useWishlist();
+  const { ids: cmpIds } = useCompare();
   const [open, setOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+
+  useEffect(() => {
+    setSearchOpen(false);
+    setOpen(false);
+  }, [pathname]);
 
   const links = [
     { to: "/", label: t("nav.home") },
@@ -52,15 +61,28 @@ export function Navbar() {
           <div className="hidden sm:block">
             <LanguageSwitcher />
           </div>
-          <Link
-            to="/products"
+          <button
+            type="button"
+            onClick={() => setSearchOpen(true)}
             aria-label={t("nav.search")}
-            className="hidden h-10 w-10 place-items-center rounded-full text-foreground/70 transition hover:bg-accent hover:text-primary sm:grid"
+            className="grid h-10 w-10 place-items-center rounded-full text-foreground/70 transition hover:bg-accent hover:text-primary"
           >
             <Search className="h-5 w-5" />
+          </button>
+          <Link
+            to="/compare"
+            aria-label="Compare"
+            className="relative hidden h-10 w-10 place-items-center rounded-full text-foreground/70 transition hover:bg-accent hover:text-primary sm:grid"
+          >
+            <GitCompareArrows className="h-5 w-5" />
+            {cmpIds.length > 0 && (
+              <span className="absolute -end-0.5 -top-0.5 grid h-4 min-w-4 place-items-center rounded-full bg-primary px-1 text-[10px] font-semibold text-primary-foreground">
+                {cmpIds.length}
+              </span>
+            )}
           </Link>
           <Link
-            to="/products"
+            to="/wishlist"
             aria-label={t("nav.wishlist")}
             className="relative grid h-10 w-10 place-items-center rounded-full text-foreground/70 transition hover:bg-accent hover:text-primary"
           >
@@ -111,6 +133,14 @@ export function Navbar() {
               <LanguageSwitcher />
             </div>
           </nav>
+        </div>
+      )}
+      {searchOpen && (
+        <div className="fixed inset-0 z-50">
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setSearchOpen(false)} />
+          <div className="relative mx-auto mt-16 max-w-2xl rounded-3xl bg-background p-5 shadow-2xl">
+            <SearchDropdown onClose={() => setSearchOpen(false)} />
+          </div>
         </div>
       )}
     </header>
