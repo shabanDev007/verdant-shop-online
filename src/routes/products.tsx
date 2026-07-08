@@ -43,7 +43,7 @@ function ProductsPage() {
   const { data: categories = [] } = useQuery({ queryKey: ["categories"], queryFn: getCategories });
 
   const setP = (patch: Partial<typeof search>) =>
-    navigate({ search: (prev) => ({ ...prev, ...patch }), replace: true });
+    navigate({ search: (prev: typeof search) => ({ ...prev, ...patch }), replace: true });
 
   const filtered = useMemo(() => {
     let list = products;
