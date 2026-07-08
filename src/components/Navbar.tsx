@@ -61,15 +61,28 @@ export function Navbar() {
           <div className="hidden sm:block">
             <LanguageSwitcher />
           </div>
-          <Link
-            to="/products"
+          <button
+            type="button"
+            onClick={() => setSearchOpen(true)}
             aria-label={t("nav.search")}
-            className="hidden h-10 w-10 place-items-center rounded-full text-foreground/70 transition hover:bg-accent hover:text-primary sm:grid"
+            className="grid h-10 w-10 place-items-center rounded-full text-foreground/70 transition hover:bg-accent hover:text-primary"
           >
             <Search className="h-5 w-5" />
+          </button>
+          <Link
+            to="/compare"
+            aria-label="Compare"
+            className="relative hidden h-10 w-10 place-items-center rounded-full text-foreground/70 transition hover:bg-accent hover:text-primary sm:grid"
+          >
+            <GitCompareArrows className="h-5 w-5" />
+            {cmpIds.length > 0 && (
+              <span className="absolute -end-0.5 -top-0.5 grid h-4 min-w-4 place-items-center rounded-full bg-primary px-1 text-[10px] font-semibold text-primary-foreground">
+                {cmpIds.length}
+              </span>
+            )}
           </Link>
           <Link
-            to="/products"
+            to="/wishlist"
             aria-label={t("nav.wishlist")}
             className="relative grid h-10 w-10 place-items-center rounded-full text-foreground/70 transition hover:bg-accent hover:text-primary"
           >
