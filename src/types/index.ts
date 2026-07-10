@@ -6,13 +6,7 @@ export type Difficulty = "Beginner" | "Easy" | "Moderate" | "Expert";
 export type SunlightLevel = "Low" | "Medium" | "Bright Indirect" | "Full Sun";
 export type WaterLevel = "Low" | "Weekly" | "Frequent";
 export type Badge =
-  | "new"
-  | "best-seller"
-  | "low-stock"
-  | "sale"
-  | "trending"
-  | "staff-pick"
-  | "limited";
+  "new" | "best-seller" | "low-stock" | "sale" | "trending" | "staff-pick" | "limited";
 export type SmartCollection =
   | "new-arrivals"
   | "best-sellers"
@@ -73,30 +67,13 @@ export interface ProductFAQ {
   a: string;
 }
 
-export type Room =
-  | "bedroom"
-  | "living-room"
-  | "office"
-  | "bathroom"
-  | "balcony"
-  | "kitchen";
+export type Room = "bedroom" | "living-room" | "office" | "bathroom" | "balcony" | "kitchen";
 export type LightTag = "low-light" | "medium-light" | "bright-light" | "direct-sun";
 export type WaterTag = "daily" | "weekly" | "low-water";
 export type Occasion =
-  | "birthday"
-  | "wedding"
-  | "new-home"
-  | "mothers-day"
-  | "valentines-day"
-  | "ramadan"
-  | "eid";
+  "birthday" | "wedding" | "new-home" | "mothers-day" | "valentines-day" | "ramadan" | "eid";
 export type Benefit =
-  | "air-purifying"
-  | "pet-friendly"
-  | "fast-growing"
-  | "low-maintenance"
-  | "flowering"
-  | "fragrant";
+  "air-purifying" | "pet-friendly" | "fast-growing" | "low-maintenance" | "flowering" | "fragrant";
 
 export interface Product {
   id: string;

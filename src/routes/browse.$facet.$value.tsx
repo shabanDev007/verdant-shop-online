@@ -12,7 +12,10 @@ export const Route = createFileRoute("/browse/$facet/$value")({
   head: ({ params }) => ({
     meta: [
       { title: `Browse by ${params.facet}: ${params.value} — Verdura` },
-      { name: "description", content: `Plants and products filtered by ${params.facet}: ${params.value}.` },
+      {
+        name: "description",
+        content: `Plants and products filtered by ${params.facet}: ${params.value}.`,
+      },
     ],
   }),
   component: BrowsePage,
@@ -46,9 +49,13 @@ function BrowsePage() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
       <nav className="mb-6 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-        <Link to="/" className="hover:text-primary">Home</Link>
+        <Link to="/" className="hover:text-primary">
+          Home
+        </Link>
         <ChevronRight className="h-3 w-3" />
-        <Link to="/products" className="hover:text-primary">Shop</Link>
+        <Link to="/products" className="hover:text-primary">
+          Shop
+        </Link>
         <ChevronRight className="h-3 w-3" />
         <span className="capitalize">{facet}</span>
         <ChevronRight className="h-3 w-3" />

@@ -27,7 +27,9 @@ function WishlistPage() {
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
       <header className="mb-8 max-w-2xl">
         <p className="text-xs font-semibold uppercase tracking-widest text-primary">Saved</p>
-        <h1 className="mt-2 font-display text-4xl font-semibold tracking-tight sm:text-5xl">Wishlist</h1>
+        <h1 className="mt-2 font-display text-4xl font-semibold tracking-tight sm:text-5xl">
+          Wishlist
+        </h1>
         <p className="mt-2 text-muted-foreground">
           {ids.length} item{ids.length === 1 ? "" : "s"} saved for later.
         </p>
@@ -39,7 +41,9 @@ function WishlistPage() {
             <Heart className="h-7 w-7" />
           </div>
           <p className="mt-5 font-display text-2xl font-semibold">Your wishlist is empty</p>
-          <p className="mt-2 text-sm text-muted-foreground">Tap the heart on any product to save it here.</p>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Tap the heart on any product to save it here.
+          </p>
           <Link
             to="/products"
             className="mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:opacity-90"

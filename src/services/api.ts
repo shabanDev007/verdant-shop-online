@@ -21,9 +21,7 @@ export async function getProducts(): Promise<Product[]> {
 
 export async function getProductById(id: string): Promise<Product | null> {
   const found =
-    mockProducts.find((p) => p.id === id) ??
-    mockProducts.find((p) => p.slug === id) ??
-    null;
+    mockProducts.find((p) => p.id === id) ?? mockProducts.find((p) => p.slug === id) ?? null;
   return delay(found);
 }
 
@@ -73,9 +71,7 @@ export async function getProductsByCollection(
   collection: SmartCollection,
   limit = 12,
 ): Promise<Product[]> {
-  return delay(
-    mockProducts.filter((p) => p.collections?.includes(collection)).slice(0, limit),
-  );
+  return delay(mockProducts.filter((p) => p.collections?.includes(collection)).slice(0, limit));
 }
 
 export async function getProductsByFacet(

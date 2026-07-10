@@ -1,4 +1,5 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, useContext, type ReactNode } from "react";
+import { usePersistentState } from "@/hooks/usePersistentState";
 
 interface WishlistContextValue {
   ids: string[];
@@ -8,22 +9,11 @@ interface WishlistContextValue {
 
 const WishlistContext = createContext<WishlistContextValue | null>(null);
 const STORAGE_KEY = "verdura.wishlist";
+const isStringArray = (value: unknown): value is string[] =>
+  Array.isArray(value) && value.every((item) => typeof item === "string");
 
 export function WishlistProvider({ children }: { children: ReactNode }) {
-  const [ids, setIds] = useState<string[]>(() => {
-    if (typeof window === "undefined") return [];
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      return raw ? (JSON.parse(raw) as string[]) : [];
-    } catch {
-      return [];
-    }
-  });
-
-  useEffect(() => {
-    if (typeof window !== "undefined")
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(ids));
-  }, [ids]);
+  const [ids, setIds] = usePersistentState<string[]>(STORAGE_KEY, [], isStringArray);
 
   return (
     <WishlistContext.Provider

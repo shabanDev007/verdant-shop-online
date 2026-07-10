@@ -1,6 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { ArrowRight, Truck, Leaf, HeartHandshake, ShieldCheck, Quote, Sparkles } from "lucide-react";
+import {
+  ArrowRight,
+  Truck,
+  Leaf,
+  HeartHandshake,
+  ShieldCheck,
+  Quote,
+  Sparkles,
+} from "lucide-react";
 import heroImage from "@/assets/hero-plants.jpg";
 import { getCategories, getFeaturedProducts } from "@/services/api";
 import { ProductCard } from "@/components/ProductCard";
@@ -27,7 +35,10 @@ export const Route = createFileRoute("/")({
 function HomePage() {
   const t = useT();
   const price = usePrice();
-  const { data: featured = [] } = useQuery({ queryKey: ["featured"], queryFn: () => getFeaturedProducts() });
+  const { data: featured = [] } = useQuery({
+    queryKey: ["featured"],
+    queryFn: () => getFeaturedProducts(),
+  });
   const { data: cats = [] } = useQuery({ queryKey: ["categories"], queryFn: getCategories });
 
   return (
@@ -81,7 +92,9 @@ function HomePage() {
             </div>
             {featured[0] && (
               <div className="absolute -bottom-6 -start-6 hidden rounded-2xl border border-border/60 bg-background/90 p-4 shadow-[var(--shadow-card)] backdrop-blur sm:block">
-                <p className="text-xs font-medium text-muted-foreground">{t("home.hero.bestseller")}</p>
+                <p className="text-xs font-medium text-muted-foreground">
+                  {t("home.hero.bestseller")}
+                </p>
                 <p className="font-display text-lg font-semibold">{featured[0].name}</p>
                 <p className="text-sm text-primary">{price(featured[0].price)}</p>
               </div>
@@ -130,10 +143,17 @@ function HomePage() {
           {[
             { icon: Truck, title: t("home.benefit1.title"), text: t("home.benefit1.text") },
             { icon: Leaf, title: t("home.benefit2.title"), text: t("home.benefit2.text") },
-            { icon: HeartHandshake, title: t("home.benefit3.title"), text: t("home.benefit3.text") },
+            {
+              icon: HeartHandshake,
+              title: t("home.benefit3.title"),
+              text: t("home.benefit3.text"),
+            },
             { icon: ShieldCheck, title: t("home.benefit4.title"), text: t("home.benefit4.text") },
           ].map(({ icon: Icon, title, text }) => (
-            <div key={title} className="rounded-3xl border border-border/60 bg-card p-6 transition hover:shadow-[var(--shadow-card)]">
+            <div
+              key={title}
+              className="rounded-3xl border border-border/60 bg-card p-6 transition hover:shadow-[var(--shadow-card)]"
+            >
               <div className="grid h-12 w-12 place-items-center rounded-2xl bg-accent text-primary">
                 <Icon className="h-6 w-6" />
               </div>
@@ -157,11 +177,26 @@ function HomePage() {
           </div>
           <div className="mt-12 grid gap-6 md:grid-cols-3">
             {[
-              { quote: "My monstera arrived flawless. The packaging was unreal — it felt like unboxing a gift.", name: "Amelia R." },
-              { quote: "Their care team replied to my fiddle leaf questions within hours. Real humans who care.", name: "Daniel S." },
-              { quote: "Three orders in. Every plant has thrived. Verdura is now my only plant shop.", name: "Priya M." },
+              {
+                quote:
+                  "My monstera arrived flawless. The packaging was unreal — it felt like unboxing a gift.",
+                name: "Amelia R.",
+              },
+              {
+                quote:
+                  "Their care team replied to my fiddle leaf questions within hours. Real humans who care.",
+                name: "Daniel S.",
+              },
+              {
+                quote:
+                  "Three orders in. Every plant has thrived. Verdura is now my only plant shop.",
+                name: "Priya M.",
+              },
             ].map((tt) => (
-              <figure key={tt.name} className="rounded-3xl bg-primary-foreground/10 p-6 backdrop-blur">
+              <figure
+                key={tt.name}
+                className="rounded-3xl bg-primary-foreground/10 p-6 backdrop-blur"
+              >
                 <Quote className="h-6 w-6 text-primary-foreground/60" />
                 <blockquote className="mt-4 text-base leading-relaxed">"{tt.quote}"</blockquote>
                 <figcaption className="mt-5 text-sm">
@@ -194,18 +229,31 @@ function HomePage() {
 }
 
 function SectionHeader({
-  eyebrow, title, subtitle, actionTo, actionLabel,
+  eyebrow,
+  title,
+  subtitle,
+  actionTo,
+  actionLabel,
 }: {
-  eyebrow: string; title: string; subtitle: string; actionTo: string; actionLabel: string;
+  eyebrow: string;
+  title: string;
+  subtitle: string;
+  actionTo: string;
+  actionLabel: string;
 }) {
   return (
     <div className="flex flex-wrap items-end justify-between gap-4">
       <div className="max-w-2xl">
         <p className="text-xs font-semibold uppercase tracking-widest text-primary">{eyebrow}</p>
-        <h2 className="mt-2 font-display text-3xl font-semibold tracking-tight sm:text-4xl">{title}</h2>
+        <h2 className="mt-2 font-display text-3xl font-semibold tracking-tight sm:text-4xl">
+          {title}
+        </h2>
         <p className="mt-3 text-muted-foreground">{subtitle}</p>
       </div>
-      <Link to={actionTo} className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:gap-2.5">
+      <Link
+        to={actionTo}
+        className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:gap-2.5"
+      >
         {actionLabel} <ArrowRight className="h-4 w-4 rtl:rotate-180" />
       </Link>
     </div>

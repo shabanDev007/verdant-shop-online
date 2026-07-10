@@ -42,14 +42,22 @@ export function OrderSummary({ subtotal, delivery, showCoupon = true, children }
           <div className="flex items-center justify-between text-sm text-primary">
             <span className="inline-flex items-center gap-1.5">
               <Tag className="h-3.5 w-3.5" /> {applied.code}
-              <button type="button" onClick={clear} aria-label="Remove coupon" className="ms-1 text-muted-foreground hover:text-destructive">
+              <button
+                type="button"
+                onClick={clear}
+                aria-label="Remove coupon"
+                className="ms-1 text-muted-foreground hover:text-destructive"
+              >
                 <X className="h-3.5 w-3.5" />
               </button>
             </span>
             <span>−{price(effectiveDiscount)}</span>
           </div>
         )}
-        <Row label={t("summary.delivery")} value={delivery === 0 ? t("summary.free") : price(delivery)} />
+        <Row
+          label={t("summary.delivery")}
+          value={delivery === 0 ? t("summary.free") : price(delivery)}
+        />
         <div className="my-2 border-t border-border" />
         <Row label={t("summary.total")} value={price(total)} bold />
       </dl>
@@ -61,7 +69,9 @@ export function OrderSummary({ subtotal, delivery, showCoupon = true, children }
             placeholder="Coupon code"
             value={code}
             onChange={(e) => setCode(e.target.value)}
-            onKeyDown={(e) => { if (e.key === "Enter") handleApply(); }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") handleApply();
+            }}
             className="w-full rounded-full border border-input bg-background px-3 py-2 text-sm outline-none focus:border-primary"
           />
           <button
@@ -86,7 +96,9 @@ export function OrderSummary({ subtotal, delivery, showCoupon = true, children }
 
 function Row({ label, value, bold }: { label: string; value: string; bold?: boolean }) {
   return (
-    <div className={`flex justify-between ${bold ? "text-base font-semibold text-foreground" : "text-muted-foreground"}`}>
+    <div
+      className={`flex justify-between ${bold ? "text-base font-semibold text-foreground" : "text-muted-foreground"}`}
+    >
       <dt>{label}</dt>
       <dd className={bold ? "text-primary" : "text-foreground"}>{value}</dd>
     </div>

@@ -2,8 +2,6 @@
 
 A modern, production-ready plant store built with **React + TypeScript + TanStack Start + Tailwind v4**. Bilingual (English / Arabic with full RTL), Egyptian Pound pricing, and a clean API layer ready for a Spring Boot backend.
 
-> Live preview is rendered inside Lovable. To self-host, see **Deployment** below.
-
 ---
 
 ## ✨ Features
@@ -23,16 +21,16 @@ A modern, production-ready plant store built with **React + TypeScript + TanStac
 
 ## 🧱 Tech Stack
 
-| Layer        | Choice                                  |
-| ------------ | --------------------------------------- |
-| Framework    | React 19 + TanStack Start (Vite 7)      |
-| Language     | TypeScript (strict)                     |
-| Styling      | Tailwind CSS v4 + design tokens (OKLCH) |
-| UI Primitives| shadcn/ui (Radix)                       |
-| Data         | TanStack Query                          |
-| Forms        | Zod                                     |
-| Notifications| sonner                                  |
-| Icons        | lucide-react                            |
+| Layer         | Choice                                  |
+| ------------- | --------------------------------------- |
+| Framework     | React 19 + TanStack Start (Vite 7)      |
+| Language      | TypeScript (strict)                     |
+| Styling       | Tailwind CSS v4 + design tokens (OKLCH) |
+| UI Primitives | shadcn/ui (Radix)                       |
+| Data          | TanStack Query                          |
+| Forms         | Zod                                     |
+| Notifications | sonner                                  |
+| Icons         | lucide-react                            |
 
 ---
 
@@ -58,29 +56,35 @@ src/
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 - **Node.js 20+** or **Bun 1.1+**
 
 ### Install
+
 ```bash
 bun install        # or: npm install / pnpm install
 ```
 
 ### Environment variables
+
 Copy the example and edit as needed:
+
 ```bash
 cp .env.example .env
 ```
 
-| Variable               | Default                          | Purpose                          |
-| ---------------------- | -------------------------------- | -------------------------------- |
-| `VITE_API_BASE_URL`    | `http://localhost:8080/api`      | Spring Boot REST endpoint base   |
+| Variable            | Default                     | Purpose                        |
+| ------------------- | --------------------------- | ------------------------------ |
+| `VITE_API_BASE_URL` | `http://localhost:8080/api` | Spring Boot REST endpoint base |
 
 ### Run dev server
+
 ```bash
 bun dev            # http://localhost:8080
 ```
 
 ### Build for production
+
 ```bash
 bun run build
 bun run start      # serves the production build
@@ -97,7 +101,11 @@ bun run start      # serves the production build
 ```tsx
 const t = useT();
 const price = usePrice();
-return <button>{t("product.addToCart")} — {price(199)}</button>;
+return (
+  <button>
+    {t("product.addToCart")} — {price(199)}
+  </button>
+);
 ```
 
 ---
@@ -105,8 +113,9 @@ return <button>{t("product.addToCart")} — {price(199)}</button>;
 ## 💷 Currency
 
 All prices are formatted via `src/lib/format.ts` (Egyptian Pound — `EGP`).
+
 - English: `1,250 EGP`
-- Arabic:  `١٬٢٥٠ ج.م.‏` (via `Intl.NumberFormat("ar-EG", ...)`)
+- Arabic: `١٬٢٥٠ ج.م.‏` (via `Intl.NumberFormat("ar-EG", ...)`)
 
 To change currency globally, update `CURRENCY_CODE` in `src/lib/format.ts`.
 
@@ -118,39 +127,25 @@ Every network call is centralized in `src/services/api.ts`. Each function carrie
 
 Expected backend contract (see `src/types/index.ts` for full DTOs):
 
-| Method | Path                          | Returns           |
-| ------ | ----------------------------- | ----------------- |
-| GET    | `/api/products`               | `Product[]`       |
-| GET    | `/api/products/{id}`          | `Product`         |
-| GET    | `/api/products/featured`      | `Product[]`       |
-| GET    | `/api/products?search=`       | `Product[]`       |
-| GET    | `/api/products?categoryId=`   | `Product[]`       |
-| GET    | `/api/products/{id}/related`  | `Product[]`       |
-| GET    | `/api/categories`             | `Category[]`      |
-| POST   | `/api/orders`                 | `Order` (with id) |
+| Method | Path                         | Returns           |
+| ------ | ---------------------------- | ----------------- |
+| GET    | `/api/products`              | `Product[]`       |
+| GET    | `/api/products/{id}`         | `Product`         |
+| GET    | `/api/products/featured`     | `Product[]`       |
+| GET    | `/api/products?search=`      | `Product[]`       |
+| GET    | `/api/products?categoryId=`  | `Product[]`       |
+| GET    | `/api/products/{id}/related` | `Product[]`       |
+| GET    | `/api/categories`            | `Category[]`      |
+| POST   | `/api/orders`                | `Order` (with id) |
 
 ---
 
 ## 🌐 Deployment
 
-The project ships with the TanStack Start Cloudflare adapter — output is an edge-ready Worker bundle.
+The project uses Nitro, so the production bundle can run on a standard Node.js host.
 
-- **Cloudflare Workers / Pages** — `bun run build`, then `wrangler deploy`
-- **Vercel** — works out of the box with the Vite preset
-- **Any Node host** — `bun run start` serves the SSR output
-- **Static export** — for a fully static deploy, swap the adapter for `nitro: { preset: "static" }` in `vite.config.ts`
-
----
-
-## 🗂️ Push to GitHub
-
-This repo wasn't initialized inside the Lovable sandbox. The fastest way to publish it:
-
-1. In the Lovable editor, open the **+** menu → **GitHub** → **Connect project**.
-2. Authorize the Lovable GitHub App and pick the target account / org.
-3. Click **Create Repository** — Lovable pushes the full codebase and keeps it in two-way sync.
-
-After that you can clone, branch, and PR as usual.
+- **Any Node host** — `bun run build`, then `bun run start`
+- **Vercel / Netlify / Cloudflare** — select the corresponding Nitro preset or platform adapter before deploying
 
 ---
 

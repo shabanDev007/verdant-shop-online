@@ -1,4 +1,12 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from "react";
 import { LANGUAGES, translations, type Language, type TranslationKey } from "./translations";
 
 interface LanguageContextValue {
@@ -16,7 +24,9 @@ function getInitialLang(): Language {
   try {
     const stored = localStorage.getItem(STORAGE_KEY) as Language | null;
     if (stored === "en" || stored === "ar") return stored;
-  } catch {}
+  } catch {
+    // Fall back to English when browser storage is unavailable.
+  }
   return "en";
 }
 
@@ -36,7 +46,9 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     setLangState(next);
     try {
       localStorage.setItem(STORAGE_KEY, next);
-    } catch {}
+    } catch {
+      // Language switching still works when browser storage is unavailable.
+    }
   }, []);
 
   const t = useCallback(
@@ -53,7 +65,10 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     [lang],
   );
 
-  const value = useMemo<LanguageContextValue>(() => ({ lang, dir, setLang, t }), [lang, dir, setLang, t]);
+  const value = useMemo<LanguageContextValue>(
+    () => ({ lang, dir, setLang, t }),
+    [lang, dir, setLang, t],
+  );
 
   return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;
 }

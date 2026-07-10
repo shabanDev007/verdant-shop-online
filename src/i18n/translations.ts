@@ -3,7 +3,12 @@
 
 export type Language = "en" | "ar";
 
-export const LANGUAGES: { code: Language; label: string; nativeLabel: string; dir: "ltr" | "rtl" }[] = [
+export const LANGUAGES: {
+  code: Language;
+  label: string;
+  nativeLabel: string;
+  dir: "ltr" | "rtl";
+}[] = [
   { code: "en", label: "English", nativeLabel: "English", dir: "ltr" },
   { code: "ar", label: "Arabic", nativeLabel: "العربية", dir: "rtl" },
 ];
@@ -55,7 +60,8 @@ export const translations = {
     "home.testimonials.eyebrow": "Loved by plant parents",
     "home.testimonials.title": "Stories from our garden community.",
     "home.cta.title": "Ready to grow your indoor jungle?",
-    "home.cta.subtitle": "Free delivery on orders over 2,000 EGP. Replace-or-refund within 30 days. Plant happy.",
+    "home.cta.subtitle":
+      "Free delivery on orders over 2,000 EGP. Replace-or-refund within 30 days. Plant happy.",
     "home.cta.button": "Start shopping",
 
     // Product / cart
@@ -99,13 +105,15 @@ export const translations = {
     "checkout.field.phone": "Phone",
     "checkout.field.city": "City",
     "checkout.field.address": "Address",
-    "checkout.notes.placeholder": "Anything we should know? Gate code, gift message, delivery instructions...",
+    "checkout.notes.placeholder":
+      "Anything we should know? Gate code, gift message, delivery instructions...",
     "checkout.cod.title": "Cash on Delivery",
     "checkout.cod.subtitle": "Pay when your plants arrive at your door.",
     "checkout.placeOrder": "Place Order",
     "checkout.placing": "Placing order...",
     "checkout.success.title": "Order placed!",
-    "checkout.success.body": "Thank you. Your order {id} is confirmed. We'll deliver fresh, healthy plants right to your door.",
+    "checkout.success.body":
+      "Thank you. Your order {id} is confirmed. We'll deliver fresh, healthy plants right to your door.",
     "checkout.success.backHome": "Back home",
     "checkout.success.keepShopping": "Keep shopping",
     "checkout.toast.fix": "Please fix the form errors",
@@ -224,7 +232,8 @@ export const translations = {
     "checkout.field.phone": "الهاتف",
     "checkout.field.city": "المدينة",
     "checkout.field.address": "العنوان",
-    "checkout.notes.placeholder": "هل من شيء يجب أن نعرفه؟ كود البوابة، رسالة هدية، تعليمات التوصيل...",
+    "checkout.notes.placeholder":
+      "هل من شيء يجب أن نعرفه؟ كود البوابة، رسالة هدية، تعليمات التوصيل...",
     "checkout.cod.title": "الدفع عند الاستلام",
     "checkout.cod.subtitle": "ادفع عند وصول نباتاتك إلى بابك.",
     "checkout.placeOrder": "تأكيد الطلب",

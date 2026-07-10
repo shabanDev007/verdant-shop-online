@@ -23,7 +23,9 @@ function CartPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-      <h1 className="font-display text-4xl font-semibold tracking-tight sm:text-5xl">{t("cart.title")}</h1>
+      <h1 className="font-display text-4xl font-semibold tracking-tight sm:text-5xl">
+        {t("cart.title")}
+      </h1>
       <p className="mt-2 text-muted-foreground">{subtitle}</p>
 
       {items.length === 0 ? (
@@ -43,7 +45,9 @@ function CartPage() {
       ) : (
         <div className="mt-10 grid gap-8 lg:grid-cols-[1fr_360px]">
           <div className="flex flex-col gap-3">
-            {items.map((it) => <CartItemRow key={it.product.id} item={it} />)}
+            {items.map((it) => (
+              <CartItemRow key={it.product.id} item={it} />
+            ))}
           </div>
           <OrderSummary subtotal={subtotal} delivery={delivery}>
             <Link
@@ -52,7 +56,10 @@ function CartPage() {
             >
               {t("cart.checkout")} <ArrowRight className="h-4 w-4 rtl:rotate-180" />
             </Link>
-            <Link to="/products" className="mt-3 block text-center text-xs text-muted-foreground hover:text-primary">
+            <Link
+              to="/products"
+              className="mt-3 block text-center text-xs text-muted-foreground hover:text-primary"
+            >
               {t("cart.continueShopping")}
             </Link>
           </OrderSummary>

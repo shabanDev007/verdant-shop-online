@@ -52,8 +52,16 @@ export function validateCoupon(
 // ---------- Reviews (seeded 2-3 per featured product) ----------
 
 const REVIEWERS = [
-  "Nour A.", "Omar H.", "Salma M.", "Youssef K.", "Farida R.",
-  "Karim S.", "Layla T.", "Hassan I.", "Mona E.", "Ahmed G.",
+  "Nour A.",
+  "Omar H.",
+  "Salma M.",
+  "Youssef K.",
+  "Farida R.",
+  "Karim S.",
+  "Layla T.",
+  "Hassan I.",
+  "Mona E.",
+  "Ahmed G.",
 ];
 const TITLES = [
   "Arrived healthy and beautiful",

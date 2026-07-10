@@ -66,7 +66,9 @@ export function ProductCard({ product }: { product: Product }) {
       </button>
 
       <div className="flex flex-1 flex-col gap-2 p-4">
-        <p className="text-xs uppercase tracking-wide text-muted-foreground">{product.categoryName}</p>
+        <p className="text-xs uppercase tracking-wide text-muted-foreground">
+          {product.categoryName}
+        </p>
         <Link
           to="/products/$id"
           params={{ id: product.id }}
@@ -83,12 +85,16 @@ export function ProductCard({ product }: { product: Product }) {
           <div className="flex flex-col">
             <span className="text-lg font-semibold text-primary">{price(product.price)}</span>
             {product.oldPrice && (
-              <span className="text-xs text-muted-foreground line-through">{price(product.oldPrice)}</span>
+              <span className="text-xs text-muted-foreground line-through">
+                {price(product.oldPrice)}
+              </span>
             )}
             <span
               className={`text-[11px] font-medium ${product.stock > 0 ? "text-moss" : "text-destructive"}`}
             >
-              {product.stock > 0 ? `${t("product.inStock")} · ${product.stock}` : t("product.outOfStock")}
+              {product.stock > 0
+                ? `${t("product.inStock")} · ${product.stock}`
+                : t("product.outOfStock")}
             </span>
           </div>
           <button

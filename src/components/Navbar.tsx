@@ -37,7 +37,9 @@ export function Navbar() {
           <span className="grid h-9 w-9 place-items-center rounded-full bg-primary text-primary-foreground">
             <Leaf className="h-5 w-5" />
           </span>
-          <span className="font-display text-xl font-semibold tracking-tight">{t("brand.name")}</span>
+          <span className="font-display text-xl font-semibold tracking-tight">
+            {t("brand.name")}
+          </span>
         </Link>
 
         <nav className="hidden items-center justify-center gap-8 md:flex">
@@ -137,7 +139,10 @@ export function Navbar() {
       )}
       {searchOpen && (
         <div className="fixed inset-0 z-50">
-          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setSearchOpen(false)} />
+          <div
+            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+            onClick={() => setSearchOpen(false)}
+          />
           <div className="relative mx-auto mt-16 max-w-2xl rounded-3xl bg-background p-5 shadow-2xl">
             <SearchDropdown onClose={() => setSearchOpen(false)} />
           </div>

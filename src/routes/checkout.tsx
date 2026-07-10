@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { z } from "zod";
 import { CheckCircle2, ArrowRight } from "lucide-react";
@@ -28,10 +28,14 @@ type Errors = Partial<Record<keyof FormState, string>>;
 function CheckoutPage() {
   const { items, subtotal, clear } = useCart();
   const delivery = deliveryFor(subtotal);
-  const navigate = useNavigate();
   const price = usePrice();
   const [form, setForm] = useState<FormState>({
-    fullName: "", email: "", phone: "", address: "", city: "", notes: "",
+    fullName: "",
+    email: "",
+    phone: "",
+    address: "",
+    city: "",
+    notes: "",
   });
   const [errors, setErrors] = useState<Errors>({});
   const [submitting, setSubmitting] = useState(false);
@@ -42,7 +46,10 @@ function CheckoutPage() {
       <div className="mx-auto max-w-3xl px-4 py-20 text-center sm:px-6">
         <h1 className="font-display text-3xl font-semibold">Your cart is empty</h1>
         <p className="mt-3 text-muted-foreground">Add a few plants before checking out.</p>
-        <Link to="/products" className="mt-6 inline-flex rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground">
+        <Link
+          to="/products"
+          className="mt-6 inline-flex rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground"
+        >
           Shop plants
         </Link>
       </div>
@@ -57,12 +64,20 @@ function CheckoutPage() {
         </div>
         <h1 className="mt-6 font-display text-4xl font-semibold tracking-tight">Order placed!</h1>
         <p className="mt-3 text-muted-foreground">
-          Thank you. Your order <span className="font-semibold text-foreground">{orderId}</span> is confirmed.
-          We'll deliver fresh, healthy plants right to your door.
+          Thank you. Your order <span className="font-semibold text-foreground">{orderId}</span> is
+          confirmed. We'll deliver fresh, healthy plants right to your door.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
-          <Link to="/" className="rounded-full border border-border px-6 py-3 text-sm font-semibold hover:bg-accent">Back home</Link>
-          <Link to="/products" className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground">
+          <Link
+            to="/"
+            className="rounded-full border border-border px-6 py-3 text-sm font-semibold hover:bg-accent"
+          >
+            Back home
+          </Link>
+          <Link
+            to="/products"
+            className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground"
+          >
             Keep shopping <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
@@ -111,13 +126,16 @@ function CheckoutPage() {
     }
   };
 
-  const update = (k: keyof FormState) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-    setForm((f) => ({ ...f, [k]: e.target.value }));
+  const update =
+    (k: keyof FormState) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+      setForm((f) => ({ ...f, [k]: e.target.value }));
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
       <h1 className="font-display text-4xl font-semibold tracking-tight sm:text-5xl">Checkout</h1>
-      <p className="mt-2 text-muted-foreground">Almost there. Just a few details to deliver your plants.</p>
+      <p className="mt-2 text-muted-foreground">
+        Almost there. Just a few details to deliver your plants.
+      </p>
 
       <form onSubmit={handleSubmit} className="mt-10 grid gap-8 lg:grid-cols-[1fr_360px]">
         <div className="space-y-6 rounded-3xl border border-border/60 bg-card p-6 sm:p-8">
@@ -127,7 +145,12 @@ function CheckoutPage() {
                 <input className={inputCls} value={form.fullName} onChange={update("fullName")} />
               </Field>
               <Field label="Email" error={errors.email}>
-                <input type="email" className={inputCls} value={form.email} onChange={update("email")} />
+                <input
+                  type="email"
+                  className={inputCls}
+                  value={form.email}
+                  onChange={update("email")}
+                />
               </Field>
               <Field label="Phone" error={errors.phone}>
                 <input className={inputCls} value={form.phone} onChange={update("phone")} />
@@ -156,7 +179,9 @@ function CheckoutPage() {
               <input type="radio" name="payment" checked readOnly className="mt-1 accent-primary" />
               <div>
                 <p className="font-semibold">Cash on Delivery</p>
-                <p className="text-sm text-muted-foreground">Pay when your plants arrive at your door.</p>
+                <p className="text-sm text-muted-foreground">
+                  Pay when your plants arrive at your door.
+                </p>
               </div>
             </label>
           </Section>
@@ -168,12 +193,18 @@ function CheckoutPage() {
             <ul className="mt-4 space-y-3">
               {items.map((it) => (
                 <li key={it.product.id} className="flex items-center gap-3 text-sm">
-                  <img src={it.product.image} alt="" className="h-12 w-12 rounded-lg object-cover" />
+                  <img
+                    src={it.product.image}
+                    alt=""
+                    className="h-12 w-12 rounded-lg object-cover"
+                  />
                   <div className="min-w-0 flex-1">
                     <p className="truncate font-medium">{it.product.name}</p>
                     <p className="text-xs text-muted-foreground">Qty {it.quantity}</p>
                   </div>
-                  <span className="text-sm font-semibold">{price(it.product.price * it.quantity)}</span>
+                  <span className="text-sm font-semibold">
+                    {price(it.product.price * it.quantity)}
+                  </span>
                 </li>
               ))}
             </ul>
@@ -206,8 +237,16 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 }
 
 function Field({
-  label, error, className, children,
-}: { label: string; error?: string; className?: string; children: React.ReactNode }) {
+  label,
+  error,
+  className,
+  children,
+}: {
+  label: string;
+  error?: string;
+  className?: string;
+  children: React.ReactNode;
+}) {
   return (
     <label className={`block ${className ?? ""}`}>
       <span className="mb-1.5 block text-sm font-medium">{label}</span>

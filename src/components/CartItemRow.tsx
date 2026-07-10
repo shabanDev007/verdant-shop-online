@@ -10,11 +10,17 @@ export function CartItemRow({ item }: { item: CartItem }) {
   const { product, quantity } = item;
   return (
     <div className="grid grid-cols-[80px_1fr_auto] gap-4 rounded-2xl border border-border/60 bg-card p-3 sm:grid-cols-[100px_1fr_auto_auto] sm:p-4">
-      <Link to="/products/$id" params={{ id: product.id }} className="overflow-hidden rounded-xl bg-muted">
+      <Link
+        to="/products/$id"
+        params={{ id: product.id }}
+        className="overflow-hidden rounded-xl bg-muted"
+      >
         <img src={product.image} alt={product.name} className="h-full w-full object-cover" />
       </Link>
       <div className="min-w-0">
-        <p className="text-xs uppercase tracking-wide text-muted-foreground">{product.categoryName}</p>
+        <p className="text-xs uppercase tracking-wide text-muted-foreground">
+          {product.categoryName}
+        </p>
         <Link
           to="/products/$id"
           params={{ id: product.id }}

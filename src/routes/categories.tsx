@@ -30,7 +30,8 @@ function CategoriesPage() {
           Shop by category
         </h1>
         <p className="mt-3 text-muted-foreground">
-          Everything for a greener home — from statement indoor plants to pots, tools, soil, and thoughtful gift kits.
+          Everything for a greener home — from statement indoor plants to pots, tools, soil, and
+          thoughtful gift kits.
         </p>
       </header>
 

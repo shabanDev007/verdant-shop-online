@@ -31,8 +31,12 @@ function ComparePage() {
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
       <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-widest text-primary">Side-by-side</p>
-          <h1 className="mt-2 font-display text-4xl font-semibold tracking-tight sm:text-5xl">Compare</h1>
+          <p className="text-xs font-semibold uppercase tracking-widest text-primary">
+            Side-by-side
+          </p>
+          <h1 className="mt-2 font-display text-4xl font-semibold tracking-tight sm:text-5xl">
+            Compare
+          </h1>
           <p className="mt-2 text-muted-foreground">
             {ids.length}/4 items · pick the best fit for your space.
           </p>
@@ -54,7 +58,9 @@ function ComparePage() {
             <GitCompareArrows className="h-7 w-7" />
           </div>
           <p className="mt-5 font-display text-2xl font-semibold">Nothing to compare yet</p>
-          <p className="mt-2 text-sm text-muted-foreground">Add up to 4 products from any product page.</p>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Add up to 4 products from any product page.
+          </p>
           <Link
             to="/products"
             className="mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:opacity-90"
@@ -72,7 +78,11 @@ function ComparePage() {
                   <th key={p.id} className="p-4 align-top">
                     <div className="flex flex-col items-start gap-3">
                       <div className="relative w-full">
-                        <img src={p.image} alt={p.name} className="aspect-square w-full rounded-2xl object-cover" />
+                        <img
+                          src={p.image}
+                          alt={p.name}
+                          className="aspect-square w-full rounded-2xl object-cover"
+                        />
                         <button
                           type="button"
                           onClick={() => toggle(p.id)}
@@ -106,8 +116,14 @@ function ComparePage() {
             </thead>
             <tbody>
               <Row label="Price" values={products.map((p) => price(p.price))} />
-              <Row label="Rating" values={products.map((p) => `${p.rating.toFixed(1)} ★ (${p.reviewsCount})`)} />
-              <Row label="Stock" values={products.map((p) => (p.stock > 0 ? `${p.stock} in stock` : "Out of stock"))} />
+              <Row
+                label="Rating"
+                values={products.map((p) => `${p.rating.toFixed(1)} ★ (${p.reviewsCount})`)}
+              />
+              <Row
+                label="Stock"
+                values={products.map((p) => (p.stock > 0 ? `${p.stock} in stock` : "Out of stock"))}
+              />
               <Row label="Category" values={products.map((p) => p.categoryName)} />
               <Row label="Light" values={products.map((p) => p.care?.sunlight ?? "—")} />
               <Row label="Water" values={products.map((p) => p.care?.water ?? "—")} />
@@ -131,7 +147,9 @@ function Row({ label, values }: { label: string; values: string[] }) {
         {label}
       </td>
       {values.map((v, i) => (
-        <td key={i} className="border-t border-border/60 p-3 text-sm">{v}</td>
+        <td key={i} className="border-t border-border/60 p-3 text-sm">
+          {v}
+        </td>
       ))}
     </tr>
   );
@@ -145,7 +163,11 @@ function BoolRow({ label, values }: { label: string; values: boolean[] }) {
       </td>
       {values.map((v, i) => (
         <td key={i} className="border-t border-border/60 p-3">
-          {v ? <Check className="h-4 w-4 text-primary" /> : <X className="h-4 w-4 text-muted-foreground/50" />}
+          {v ? (
+            <Check className="h-4 w-4 text-primary" />
+          ) : (
+            <X className="h-4 w-4 text-muted-foreground/50" />
+          )}
         </td>
       ))}
     </tr>

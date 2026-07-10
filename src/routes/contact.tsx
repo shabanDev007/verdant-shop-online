@@ -8,7 +8,10 @@ export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
       { title: "Contact Us — Verdura" },
-      { name: "description", content: "Get in touch with the Verdura plant team. Email, phone, WhatsApp, or visit us." },
+      {
+        name: "description",
+        content: "Get in touch with the Verdura plant team. Email, phone, WhatsApp, or visit us.",
+      },
     ],
   }),
   component: ContactPage,
@@ -53,8 +56,16 @@ function ContactPage() {
 
       <div className="mt-12 grid gap-10 lg:grid-cols-[1fr_1.2fr]">
         <div className="space-y-4">
-          <Info icon={<Mail className="h-5 w-5" />} title="Email us" lines={["hello@verdura.shop", "support@verdura.shop"]} />
-          <Info icon={<Phone className="h-5 w-5" />} title="Call us" lines={["+1 (555) 010-9090", "Mon–Sat · 9am–6pm"]} />
+          <Info
+            icon={<Mail className="h-5 w-5" />}
+            title="Email us"
+            lines={["hello@verdura.shop", "support@verdura.shop"]}
+          />
+          <Info
+            icon={<Phone className="h-5 w-5" />}
+            title="Call us"
+            lines={["+1 (555) 010-9090", "Mon–Sat · 9am–6pm"]}
+          />
           <a
             href="https://wa.me/15550109090"
             target="_blank"
@@ -69,7 +80,11 @@ function ContactPage() {
               <p className="text-sm text-muted-foreground">Fastest way to reach us</p>
             </div>
           </a>
-          <Info icon={<MapPin className="h-5 w-5" />} title="Visit us" lines={["88 Greenhouse Lane", "Portland, OR 97204"]} />
+          <Info
+            icon={<MapPin className="h-5 w-5" />}
+            title="Visit us"
+            lines={["88 Greenhouse Lane", "Portland, OR 97204"]}
+          />
 
           <div className="overflow-hidden rounded-3xl border border-border/60">
             <div className="grid h-56 place-items-center bg-gradient-to-br from-accent to-secondary text-sm text-muted-foreground">
@@ -78,18 +93,38 @@ function ContactPage() {
           </div>
         </div>
 
-        <form onSubmit={submit} className="space-y-4 rounded-3xl border border-border/60 bg-card p-6 sm:p-8">
+        <form
+          onSubmit={submit}
+          className="space-y-4 rounded-3xl border border-border/60 bg-card p-6 sm:p-8"
+        >
           <h2 className="font-display text-2xl font-semibold">Send us a message</h2>
           <Field label="Name" error={errors.name}>
-            <input className={inputCls} value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
+            <input
+              className={inputCls}
+              value={form.name}
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
+            />
           </Field>
           <Field label="Email" error={errors.email}>
-            <input type="email" className={inputCls} value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
+            <input
+              type="email"
+              className={inputCls}
+              value={form.email}
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
+            />
           </Field>
           <Field label="Message" error={errors.message}>
-            <textarea rows={6} className={`${inputCls} resize-none`} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} />
+            <textarea
+              rows={6}
+              className={`${inputCls} resize-none`}
+              value={form.message}
+              onChange={(e) => setForm({ ...form, message: e.target.value })}
+            />
           </Field>
-          <button type="submit" className="inline-flex w-full items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:opacity-90">
+          <button
+            type="submit"
+            className="inline-flex w-full items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:opacity-90"
+          >
             Send Message
           </button>
         </form>
@@ -104,16 +139,30 @@ const inputCls =
 function Info({ icon, title, lines }: { icon: React.ReactNode; title: string; lines: string[] }) {
   return (
     <div className="flex items-center gap-4 rounded-3xl border border-border/60 bg-card p-5">
-      <span className="grid h-11 w-11 place-items-center rounded-2xl bg-accent text-primary">{icon}</span>
+      <span className="grid h-11 w-11 place-items-center rounded-2xl bg-accent text-primary">
+        {icon}
+      </span>
       <div>
         <p className="font-semibold">{title}</p>
-        {lines.map((l) => <p key={l} className="text-sm text-muted-foreground">{l}</p>)}
+        {lines.map((l) => (
+          <p key={l} className="text-sm text-muted-foreground">
+            {l}
+          </p>
+        ))}
       </div>
     </div>
   );
 }
 
-function Field({ label, error, children }: { label: string; error?: string; children: React.ReactNode }) {
+function Field({
+  label,
+  error,
+  children,
+}: {
+  label: string;
+  error?: string;
+  children: React.ReactNode;
+}) {
   return (
     <label className="block">
       <span className="mb-1.5 block text-sm font-medium">{label}</span>

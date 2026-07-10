@@ -32,18 +32,22 @@ export function SearchDropdown({ onClose }: { onClose?: () => void }) {
     if (!query) return { products: [], categories: [] };
     return {
       products: products
-        .filter((p) => p.name.toLowerCase().includes(query) || p.categoryName.toLowerCase().includes(query))
+        .filter(
+          (p) =>
+            p.name.toLowerCase().includes(query) || p.categoryName.toLowerCase().includes(query),
+        )
         .slice(0, 6),
-      categories: categories
-        .filter((c) => c.name.toLowerCase().includes(query))
-        .slice(0, 4),
+      categories: categories.filter((c) => c.name.toLowerCase().includes(query)).slice(0, 4),
     };
   }, [q, products, categories]);
 
   const commit = (term: string) => {
     const t = term.trim();
     if (!t) return;
-    const next = [t, ...recent.filter((r) => r.toLowerCase() !== t.toLowerCase())].slice(0, MAX_RECENT);
+    const next = [t, ...recent.filter((r) => r.toLowerCase() !== t.toLowerCase())].slice(
+      0,
+      MAX_RECENT,
+    );
     setRecent(next);
     try {
       localStorage.setItem(RECENT_KEY, JSON.stringify(next));
@@ -72,7 +76,9 @@ export function SearchDropdown({ onClose }: { onClose?: () => void }) {
         />
         {onClose && (
           <button
-            type="button" onClick={onClose} aria-label="Close"
+            type="button"
+            onClick={onClose}
+            aria-label="Close"
             className="absolute end-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
           >
             <X className="h-4 w-4" />
@@ -93,7 +99,11 @@ export function SearchDropdown({ onClose }: { onClose?: () => void }) {
                     type="button"
                     onClick={() => {
                       setRecent([]);
-                      try { localStorage.removeItem(RECENT_KEY); } catch { /* ignore */ }
+                      try {
+                        localStorage.removeItem(RECENT_KEY);
+                      } catch {
+                        /* ignore */
+                      }
                     }}
                     className="text-xs text-muted-foreground hover:text-foreground"
                   >
@@ -136,7 +146,9 @@ export function SearchDropdown({ onClose }: { onClose?: () => void }) {
           <div className="space-y-4">
             {suggestions.categories.length > 0 && (
               <div>
-                <p className="mb-2 px-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Categories</p>
+                <p className="mb-2 px-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  Categories
+                </p>
                 <div className="flex flex-wrap gap-1.5 px-1">
                   {suggestions.categories.map((c) => (
                     <Link
@@ -154,7 +166,9 @@ export function SearchDropdown({ onClose }: { onClose?: () => void }) {
             )}
             {suggestions.products.length > 0 && (
               <div>
-                <p className="mb-2 px-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Products</p>
+                <p className="mb-2 px-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  Products
+                </p>
                 <ul className="divide-y divide-border/50 overflow-hidden rounded-2xl border border-border/60 bg-card">
                   {suggestions.products.map((p) => (
                     <li key={p.id}>
@@ -177,7 +191,9 @@ export function SearchDropdown({ onClose }: { onClose?: () => void }) {
               </div>
             )}
             {suggestions.products.length === 0 && suggestions.categories.length === 0 && (
-              <p className="px-1 text-sm text-muted-foreground">No matches for "{q}". Press Enter to search anyway.</p>
+              <p className="px-1 text-sm text-muted-foreground">
+                No matches for "{q}". Press Enter to search anyway.
+              </p>
             )}
           </div>
         )}

@@ -121,21 +121,167 @@ const TAXONOMY: RootSpec[] = [
         featured: true,
         description: "Bring nature inside with our curated indoor collection.",
         children: [
-          { name: "Snake Plant", tags: { airPurifying: true, difficulty: "Beginner", lightTag: "low-light", waterTag: "low-water", indoorOutdoor: "indoor", rooms: ["bedroom", "office"], benefits: ["air-purifying", "low-maintenance"] } },
-          { name: "ZZ Plant", tags: { airPurifying: true, difficulty: "Beginner", lightTag: "low-light", waterTag: "low-water", indoorOutdoor: "indoor", rooms: ["office", "living-room"], benefits: ["air-purifying", "low-maintenance"] } },
-          { name: "Monstera", tags: { difficulty: "Easy", lightTag: "bright-light", waterTag: "weekly", indoorOutdoor: "indoor", rooms: ["living-room"], benefits: ["fast-growing"] } },
-          { name: "Pothos", tags: { airPurifying: true, difficulty: "Beginner", lightTag: "medium-light", waterTag: "weekly", indoorOutdoor: "indoor", rooms: ["living-room", "bedroom"], benefits: ["air-purifying", "fast-growing"] } },
-          { name: "Philodendron", tags: { difficulty: "Easy", lightTag: "medium-light", waterTag: "weekly", indoorOutdoor: "indoor" } },
-          { name: "Peace Lily", tags: { airPurifying: true, difficulty: "Easy", lightTag: "low-light", waterTag: "weekly", indoorOutdoor: "indoor", rooms: ["bedroom", "bathroom"], benefits: ["air-purifying", "flowering"] } },
-          { name: "Spider Plant", tags: { petSafe: true, airPurifying: true, difficulty: "Beginner", lightTag: "medium-light", waterTag: "weekly", indoorOutdoor: "indoor", benefits: ["air-purifying", "pet-friendly"] } },
-          { name: "Rubber Plant", tags: { difficulty: "Easy", lightTag: "bright-light", waterTag: "weekly", indoorOutdoor: "indoor" } },
-          { name: "Ficus", tags: { difficulty: "Moderate", lightTag: "bright-light", waterTag: "weekly", indoorOutdoor: "indoor" } },
-          { name: "Dracaena", tags: { airPurifying: true, difficulty: "Easy", lightTag: "medium-light", waterTag: "weekly", indoorOutdoor: "indoor", benefits: ["air-purifying"] } },
-          { name: "Aglaonema", tags: { difficulty: "Easy", lightTag: "low-light", waterTag: "weekly", indoorOutdoor: "indoor" } },
-          { name: "Areca Palm", tags: { petSafe: true, airPurifying: true, difficulty: "Easy", lightTag: "bright-light", waterTag: "weekly", indoorOutdoor: "indoor", benefits: ["air-purifying", "pet-friendly"] } },
-          { name: "Kentia Palm", tags: { petSafe: true, difficulty: "Easy", lightTag: "medium-light", waterTag: "weekly", indoorOutdoor: "indoor", benefits: ["pet-friendly"] } },
-          { name: "Calathea", tags: { petSafe: true, difficulty: "Moderate", lightTag: "medium-light", waterTag: "weekly", indoorOutdoor: "indoor", benefits: ["pet-friendly"] } },
-          { name: "Dieffenbachia", tags: { difficulty: "Easy", lightTag: "medium-light", waterTag: "weekly", indoorOutdoor: "indoor" } },
+          {
+            name: "Snake Plant",
+            tags: {
+              airPurifying: true,
+              difficulty: "Beginner",
+              lightTag: "low-light",
+              waterTag: "low-water",
+              indoorOutdoor: "indoor",
+              rooms: ["bedroom", "office"],
+              benefits: ["air-purifying", "low-maintenance"],
+            },
+          },
+          {
+            name: "ZZ Plant",
+            tags: {
+              airPurifying: true,
+              difficulty: "Beginner",
+              lightTag: "low-light",
+              waterTag: "low-water",
+              indoorOutdoor: "indoor",
+              rooms: ["office", "living-room"],
+              benefits: ["air-purifying", "low-maintenance"],
+            },
+          },
+          {
+            name: "Monstera",
+            tags: {
+              difficulty: "Easy",
+              lightTag: "bright-light",
+              waterTag: "weekly",
+              indoorOutdoor: "indoor",
+              rooms: ["living-room"],
+              benefits: ["fast-growing"],
+            },
+          },
+          {
+            name: "Pothos",
+            tags: {
+              airPurifying: true,
+              difficulty: "Beginner",
+              lightTag: "medium-light",
+              waterTag: "weekly",
+              indoorOutdoor: "indoor",
+              rooms: ["living-room", "bedroom"],
+              benefits: ["air-purifying", "fast-growing"],
+            },
+          },
+          {
+            name: "Philodendron",
+            tags: {
+              difficulty: "Easy",
+              lightTag: "medium-light",
+              waterTag: "weekly",
+              indoorOutdoor: "indoor",
+            },
+          },
+          {
+            name: "Peace Lily",
+            tags: {
+              airPurifying: true,
+              difficulty: "Easy",
+              lightTag: "low-light",
+              waterTag: "weekly",
+              indoorOutdoor: "indoor",
+              rooms: ["bedroom", "bathroom"],
+              benefits: ["air-purifying", "flowering"],
+            },
+          },
+          {
+            name: "Spider Plant",
+            tags: {
+              petSafe: true,
+              airPurifying: true,
+              difficulty: "Beginner",
+              lightTag: "medium-light",
+              waterTag: "weekly",
+              indoorOutdoor: "indoor",
+              benefits: ["air-purifying", "pet-friendly"],
+            },
+          },
+          {
+            name: "Rubber Plant",
+            tags: {
+              difficulty: "Easy",
+              lightTag: "bright-light",
+              waterTag: "weekly",
+              indoorOutdoor: "indoor",
+            },
+          },
+          {
+            name: "Ficus",
+            tags: {
+              difficulty: "Moderate",
+              lightTag: "bright-light",
+              waterTag: "weekly",
+              indoorOutdoor: "indoor",
+            },
+          },
+          {
+            name: "Dracaena",
+            tags: {
+              airPurifying: true,
+              difficulty: "Easy",
+              lightTag: "medium-light",
+              waterTag: "weekly",
+              indoorOutdoor: "indoor",
+              benefits: ["air-purifying"],
+            },
+          },
+          {
+            name: "Aglaonema",
+            tags: {
+              difficulty: "Easy",
+              lightTag: "low-light",
+              waterTag: "weekly",
+              indoorOutdoor: "indoor",
+            },
+          },
+          {
+            name: "Areca Palm",
+            tags: {
+              petSafe: true,
+              airPurifying: true,
+              difficulty: "Easy",
+              lightTag: "bright-light",
+              waterTag: "weekly",
+              indoorOutdoor: "indoor",
+              benefits: ["air-purifying", "pet-friendly"],
+            },
+          },
+          {
+            name: "Kentia Palm",
+            tags: {
+              petSafe: true,
+              difficulty: "Easy",
+              lightTag: "medium-light",
+              waterTag: "weekly",
+              indoorOutdoor: "indoor",
+              benefits: ["pet-friendly"],
+            },
+          },
+          {
+            name: "Calathea",
+            tags: {
+              petSafe: true,
+              difficulty: "Moderate",
+              lightTag: "medium-light",
+              waterTag: "weekly",
+              indoorOutdoor: "indoor",
+              benefits: ["pet-friendly"],
+            },
+          },
+          {
+            name: "Dieffenbachia",
+            tags: {
+              difficulty: "Easy",
+              lightTag: "medium-light",
+              waterTag: "weekly",
+              indoorOutdoor: "indoor",
+            },
+          },
         ],
       },
       {
@@ -145,16 +291,107 @@ const TAXONOMY: RootSpec[] = [
         featured: true,
         description: "Hardy plants for gardens, balconies, and terraces.",
         children: [
-          { name: "Bougainvillea", tags: { difficulty: "Easy", lightTag: "direct-sun", waterTag: "weekly", indoorOutdoor: "outdoor", benefits: ["flowering"] } },
-          { name: "Jasmine", tags: { difficulty: "Easy", lightTag: "bright-light", waterTag: "weekly", indoorOutdoor: "outdoor", benefits: ["flowering", "fragrant"] } },
-          { name: "Hibiscus", tags: { difficulty: "Easy", lightTag: "direct-sun", waterTag: "weekly", indoorOutdoor: "outdoor", benefits: ["flowering"] } },
-          { name: "Roses", tags: { difficulty: "Moderate", lightTag: "direct-sun", waterTag: "weekly", indoorOutdoor: "outdoor", benefits: ["flowering", "fragrant"] } },
-          { name: "Lavender", tags: { petSafe: true, difficulty: "Easy", lightTag: "direct-sun", waterTag: "low-water", indoorOutdoor: "outdoor", benefits: ["flowering", "fragrant", "pet-friendly"] } },
-          { name: "Oleander", tags: { difficulty: "Easy", lightTag: "direct-sun", waterTag: "low-water", indoorOutdoor: "outdoor", benefits: ["flowering"] } },
-          { name: "Citrus Trees", tags: { difficulty: "Moderate", lightTag: "direct-sun", waterTag: "weekly", indoorOutdoor: "outdoor", benefits: ["flowering", "fragrant"] }, price: [3500, 8000] },
-          { name: "Olive Trees", tags: { difficulty: "Moderate", lightTag: "direct-sun", waterTag: "low-water", indoorOutdoor: "outdoor" }, price: [4500, 12000] },
-          { name: "Palm Trees", tags: { difficulty: "Easy", lightTag: "direct-sun", waterTag: "weekly", indoorOutdoor: "outdoor" }, price: [3500, 15000] },
-          { name: "Bamboo", tags: { difficulty: "Easy", lightTag: "bright-light", waterTag: "weekly", indoorOutdoor: "both" } },
+          {
+            name: "Bougainvillea",
+            tags: {
+              difficulty: "Easy",
+              lightTag: "direct-sun",
+              waterTag: "weekly",
+              indoorOutdoor: "outdoor",
+              benefits: ["flowering"],
+            },
+          },
+          {
+            name: "Jasmine",
+            tags: {
+              difficulty: "Easy",
+              lightTag: "bright-light",
+              waterTag: "weekly",
+              indoorOutdoor: "outdoor",
+              benefits: ["flowering", "fragrant"],
+            },
+          },
+          {
+            name: "Hibiscus",
+            tags: {
+              difficulty: "Easy",
+              lightTag: "direct-sun",
+              waterTag: "weekly",
+              indoorOutdoor: "outdoor",
+              benefits: ["flowering"],
+            },
+          },
+          {
+            name: "Roses",
+            tags: {
+              difficulty: "Moderate",
+              lightTag: "direct-sun",
+              waterTag: "weekly",
+              indoorOutdoor: "outdoor",
+              benefits: ["flowering", "fragrant"],
+            },
+          },
+          {
+            name: "Lavender",
+            tags: {
+              petSafe: true,
+              difficulty: "Easy",
+              lightTag: "direct-sun",
+              waterTag: "low-water",
+              indoorOutdoor: "outdoor",
+              benefits: ["flowering", "fragrant", "pet-friendly"],
+            },
+          },
+          {
+            name: "Oleander",
+            tags: {
+              difficulty: "Easy",
+              lightTag: "direct-sun",
+              waterTag: "low-water",
+              indoorOutdoor: "outdoor",
+              benefits: ["flowering"],
+            },
+          },
+          {
+            name: "Citrus Trees",
+            tags: {
+              difficulty: "Moderate",
+              lightTag: "direct-sun",
+              waterTag: "weekly",
+              indoorOutdoor: "outdoor",
+              benefits: ["flowering", "fragrant"],
+            },
+            price: [3500, 8000],
+          },
+          {
+            name: "Olive Trees",
+            tags: {
+              difficulty: "Moderate",
+              lightTag: "direct-sun",
+              waterTag: "low-water",
+              indoorOutdoor: "outdoor",
+            },
+            price: [4500, 12000],
+          },
+          {
+            name: "Palm Trees",
+            tags: {
+              difficulty: "Easy",
+              lightTag: "direct-sun",
+              waterTag: "weekly",
+              indoorOutdoor: "outdoor",
+            },
+            price: [3500, 15000],
+          },
+          {
+            name: "Bamboo",
+            tags: {
+              difficulty: "Easy",
+              lightTag: "bright-light",
+              waterTag: "weekly",
+              indoorOutdoor: "both",
+            },
+          },
         ],
       },
       {
@@ -164,12 +401,61 @@ const TAXONOMY: RootSpec[] = [
         featured: true,
         description: "Low-maintenance beauties for sunny spots.",
         children: [
-          { name: "Aloe Vera", tags: { difficulty: "Beginner", lightTag: "bright-light", waterTag: "low-water", indoorOutdoor: "both", benefits: ["low-maintenance"] } },
-          { name: "Jade Plant", tags: { difficulty: "Beginner", lightTag: "bright-light", waterTag: "low-water", indoorOutdoor: "indoor" } },
-          { name: "Haworthia", tags: { difficulty: "Beginner", lightTag: "medium-light", waterTag: "low-water", indoorOutdoor: "indoor" } },
-          { name: "Echeveria", tags: { difficulty: "Beginner", lightTag: "direct-sun", waterTag: "low-water", indoorOutdoor: "both" } },
-          { name: "Barrel Cactus", tags: { difficulty: "Beginner", lightTag: "direct-sun", waterTag: "low-water", indoorOutdoor: "both" } },
-          { name: "Bunny Ear Cactus", tags: { difficulty: "Beginner", lightTag: "direct-sun", waterTag: "low-water", indoorOutdoor: "both" } },
+          {
+            name: "Aloe Vera",
+            tags: {
+              difficulty: "Beginner",
+              lightTag: "bright-light",
+              waterTag: "low-water",
+              indoorOutdoor: "both",
+              benefits: ["low-maintenance"],
+            },
+          },
+          {
+            name: "Jade Plant",
+            tags: {
+              difficulty: "Beginner",
+              lightTag: "bright-light",
+              waterTag: "low-water",
+              indoorOutdoor: "indoor",
+            },
+          },
+          {
+            name: "Haworthia",
+            tags: {
+              difficulty: "Beginner",
+              lightTag: "medium-light",
+              waterTag: "low-water",
+              indoorOutdoor: "indoor",
+            },
+          },
+          {
+            name: "Echeveria",
+            tags: {
+              difficulty: "Beginner",
+              lightTag: "direct-sun",
+              waterTag: "low-water",
+              indoorOutdoor: "both",
+            },
+          },
+          {
+            name: "Barrel Cactus",
+            tags: {
+              difficulty: "Beginner",
+              lightTag: "direct-sun",
+              waterTag: "low-water",
+              indoorOutdoor: "both",
+            },
+          },
+          {
+            name: "Bunny Ear Cactus",
+            tags: {
+              difficulty: "Beginner",
+              lightTag: "direct-sun",
+              waterTag: "low-water",
+              indoorOutdoor: "both",
+            },
+          },
         ],
       },
       {
@@ -178,10 +464,46 @@ const TAXONOMY: RootSpec[] = [
         pool: "flowering",
         description: "Vibrant blooms to brighten every room.",
         children: [
-          { name: "Orchid Phalaenopsis", tags: { difficulty: "Moderate", lightTag: "bright-light", waterTag: "weekly", indoorOutdoor: "indoor", benefits: ["flowering"] } },
-          { name: "Anthurium", tags: { difficulty: "Easy", lightTag: "medium-light", waterTag: "weekly", indoorOutdoor: "indoor", benefits: ["flowering"] } },
-          { name: "African Violet", tags: { difficulty: "Easy", lightTag: "medium-light", waterTag: "weekly", indoorOutdoor: "indoor", benefits: ["flowering"] } },
-          { name: "Begonia", tags: { difficulty: "Easy", lightTag: "medium-light", waterTag: "weekly", indoorOutdoor: "both", benefits: ["flowering"] } },
+          {
+            name: "Orchid Phalaenopsis",
+            tags: {
+              difficulty: "Moderate",
+              lightTag: "bright-light",
+              waterTag: "weekly",
+              indoorOutdoor: "indoor",
+              benefits: ["flowering"],
+            },
+          },
+          {
+            name: "Anthurium",
+            tags: {
+              difficulty: "Easy",
+              lightTag: "medium-light",
+              waterTag: "weekly",
+              indoorOutdoor: "indoor",
+              benefits: ["flowering"],
+            },
+          },
+          {
+            name: "African Violet",
+            tags: {
+              difficulty: "Easy",
+              lightTag: "medium-light",
+              waterTag: "weekly",
+              indoorOutdoor: "indoor",
+              benefits: ["flowering"],
+            },
+          },
+          {
+            name: "Begonia",
+            tags: {
+              difficulty: "Easy",
+              lightTag: "medium-light",
+              waterTag: "weekly",
+              indoorOutdoor: "both",
+              benefits: ["flowering"],
+            },
+          },
         ],
       },
       {
@@ -190,11 +512,61 @@ const TAXONOMY: RootSpec[] = [
         pool: "outdoor",
         description: "Fresh culinary herbs for kitchen and balcony.",
         children: [
-          { name: "Basil", tags: { petSafe: true, difficulty: "Beginner", lightTag: "bright-light", waterTag: "weekly", indoorOutdoor: "both", rooms: ["kitchen"], benefits: ["fragrant", "pet-friendly"] } },
-          { name: "Mint", tags: { petSafe: true, difficulty: "Beginner", lightTag: "bright-light", waterTag: "weekly", indoorOutdoor: "both", rooms: ["kitchen"], benefits: ["fragrant"] } },
-          { name: "Rosemary", tags: { difficulty: "Easy", lightTag: "direct-sun", waterTag: "low-water", indoorOutdoor: "both", rooms: ["kitchen"], benefits: ["fragrant"] } },
-          { name: "Thyme", tags: { difficulty: "Easy", lightTag: "bright-light", waterTag: "low-water", indoorOutdoor: "both", rooms: ["kitchen"] } },
-          { name: "Parsley", tags: { difficulty: "Beginner", lightTag: "bright-light", waterTag: "weekly", indoorOutdoor: "both", rooms: ["kitchen"] } },
+          {
+            name: "Basil",
+            tags: {
+              petSafe: true,
+              difficulty: "Beginner",
+              lightTag: "bright-light",
+              waterTag: "weekly",
+              indoorOutdoor: "both",
+              rooms: ["kitchen"],
+              benefits: ["fragrant", "pet-friendly"],
+            },
+          },
+          {
+            name: "Mint",
+            tags: {
+              petSafe: true,
+              difficulty: "Beginner",
+              lightTag: "bright-light",
+              waterTag: "weekly",
+              indoorOutdoor: "both",
+              rooms: ["kitchen"],
+              benefits: ["fragrant"],
+            },
+          },
+          {
+            name: "Rosemary",
+            tags: {
+              difficulty: "Easy",
+              lightTag: "direct-sun",
+              waterTag: "low-water",
+              indoorOutdoor: "both",
+              rooms: ["kitchen"],
+              benefits: ["fragrant"],
+            },
+          },
+          {
+            name: "Thyme",
+            tags: {
+              difficulty: "Easy",
+              lightTag: "bright-light",
+              waterTag: "low-water",
+              indoorOutdoor: "both",
+              rooms: ["kitchen"],
+            },
+          },
+          {
+            name: "Parsley",
+            tags: {
+              difficulty: "Beginner",
+              lightTag: "bright-light",
+              waterTag: "weekly",
+              indoorOutdoor: "both",
+              rooms: ["kitchen"],
+            },
+          },
         ],
       },
       {
@@ -203,10 +575,42 @@ const TAXONOMY: RootSpec[] = [
         pool: "outdoor",
         description: "Grow your own vegetables at home.",
         children: [
-          { name: "Tomato", tags: { difficulty: "Easy", lightTag: "direct-sun", waterTag: "daily", indoorOutdoor: "outdoor" } },
-          { name: "Chili Pepper", tags: { difficulty: "Easy", lightTag: "direct-sun", waterTag: "weekly", indoorOutdoor: "outdoor" } },
-          { name: "Cucumber", tags: { difficulty: "Easy", lightTag: "direct-sun", waterTag: "daily", indoorOutdoor: "outdoor" } },
-          { name: "Lettuce", tags: { difficulty: "Beginner", lightTag: "bright-light", waterTag: "weekly", indoorOutdoor: "both" } },
+          {
+            name: "Tomato",
+            tags: {
+              difficulty: "Easy",
+              lightTag: "direct-sun",
+              waterTag: "daily",
+              indoorOutdoor: "outdoor",
+            },
+          },
+          {
+            name: "Chili Pepper",
+            tags: {
+              difficulty: "Easy",
+              lightTag: "direct-sun",
+              waterTag: "weekly",
+              indoorOutdoor: "outdoor",
+            },
+          },
+          {
+            name: "Cucumber",
+            tags: {
+              difficulty: "Easy",
+              lightTag: "direct-sun",
+              waterTag: "daily",
+              indoorOutdoor: "outdoor",
+            },
+          },
+          {
+            name: "Lettuce",
+            tags: {
+              difficulty: "Beginner",
+              lightTag: "bright-light",
+              waterTag: "weekly",
+              indoorOutdoor: "both",
+            },
+          },
         ],
       },
       {
@@ -215,10 +619,45 @@ const TAXONOMY: RootSpec[] = [
         pool: "outdoor",
         description: "Home-grown fruit trees and berries.",
         children: [
-          { name: "Strawberry", tags: { difficulty: "Easy", lightTag: "direct-sun", waterTag: "weekly", indoorOutdoor: "both" } },
-          { name: "Lemon Tree", tags: { difficulty: "Moderate", lightTag: "direct-sun", waterTag: "weekly", indoorOutdoor: "outdoor" }, price: [3500, 7000] },
-          { name: "Fig Tree", tags: { difficulty: "Easy", lightTag: "direct-sun", waterTag: "weekly", indoorOutdoor: "outdoor" }, price: [3500, 7000] },
-          { name: "Pomegranate", tags: { difficulty: "Easy", lightTag: "direct-sun", waterTag: "low-water", indoorOutdoor: "outdoor" }, price: [3500, 7000] },
+          {
+            name: "Strawberry",
+            tags: {
+              difficulty: "Easy",
+              lightTag: "direct-sun",
+              waterTag: "weekly",
+              indoorOutdoor: "both",
+            },
+          },
+          {
+            name: "Lemon Tree",
+            tags: {
+              difficulty: "Moderate",
+              lightTag: "direct-sun",
+              waterTag: "weekly",
+              indoorOutdoor: "outdoor",
+            },
+            price: [3500, 7000],
+          },
+          {
+            name: "Fig Tree",
+            tags: {
+              difficulty: "Easy",
+              lightTag: "direct-sun",
+              waterTag: "weekly",
+              indoorOutdoor: "outdoor",
+            },
+            price: [3500, 7000],
+          },
+          {
+            name: "Pomegranate",
+            tags: {
+              difficulty: "Easy",
+              lightTag: "direct-sun",
+              waterTag: "low-water",
+              indoorOutdoor: "outdoor",
+            },
+            price: [3500, 7000],
+          },
         ],
       },
       {
@@ -227,9 +666,36 @@ const TAXONOMY: RootSpec[] = [
         pool: "indoor",
         description: "Statement floor plants for large spaces.",
         children: [
-          { name: "Fiddle Leaf Fig", tags: { difficulty: "Moderate", lightTag: "bright-light", waterTag: "weekly", indoorOutdoor: "indoor" }, price: [3500, 6500] },
-          { name: "Bird of Paradise", tags: { difficulty: "Easy", lightTag: "bright-light", waterTag: "weekly", indoorOutdoor: "indoor" }, price: [3500, 8500] },
-          { name: "Yucca", tags: { difficulty: "Easy", lightTag: "bright-light", waterTag: "low-water", indoorOutdoor: "both" }, price: [2500, 6000] },
+          {
+            name: "Fiddle Leaf Fig",
+            tags: {
+              difficulty: "Moderate",
+              lightTag: "bright-light",
+              waterTag: "weekly",
+              indoorOutdoor: "indoor",
+            },
+            price: [3500, 6500],
+          },
+          {
+            name: "Bird of Paradise",
+            tags: {
+              difficulty: "Easy",
+              lightTag: "bright-light",
+              waterTag: "weekly",
+              indoorOutdoor: "indoor",
+            },
+            price: [3500, 8500],
+          },
+          {
+            name: "Yucca",
+            tags: {
+              difficulty: "Easy",
+              lightTag: "bright-light",
+              waterTag: "low-water",
+              indoorOutdoor: "both",
+            },
+            price: [2500, 6000],
+          },
         ],
       },
       {
@@ -238,9 +704,41 @@ const TAXONOMY: RootSpec[] = [
         pool: "indoor",
         description: "Plants proven to freshen your indoor air.",
         children: [
-          { name: "Boston Fern", tags: { petSafe: true, airPurifying: true, difficulty: "Moderate", lightTag: "medium-light", waterTag: "weekly", indoorOutdoor: "indoor", benefits: ["air-purifying", "pet-friendly"] } },
-          { name: "English Ivy", tags: { airPurifying: true, difficulty: "Easy", lightTag: "medium-light", waterTag: "weekly", indoorOutdoor: "both", benefits: ["air-purifying"] } },
-          { name: "Bamboo Palm", tags: { petSafe: true, airPurifying: true, difficulty: "Easy", lightTag: "medium-light", waterTag: "weekly", indoorOutdoor: "indoor", benefits: ["air-purifying", "pet-friendly"] } },
+          {
+            name: "Boston Fern",
+            tags: {
+              petSafe: true,
+              airPurifying: true,
+              difficulty: "Moderate",
+              lightTag: "medium-light",
+              waterTag: "weekly",
+              indoorOutdoor: "indoor",
+              benefits: ["air-purifying", "pet-friendly"],
+            },
+          },
+          {
+            name: "English Ivy",
+            tags: {
+              airPurifying: true,
+              difficulty: "Easy",
+              lightTag: "medium-light",
+              waterTag: "weekly",
+              indoorOutdoor: "both",
+              benefits: ["air-purifying"],
+            },
+          },
+          {
+            name: "Bamboo Palm",
+            tags: {
+              petSafe: true,
+              airPurifying: true,
+              difficulty: "Easy",
+              lightTag: "medium-light",
+              waterTag: "weekly",
+              indoorOutdoor: "indoor",
+              benefits: ["air-purifying", "pet-friendly"],
+            },
+          },
         ],
       },
       {
@@ -249,9 +747,36 @@ const TAXONOMY: RootSpec[] = [
         pool: "indoor",
         description: "Collector-worthy rarities in limited supply.",
         children: [
-          { name: "Variegated Monstera", tags: { difficulty: "Moderate", lightTag: "bright-light", waterTag: "weekly", indoorOutdoor: "indoor" }, price: [8000, 15000] },
-          { name: "Philodendron Pink Princess", tags: { difficulty: "Moderate", lightTag: "bright-light", waterTag: "weekly", indoorOutdoor: "indoor" }, price: [6000, 12000] },
-          { name: "Alocasia Black Velvet", tags: { difficulty: "Expert", lightTag: "medium-light", waterTag: "weekly", indoorOutdoor: "indoor" }, price: [4000, 8000] },
+          {
+            name: "Variegated Monstera",
+            tags: {
+              difficulty: "Moderate",
+              lightTag: "bright-light",
+              waterTag: "weekly",
+              indoorOutdoor: "indoor",
+            },
+            price: [8000, 15000],
+          },
+          {
+            name: "Philodendron Pink Princess",
+            tags: {
+              difficulty: "Moderate",
+              lightTag: "bright-light",
+              waterTag: "weekly",
+              indoorOutdoor: "indoor",
+            },
+            price: [6000, 12000],
+          },
+          {
+            name: "Alocasia Black Velvet",
+            tags: {
+              difficulty: "Expert",
+              lightTag: "medium-light",
+              waterTag: "weekly",
+              indoorOutdoor: "indoor",
+            },
+            price: [4000, 8000],
+          },
         ],
       },
     ],
@@ -525,7 +1050,14 @@ const TAXONOMY: RootSpec[] = [
         pool: "indoor",
         children: [
           { name: "Cat Grass", tags: { petSafe: true, benefits: ["pet-friendly"] } },
-          { name: "Boston Fern (Pet Safe)", tags: { petSafe: true, airPurifying: true, benefits: ["pet-friendly", "air-purifying"] } },
+          {
+            name: "Boston Fern (Pet Safe)",
+            tags: {
+              petSafe: true,
+              airPurifying: true,
+              benefits: ["pet-friendly", "air-purifying"],
+            },
+          },
           { name: "Prayer Plant", tags: { petSafe: true, benefits: ["pet-friendly"] } },
         ],
       },
@@ -669,7 +1201,7 @@ function buildProducts(): Product[] {
         for (let v = 0; v < count; v++) {
           const seed = hash(leafId + v);
           const variant = variants[v % variants.length];
-          const price = Math.round(minP + (seed % 100) / 100 * (maxP - minP));
+          const price = Math.round(minP + ((seed % 100) / 100) * (maxP - minP));
           const hasDiscount = seed % 7 === 0;
           const oldPrice = hasDiscount ? Math.round(price * 1.25) : undefined;
           const featured = seed % 11 === 0 || branch.featured === true;
@@ -683,7 +1215,8 @@ function buildProducts(): Product[] {
           if (seed % 17 === 0) badges.push("best-seller");
           if (stock <= 6) badges.push("low-stock");
           if (seed % 23 === 0) badges.push("staff-pick");
-          if (branch.type === "plants" && leaf.tags?.difficulty === "Expert") badges.push("limited");
+          if (branch.type === "plants" && leaf.tags?.difficulty === "Expert")
+            badges.push("limited");
 
           const collections: SmartCollection[] = [];
           if (seed % 5 === 0) collections.push("new-arrivals");
@@ -751,7 +1284,8 @@ function buildProducts(): Product[] {
               difficulty: (tags.difficulty ?? "Easy") as never,
             },
             specs: {
-              plantHeight: branch.type === "plants" ? `${20 + (seed % 60)}–${40 + (seed % 80)}cm` : undefined,
+              plantHeight:
+                branch.type === "plants" ? `${20 + (seed % 60)}–${40 + (seed % 80)}cm` : undefined,
               potSize: branch.type === "plants" ? `${10 + (seed % 8)}cm` : undefined,
               humidity: branch.type === "plants" ? "40–60%" : undefined,
               temperature: branch.type === "plants" ? "18–26°C" : undefined,
@@ -759,14 +1293,24 @@ function buildProducts(): Product[] {
               flowering: !!tags.benefits?.includes("flowering"),
             },
             deliveryInfo: "Free shipping on orders over 2,000 EGP. Delivery in 2–5 business days.",
-            returnPolicy: "14-day return policy on non-plant items. Live plants covered by our 30-day plant guarantee.",
+            returnPolicy:
+              "14-day return policy on non-plant items. Live plants covered by our 30-day plant guarantee.",
             careInstructions:
               branch.type === "plants"
                 ? `Water when top 2–3cm of soil feel dry. Provide ${legacySun.toLowerCase()} light. Rotate weekly for even growth.`
                 : undefined,
             faq: [
-              { q: "Is this suitable for beginners?", a: tags.difficulty === "Expert" ? "This is a collector-grade item and best for experienced plant parents." : "Yes — this is beginner-friendly with basic care." },
-              { q: "Do you ship nationwide?", a: "Yes, we deliver across Egypt within 2–5 business days." },
+              {
+                q: "Is this suitable for beginners?",
+                a:
+                  tags.difficulty === "Expert"
+                    ? "This is a collector-grade item and best for experienced plant parents."
+                    : "Yes — this is beginner-friendly with basic care.",
+              },
+              {
+                q: "Do you ship nationwide?",
+                a: "Yes, we deliver across Egypt within 2–5 business days.",
+              },
             ],
             rooms: tags.rooms,
             lightTag: tags.lightTag,

@@ -28,7 +28,11 @@ export const Route = createFileRoute("/products")({
   head: () => ({
     meta: [
       { title: "Shop All Plants & Gardening — Verdura" },
-      { name: "description", content: "Browse our full collection of plants, pots, tools, soil, and gardening essentials." },
+      {
+        name: "description",
+        content:
+          "Browse our full collection of plants, pots, tools, soil, and gardening essentials.",
+      },
     ],
   }),
   component: ProductsPage,
@@ -39,7 +43,10 @@ function ProductsPage() {
   const navigate = Route.useNavigate();
   const [drawer, setDrawer] = useState(false);
 
-  const { data: products = [], isLoading } = useQuery({ queryKey: ["products"], queryFn: getProducts });
+  const { data: products = [], isLoading } = useQuery({
+    queryKey: ["products"],
+    queryFn: getProducts,
+  });
   const { data: categories = [] } = useQuery({ queryKey: ["categories"], queryFn: getCategories });
 
   const setP = (patch: Partial<typeof search>) =>
@@ -65,12 +72,16 @@ function ProductsPage() {
     if (search.featured) list = list.filter((p) => p.featured);
     if (search.light) list = list.filter((p) => p.lightTag === search.light);
     if (search.water) list = list.filter((p) => p.waterTag === search.water);
-    if (search.difficulty) list = list.filter((p) => p.difficultyLevel === (search.difficulty as never));
+    if (search.difficulty)
+      list = list.filter((p) => p.difficultyLevel === (search.difficulty as never));
 
     if (search.sort === "price-asc") list = [...list].sort((a, b) => a.price - b.price);
     if (search.sort === "price-desc") list = [...list].sort((a, b) => b.price - a.price);
     if (search.sort === "rating") list = [...list].sort((a, b) => b.rating - a.rating);
-    if (search.sort === "newest") list = [...list].sort((a, b) => (b.badges.includes("new") ? 1 : 0) - (a.badges.includes("new") ? 1 : 0));
+    if (search.sort === "newest")
+      list = [...list].sort(
+        (a, b) => (b.badges.includes("new") ? 1 : 0) - (a.badges.includes("new") ? 1 : 0),
+      );
     return list;
   }, [products, search]);
 
@@ -90,9 +101,18 @@ function ProductsPage() {
   const clearAll = () =>
     navigate({
       search: {
-        category: "all", q: "", sort: "featured", min: 0, max: 0,
-        pet: false, air: false, inStock: false, featured: false,
-        light: "", water: "", difficulty: "",
+        category: "all",
+        q: "",
+        sort: "featured",
+        min: 0,
+        max: 0,
+        pet: false,
+        air: false,
+        inStock: false,
+        featured: false,
+        light: "",
+        water: "",
+        difficulty: "",
       },
       replace: true,
     });
@@ -109,7 +129,9 @@ function ProductsPage() {
         >
           <option value="all">All categories</option>
           {rootCategories.map((c) => (
-            <option key={c.id} value={c.id}>{c.name}</option>
+            <option key={c.id} value={c.id}>
+              {c.name}
+            </option>
           ))}
         </select>
       </FilterSection>
@@ -117,14 +139,18 @@ function ProductsPage() {
       <FilterSection title="Price (EGP)">
         <div className="flex items-center gap-2">
           <input
-            type="number" min={0} placeholder="Min"
+            type="number"
+            min={0}
+            placeholder="Min"
             value={search.min || ""}
             onChange={(e) => setP({ min: Number(e.target.value) || 0 })}
             className="w-full rounded-full border border-input bg-background px-3 py-2 text-sm outline-none focus:border-primary"
           />
           <span className="text-muted-foreground">—</span>
           <input
-            type="number" min={0} placeholder="Max"
+            type="number"
+            min={0}
+            placeholder="Max"
             value={search.max || ""}
             onChange={(e) => setP({ max: Number(e.target.value) || 0 })}
             className="w-full rounded-full border border-input bg-background px-3 py-2 text-sm outline-none focus:border-primary"
@@ -160,8 +186,16 @@ function ProductsPage() {
         <div className="flex flex-col gap-2">
           <Toggle checked={search.pet} onChange={(v) => setP({ pet: v })} label="Pet friendly" />
           <Toggle checked={search.air} onChange={(v) => setP({ air: v })} label="Air purifying" />
-          <Toggle checked={search.inStock} onChange={(v) => setP({ inStock: v })} label="In stock only" />
-          <Toggle checked={search.featured} onChange={(v) => setP({ featured: v })} label="Featured" />
+          <Toggle
+            checked={search.inStock}
+            onChange={(v) => setP({ inStock: v })}
+            label="In stock only"
+          />
+          <Toggle
+            checked={search.featured}
+            onChange={(v) => setP({ featured: v })}
+            label="Featured"
+          />
         </div>
       </FilterSection>
 
@@ -235,8 +269,12 @@ function ProductsPage() {
           ) : filtered.length === 0 ? (
             <div className="rounded-3xl border border-dashed border-border bg-card/50 p-16 text-center">
               <SlidersHorizontal className="mx-auto h-8 w-8 text-muted-foreground" />
-              <p className="mt-4 font-display text-xl font-semibold">No products match your filters</p>
-              <p className="mt-2 text-sm text-muted-foreground">Try clearing search or another category.</p>
+              <p className="mt-4 font-display text-xl font-semibold">
+                No products match your filters
+              </p>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Try clearing search or another category.
+              </p>
               <button
                 type="button"
                 onClick={clearAll}
@@ -254,19 +292,23 @@ function ProductsPage() {
           )}
 
           <div className="mt-10 flex flex-wrap gap-2">
-            <span className="text-xs uppercase tracking-wide text-muted-foreground me-1">Browse by:</span>
-            {Object.entries(facets).slice(0, 4).map(([key, values]) =>
-              values.slice(0, 2).map((v) => (
-                <Link
-                  key={`${key}-${v.value}`}
-                  to="/browse/$facet/$value"
-                  params={{ facet: key, value: v.value }}
-                  className="rounded-full border border-border px-3 py-1 text-xs hover:border-primary"
-                >
-                  {v.label}
-                </Link>
-              )),
-            )}
+            <span className="text-xs uppercase tracking-wide text-muted-foreground me-1">
+              Browse by:
+            </span>
+            {Object.entries(facets)
+              .slice(0, 4)
+              .map(([key, values]) =>
+                values.slice(0, 2).map((v) => (
+                  <Link
+                    key={`${key}-${v.value}`}
+                    to="/browse/$facet/$value"
+                    params={{ facet: key, value: v.value }}
+                    className="rounded-full border border-border px-3 py-1 text-xs hover:border-primary"
+                  >
+                    {v.label}
+                  </Link>
+                )),
+              )}
           </div>
         </section>
       </div>
@@ -300,14 +342,18 @@ function ProductsPage() {
 function FilterSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div>
-      <h3 className="mb-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground">{title}</h3>
+      <h3 className="mb-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+        {title}
+      </h3>
       {children}
     </div>
   );
 }
 
 function ChipGroup({
-  value, onChange, options,
+  value,
+  onChange,
+  options,
 }: {
   value: string;
   onChange: (v: string) => void;
@@ -323,7 +369,9 @@ function ChipGroup({
             type="button"
             onClick={() => onChange(active ? "" : o.value)}
             className={`rounded-full border px-3 py-1 text-xs transition ${
-              active ? "border-primary bg-primary text-primary-foreground" : "border-border hover:border-primary"
+              active
+                ? "border-primary bg-primary text-primary-foreground"
+                : "border-border hover:border-primary"
             }`}
           >
             {o.label}
@@ -334,7 +382,15 @@ function ChipGroup({
   );
 }
 
-function Toggle({ checked, onChange, label }: { checked: boolean; onChange: (v: boolean) => void; label: string }) {
+function Toggle({
+  checked,
+  onChange,
+  label,
+}: {
+  checked: boolean;
+  onChange: (v: boolean) => void;
+  label: string;
+}) {
   return (
     <label className="flex cursor-pointer items-center gap-2 text-sm">
       <input

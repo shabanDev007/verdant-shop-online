@@ -3,7 +3,11 @@ import type {} from "@tanstack/react-start";
 
 const BASE_URL = "";
 
-interface SitemapEntry { path: string; changefreq?: string; priority?: string; }
+interface SitemapEntry {
+  path: string;
+  changefreq?: string;
+  priority?: string;
+}
 
 export const Route = createFileRoute("/sitemap.xml")({
   server: {
@@ -23,7 +27,9 @@ export const Route = createFileRoute("/sitemap.xml")({
             e.changefreq ? `    <changefreq>${e.changefreq}</changefreq>` : null,
             e.priority ? `    <priority>${e.priority}</priority>` : null,
             `  </url>`,
-          ].filter(Boolean).join("\n"),
+          ]
+            .filter(Boolean)
+            .join("\n"),
         );
         const xml = [
           `<?xml version="1.0" encoding="UTF-8"?>`,

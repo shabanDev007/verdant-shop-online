@@ -14,7 +14,9 @@ export function Footer() {
             </span>
             <span className="font-display text-xl font-semibold">{t("brand.name")}</span>
           </Link>
-          <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{t("footer.tagline")}</p>
+          <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+            {t("footer.tagline")}
+          </p>
           <div className="mt-5 flex gap-2">
             {[Instagram, Facebook, Twitter, Mail].map((Icon, i) => (
               <a
@@ -43,13 +45,17 @@ export function Footer() {
         </FooterCol>
         <FooterCol title={t("footer.col.support")}>
           <p className="text-sm text-muted-foreground">hello@verdura.shop</p>
-          <p className="text-sm text-muted-foreground" dir="ltr">+20 100 000 0000</p>
+          <p className="text-sm text-muted-foreground" dir="ltr">
+            +20 100 000 0000
+          </p>
           <p className="text-sm text-muted-foreground">{t("footer.support.hours")}</p>
         </FooterCol>
       </div>
       <div className="border-t border-border/60">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-4 py-5 text-xs text-muted-foreground sm:flex-row sm:px-6 lg:px-8">
-          <p>© {new Date().getFullYear()} {t("brand.name")}. {t("footer.rights")}</p>
+          <p>
+            © {new Date().getFullYear()} {t("brand.name")}. {t("footer.rights")}
+          </p>
           <p>{t("footer.grown")}</p>
         </div>
       </div>

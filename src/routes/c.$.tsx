@@ -9,8 +9,13 @@ import type { Category } from "@/types";
 export const Route = createFileRoute("/c/$")({
   head: ({ params }) => ({
     meta: [
-      { title: `${(params._splat ?? "").split("/").pop()?.replace(/-/g, " ") || "Category"} — Verdura` },
-      { name: "description", content: "Shop premium plants, pots, tools, and gardening essentials at Verdura." },
+      {
+        title: `${(params._splat ?? "").split("/").pop()?.replace(/-/g, " ") || "Category"} — Verdura`,
+      },
+      {
+        name: "description",
+        content: "Shop premium plants, pots, tools, and gardening essentials at Verdura.",
+      },
     ],
   }),
   component: CategoryPage,
@@ -62,9 +67,13 @@ function CategoryPage() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
       <nav className="mb-6 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-        <Link to="/" className="hover:text-primary">Home</Link>
+        <Link to="/" className="hover:text-primary">
+          Home
+        </Link>
         <ChevronRight className="h-3 w-3" />
-        <Link to="/categories" className="hover:text-primary">Categories</Link>
+        <Link to="/categories" className="hover:text-primary">
+          Categories
+        </Link>
         {breadcrumb.map((c) => (
           <span key={c.id} className="flex items-center gap-2">
             <ChevronRight className="h-3 w-3" />

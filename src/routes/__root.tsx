@@ -10,7 +10,6 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
-import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { CartProvider } from "@/context/CartContext";
@@ -43,10 +42,9 @@ function NotFoundComponent() {
 }
 
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
-  console.error(error);
   const router = useRouter();
   useEffect(() => {
-    reportLovableError(error, { boundary: "tanstack_root_error_component" });
+    console.error("Route error:", error);
   }, [error]);
 
   return (
@@ -90,7 +88,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "Verdura is a premium plant shop with indoor, outdoor, succulents, and flowering plants. Fast delivery, healthy plants, and lifetime care support.",
       },
       { property: "og:title", content: "Verdura — Premium Plants Delivered" },
-      { property: "og:description", content: "Greener homes, happier humans. Shop premium plants online." },
+      {
+        property: "og:description",
+        content: "Greener homes, happier humans. Shop premium plants online.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],

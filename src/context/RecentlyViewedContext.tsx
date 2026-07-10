@@ -1,4 +1,5 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, useContext, type ReactNode } from "react";
+import { usePersistentState } from "@/hooks/usePersistentState";
 
 interface RecentlyViewedContextValue {
   ids: string[];
@@ -9,23 +10,11 @@ interface RecentlyViewedContextValue {
 const Ctx = createContext<RecentlyViewedContextValue | null>(null);
 const STORAGE_KEY = "verdura.recentlyViewed";
 const MAX = 8;
+const isStringArray = (value: unknown): value is string[] =>
+  Array.isArray(value) && value.every((item) => typeof item === "string");
 
 export function RecentlyViewedProvider({ children }: { children: ReactNode }) {
-  const [ids, setIds] = useState<string[]>([]);
-
-  useEffect(() => {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) setIds(JSON.parse(raw) as string[]);
-    } catch {
-      /* ignore */
-    }
-  }, []);
-
-  useEffect(() => {
-    if (typeof window !== "undefined")
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(ids));
-  }, [ids]);
+  const [ids, setIds] = usePersistentState<string[]>(STORAGE_KEY, [], isStringArray);
 
   return (
     <Ctx.Provider

@@ -2,13 +2,24 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import {
-  Heart, Minus, Plus, ShoppingBag, Droplets, Sun, Thermometer, Sprout,
-  ArrowLeft, Star, Share2, Truck, RotateCcw, GitCompareArrows, ChevronDown,
+  Heart,
+  Minus,
+  Plus,
+  ShoppingBag,
+  Droplets,
+  Sun,
+  Thermometer,
+  Sprout,
+  ArrowLeft,
+  Star,
+  Share2,
+  Truck,
+  RotateCcw,
+  GitCompareArrows,
+  ChevronDown,
 } from "lucide-react";
 import { toast } from "sonner";
-import {
-  getProductById, getRelatedProducts, getReviews, getProductsByIds,
-} from "@/services/api";
+import { getProductById, getRelatedProducts, getReviews, getProductsByIds } from "@/services/api";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { useCompare } from "@/context/CompareContext";
@@ -85,7 +96,10 @@ function ProductDetailPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-      <Link to="/products" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary">
+      <Link
+        to="/products"
+        className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary"
+      >
         <ArrowLeft className="h-4 w-4 rtl:rotate-180" /> Back to shop
       </Link>
 
@@ -93,7 +107,11 @@ function ProductDetailPage() {
         {/* Gallery */}
         <div>
           <div className="overflow-hidden rounded-3xl border border-border/60 bg-card">
-            <img src={gallery[activeImg]} alt={product.name} className="aspect-square w-full object-cover" />
+            <img
+              src={gallery[activeImg]}
+              alt={product.name}
+              className="aspect-square w-full object-cover"
+            />
           </div>
           {gallery.length > 1 && (
             <div className="mt-3 grid grid-cols-4 gap-2">
@@ -129,7 +147,9 @@ function ProductDetailPage() {
             </div>
             <span
               className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                product.stock > 0 ? "bg-accent text-accent-foreground" : "bg-destructive/15 text-destructive"
+                product.stock > 0
+                  ? "bg-accent text-accent-foreground"
+                  : "bg-destructive/15 text-destructive"
               }`}
             >
               {product.stock > 0 ? `In stock · ${product.stock} left` : "Out of stock"}
@@ -137,10 +157,14 @@ function ProductDetailPage() {
           </div>
 
           <div className="mt-5 flex items-baseline gap-3">
-            <span className="font-display text-3xl font-semibold text-primary">{price(product.price)}</span>
+            <span className="font-display text-3xl font-semibold text-primary">
+              {price(product.price)}
+            </span>
             {product.oldPrice && (
               <>
-                <span className="text-base text-muted-foreground line-through">{price(product.oldPrice)}</span>
+                <span className="text-base text-muted-foreground line-through">
+                  {price(product.oldPrice)}
+                </span>
                 <span className="rounded-full bg-clay/15 px-2 py-0.5 text-xs font-semibold text-clay">
                   Save {Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100)}%
                 </span>
@@ -148,19 +172,38 @@ function ProductDetailPage() {
             )}
           </div>
 
-          <p className="mt-5 text-base leading-relaxed text-muted-foreground">{product.description}</p>
+          <p className="mt-5 text-base leading-relaxed text-muted-foreground">
+            {product.description}
+          </p>
 
           <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
-            <CareTile icon={<Droplets className="h-4 w-4" />} label="Water" value={product.care.water} />
-            <CareTile icon={<Sun className="h-4 w-4" />} label="Light" value={product.care.sunlight} />
-            <CareTile icon={<Thermometer className="h-4 w-4" />} label="Temp" value={product.care.temperature} />
-            <CareTile icon={<Sprout className="h-4 w-4" />} label="Level" value={product.care.difficulty} />
+            <CareTile
+              icon={<Droplets className="h-4 w-4" />}
+              label="Water"
+              value={product.care.water}
+            />
+            <CareTile
+              icon={<Sun className="h-4 w-4" />}
+              label="Light"
+              value={product.care.sunlight}
+            />
+            <CareTile
+              icon={<Thermometer className="h-4 w-4" />}
+              label="Temp"
+              value={product.care.temperature}
+            />
+            <CareTile
+              icon={<Sprout className="h-4 w-4" />}
+              label="Level"
+              value={product.care.difficulty}
+            />
           </div>
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <div className="flex items-center gap-1 rounded-full border border-border bg-background p-1">
               <button
-                type="button" aria-label="Decrease"
+                type="button"
+                aria-label="Decrease"
                 onClick={() => setQty((q) => Math.max(1, q - 1))}
                 className="grid h-9 w-9 place-items-center rounded-full text-foreground/70 hover:bg-accent"
               >
@@ -168,7 +211,8 @@ function ProductDetailPage() {
               </button>
               <span className="w-8 text-center font-semibold">{qty}</span>
               <button
-                type="button" aria-label="Increase"
+                type="button"
+                aria-label="Increase"
                 onClick={() => setQty((q) => Math.min(product.stock || 99, q + 1))}
                 className="grid h-9 w-9 place-items-center rounded-full text-foreground/70 hover:bg-accent"
               >
@@ -176,7 +220,8 @@ function ProductDetailPage() {
               </button>
             </div>
             <button
-              type="button" disabled={product.stock === 0}
+              type="button"
+              disabled={product.stock === 0}
               onClick={() => {
                 add(product, qty);
                 toast.success(`${product.name} added to cart`);
@@ -210,7 +255,8 @@ function ProductDetailPage() {
               <GitCompareArrows className="h-4 w-4" />
             </button>
             <button
-              type="button" onClick={share}
+              type="button"
+              onClick={share}
               className="grid h-12 w-12 place-items-center rounded-full border border-border bg-background text-foreground/70 hover:text-primary"
               aria-label="Share"
             >
@@ -231,7 +277,9 @@ function ProductDetailPage() {
               <RotateCcw className="mt-0.5 h-5 w-5 text-primary" />
               <div>
                 <p className="font-semibold">30-day plant guarantee</p>
-                <p className="text-xs text-muted-foreground">Healthy on arrival, or we replace it.</p>
+                <p className="text-xs text-muted-foreground">
+                  Healthy on arrival, or we replace it.
+                </p>
               </div>
             </div>
           </div>
@@ -275,13 +323,20 @@ function ProductDetailPage() {
           )}
           {tab === "care" && (
             <div className="prose prose-sm max-w-none text-muted-foreground">
-              <p>{product.careInstructions ?? "Follow the care summary above. Rotate weekly, wipe leaves monthly, and repot when roots outgrow the pot."}</p>
+              <p>
+                {product.careInstructions ??
+                  "Follow the care summary above. Rotate weekly, wipe leaves monthly, and repot when roots outgrow the pot."}
+              </p>
             </div>
           )}
           {tab === "delivery" && (
             <div className="space-y-4 text-sm text-muted-foreground">
-              <p><strong className="text-foreground">Delivery:</strong> {product.deliveryInfo}</p>
-              <p><strong className="text-foreground">Returns:</strong> {product.returnPolicy}</p>
+              <p>
+                <strong className="text-foreground">Delivery:</strong> {product.deliveryInfo}
+              </p>
+              <p>
+                <strong className="text-foreground">Returns:</strong> {product.returnPolicy}
+              </p>
             </div>
           )}
           {tab === "faq" && (
@@ -305,16 +360,28 @@ function ProductDetailPage() {
                 reviews.map((r) => (
                   <div key={r.id} className="rounded-2xl border border-border/60 bg-card p-5">
                     <div className="flex items-center justify-between">
-                      <p className="font-semibold">{r.userName} {r.verified && <span className="ms-1 text-[10px] font-medium uppercase tracking-wide text-primary">Verified</span>}</p>
+                      <p className="font-semibold">
+                        {r.userName}{" "}
+                        {r.verified && (
+                          <span className="ms-1 text-[10px] font-medium uppercase tracking-wide text-primary">
+                            Verified
+                          </span>
+                        )}
+                      </p>
                       <div className="flex items-center gap-1 text-xs">
                         {Array.from({ length: 5 }).map((_, i) => (
-                          <Star key={i} className={`h-3.5 w-3.5 ${i < r.rating ? "fill-clay text-clay" : "text-muted-foreground/30"}`} />
+                          <Star
+                            key={i}
+                            className={`h-3.5 w-3.5 ${i < r.rating ? "fill-clay text-clay" : "text-muted-foreground/30"}`}
+                          />
                         ))}
                       </div>
                     </div>
                     {r.title && <p className="mt-2 font-medium">{r.title}</p>}
                     <p className="mt-1 text-sm text-muted-foreground">{r.body}</p>
-                    <p className="mt-2 text-xs text-muted-foreground">{new Date(r.createdAt).toLocaleDateString()}</p>
+                    <p className="mt-2 text-xs text-muted-foreground">
+                      {new Date(r.createdAt).toLocaleDateString()}
+                    </p>
                   </div>
                 ))
               )}
@@ -325,7 +392,9 @@ function ProductDetailPage() {
 
       {related.length > 0 && (
         <section className="mt-16">
-          <h2 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">You may also love</h2>
+          <h2 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">
+            You may also love
+          </h2>
           <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {related.map((p) => (
               <ProductCard key={p.id} product={p} />
@@ -336,7 +405,9 @@ function ProductDetailPage() {
 
       {recentProducts.length > 0 && (
         <section className="mt-16">
-          <h2 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">Recently viewed</h2>
+          <h2 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">
+            Recently viewed
+          </h2>
           <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {recentProducts.map((p) => (
               <ProductCard key={p.id} product={p} />

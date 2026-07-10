@@ -1,4 +1,5 @@
-import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import { createContext, useContext, useMemo, type ReactNode } from "react";
+import { usePersistentState } from "@/hooks/usePersistentState";
 import type { CartItem, Product } from "@/types";
 
 interface CartContextValue {
@@ -13,26 +14,30 @@ interface CartContextValue {
 
 const CartContext = createContext<CartContextValue | null>(null);
 const STORAGE_KEY = "verdura.cart";
+const isCart = (value: unknown): value is CartItem[] =>
+  Array.isArray(value) &&
+  value.every(
+    (item) =>
+      typeof item === "object" &&
+      item !== null &&
+      "product" in item &&
+      typeof item.product === "object" &&
+      item.product !== null &&
+      "id" in item.product &&
+      typeof item.product.id === "string" &&
+      "price" in item.product &&
+      typeof item.product.price === "number" &&
+      "quantity" in item &&
+      typeof item.quantity === "number" &&
+      Number.isFinite(item.quantity) &&
+      item.quantity > 0,
+  );
 // Egyptian Pound thresholds
 const DELIVERY_FEE_FREE_THRESHOLD = 2000;
 export const DELIVERY_FEE = 50;
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [items, setItems] = useState<CartItem[]>(() => {
-    if (typeof window === "undefined") return [];
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      return raw ? (JSON.parse(raw) as CartItem[]) : [];
-    } catch {
-      return [];
-    }
-  });
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
-    }
-  }, [items]);
+  const [items, setItems] = usePersistentState<CartItem[]>(STORAGE_KEY, [], isCart);
 
   const value = useMemo<CartContextValue>(() => {
     const subtotal = items.reduce((s, i) => s + i.product.price * i.quantity, 0);
@@ -55,12 +60,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
       updateQty: (productId, quantity) =>
         setItems((prev) =>
           prev
-            .map((i) => (i.product.id === productId ? { ...i, quantity: Math.max(1, quantity) } : i))
+            .map((i) =>
+              i.product.id === productId ? { ...i, quantity: Math.max(1, quantity) } : i,
+            )
             .filter((i) => i.quantity > 0),
         ),
       clear: () => setItems([]),
     };
-  }, [items]);
+  }, [items, setItems]);
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }
