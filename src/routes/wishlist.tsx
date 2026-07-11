@@ -4,6 +4,7 @@ import { Heart } from "lucide-react";
 import { useWishlist } from "@/context/WishlistContext";
 import { getProductsByIds } from "@/services/api";
 import { ProductCard } from "@/components/ProductCard";
+import { useT } from "@/i18n/LanguageContext";
 
 export const Route = createFileRoute("/wishlist")({
   head: () => ({
@@ -17,6 +18,7 @@ export const Route = createFileRoute("/wishlist")({
 
 function WishlistPage() {
   const { ids } = useWishlist();
+  const t = useT();
   const { data: products = [] } = useQuery({
     queryKey: ["wishlist", ids],
     queryFn: () => getProductsByIds(ids),
@@ -26,9 +28,11 @@ function WishlistPage() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
       <header className="mb-8 max-w-2xl">
-        <p className="text-xs font-semibold uppercase tracking-widest text-primary">Saved</p>
+        <p className="text-xs font-semibold uppercase tracking-widest text-primary">
+          {t("wishlist.saved")}
+        </p>
         <h1 className="mt-2 font-display text-4xl font-semibold tracking-tight sm:text-5xl">
-          Wishlist
+          {t("wishlist.title")}
         </h1>
         <p className="mt-2 text-muted-foreground">
           {ids.length} item{ids.length === 1 ? "" : "s"} saved for later.
@@ -40,15 +44,13 @@ function WishlistPage() {
           <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-accent text-primary">
             <Heart className="h-7 w-7" />
           </div>
-          <p className="mt-5 font-display text-2xl font-semibold">Your wishlist is empty</p>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Tap the heart on any product to save it here.
-          </p>
+          <p className="mt-5 font-display text-2xl font-semibold">{t("wishlist.empty")}</p>
+          <p className="mt-2 text-sm text-muted-foreground">{t("wishlist.hint")}</p>
           <Link
             to="/products"
             className="mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:opacity-90"
           >
-            Browse products
+            {t("cart.browsePlants")}
           </Link>
         </div>
       ) : (

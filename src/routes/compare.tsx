@@ -6,6 +6,8 @@ import { useCart } from "@/context/CartContext";
 import { getProductsByIds } from "@/services/api";
 import { usePrice } from "@/lib/usePrice";
 import { toast } from "sonner";
+import { useLanguage, useT } from "@/i18n/LanguageContext";
+import { localizeLabel } from "@/lib/localizeData";
 
 export const Route = createFileRoute("/compare")({
   head: () => ({
@@ -21,6 +23,8 @@ function ComparePage() {
   const { ids, toggle, clear } = useCompare();
   const price = usePrice();
   const { add } = useCart();
+  const t = useT();
+  const { lang } = useLanguage();
   const { data: products = [] } = useQuery({
     queryKey: ["compare", ids],
     queryFn: () => getProductsByIds(ids),
@@ -35,11 +39,12 @@ function ComparePage() {
             Side-by-side
           </p>
           <h1 className="mt-2 font-display text-4xl font-semibold tracking-tight sm:text-5xl">
-            Compare
+            {t("compare.title")}
           </h1>
           <p className="mt-2 text-muted-foreground">
             {ids.length}/4 items · pick the best fit for your space.
           </p>
+          <p className="mt-2 max-w-2xl text-sm text-muted-foreground">{t("compare.step")}</p>
         </div>
         {ids.length > 0 && (
           <button
@@ -47,7 +52,7 @@ function ComparePage() {
             onClick={clear}
             className="rounded-full border border-border px-4 py-2 text-sm hover:border-primary"
           >
-            Clear all
+            {t("compare.clear")}
           </button>
         )}
       </div>
@@ -57,15 +62,13 @@ function ComparePage() {
           <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-accent text-primary">
             <GitCompareArrows className="h-7 w-7" />
           </div>
-          <p className="mt-5 font-display text-2xl font-semibold">Nothing to compare yet</p>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Add up to 4 products from any product page.
-          </p>
+          <p className="mt-5 font-display text-2xl font-semibold">{t("compare.empty")}</p>
+          <p className="mt-2 text-sm text-muted-foreground">{t("compare.hint")}</p>
           <Link
             to="/products"
             className="mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:opacity-90"
           >
-            Browse products
+            {t("cart.browsePlants")}
           </Link>
         </div>
       ) : (
@@ -80,7 +83,7 @@ function ComparePage() {
                       <div className="relative w-full">
                         <img
                           src={p.image}
-                          alt={p.name}
+                          alt={localizeLabel(p.name, lang)}
                           className="aspect-square w-full rounded-2xl object-cover"
                         />
                         <button
@@ -97,17 +100,19 @@ function ComparePage() {
                         params={{ id: p.id }}
                         className="font-display text-base font-semibold hover:text-primary"
                       >
-                        {p.name}
+                        {localizeLabel(p.name, lang)}
                       </Link>
                       <button
                         type="button"
                         onClick={() => {
                           add(p);
-                          toast.success(`${p.name} added to cart`);
+                          toast.success(
+                            t("product.addedToCart", { name: localizeLabel(p.name, lang) }),
+                          );
                         }}
                         className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground hover:opacity-90"
                       >
-                        <ShoppingBag className="h-3.5 w-3.5" /> Add to cart
+                        <ShoppingBag className="h-3.5 w-3.5" /> {t("product.addToCart")}
                       </button>
                     </div>
                   </th>
@@ -115,23 +120,49 @@ function ComparePage() {
               </tr>
             </thead>
             <tbody>
-              <Row label="Price" values={products.map((p) => price(p.price))} />
+              <Row label={t("compare.price")} values={products.map((p) => price(p.price))} />
               <Row
-                label="Rating"
+                label={t("compare.rating")}
                 values={products.map((p) => `${p.rating.toFixed(1)} ★ (${p.reviewsCount})`)}
               />
               <Row
-                label="Stock"
-                values={products.map((p) => (p.stock > 0 ? `${p.stock} in stock` : "Out of stock"))}
+                label={t("compare.stock")}
+                values={products.map((p) =>
+                  p.stock > 0 ? `${p.stock} ${t("product.inStock")}` : t("product.outOfStock"),
+                )}
               />
-              <Row label="Category" values={products.map((p) => p.categoryName)} />
-              <Row label="Light" values={products.map((p) => p.care?.sunlight ?? "—")} />
-              <Row label="Water" values={products.map((p) => p.care?.water ?? "—")} />
-              <Row label="Difficulty" values={products.map((p) => p.care?.difficulty ?? "—")} />
-              <Row label="Height" values={products.map((p) => p.specs?.plantHeight ?? "—")} />
-              <Row label="Pot size" values={products.map((p) => p.specs?.potSize ?? "—")} />
-              <BoolRow label="Pet Safe" values={products.map((p) => !!p.petSafe)} />
-              <BoolRow label="Air Purifying" values={products.map((p) => !!p.airPurifying)} />
+              <Row
+                label={t("product.spec.category")}
+                values={products.map((p) => localizeLabel(p.categoryName, lang))}
+              />
+              <Row
+                label={t("product.light")}
+                values={products.map((p) => localizeLabel(p.care?.sunlight ?? "—", lang))}
+              />
+              <Row
+                label={t("product.water")}
+                values={products.map((p) => localizeLabel(p.care?.water ?? "—", lang))}
+              />
+              <Row
+                label={t("catalog.difficulty")}
+                values={products.map((p) => p.care?.difficulty ?? "—")}
+              />
+              <Row
+                label={t("compare.height")}
+                values={products.map((p) => p.specs?.plantHeight ?? "—")}
+              />
+              <Row
+                label={t("product.spec.potSize")}
+                values={products.map((p) => p.specs?.potSize ?? "—")}
+              />
+              <BoolRow
+                label={t("product.spec.petSafe")}
+                values={products.map((p) => !!p.petSafe)}
+              />
+              <BoolRow
+                label={t("product.spec.airPurifying")}
+                values={products.map((p) => !!p.airPurifying)}
+              />
             </tbody>
           </table>
         </div>

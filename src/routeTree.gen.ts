@@ -19,7 +19,7 @@ import { Route as CategoriesRouteImport } from './routes/categories'
 import { Route as CartRouteImport } from './routes/cart'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ProductsIdRouteImport } from './routes/products.$id'
+import { Route as ProductsIdRouteImport } from './routes/products_.$id'
 import { Route as CSplatRouteImport } from './routes/c.$'
 import { Route as BrowseFacetValueRouteImport } from './routes/browse.$facet.$value'
 
@@ -74,9 +74,9 @@ const IndexRoute = IndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProductsIdRoute = ProductsIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => ProductsRoute,
+  id: '/products_/$id',
+  path: '/products/$id',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const CSplatRoute = CSplatRouteImport.update({
   id: '/c/$',
@@ -97,7 +97,7 @@ export interface FileRoutesByFullPath {
   '/checkout': typeof CheckoutRoute
   '/compare': typeof CompareRoute
   '/contact': typeof ContactRoute
-  '/products': typeof ProductsRouteWithChildren
+  '/products': typeof ProductsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/wishlist': typeof WishlistRoute
   '/c/$': typeof CSplatRoute
@@ -112,7 +112,7 @@ export interface FileRoutesByTo {
   '/checkout': typeof CheckoutRoute
   '/compare': typeof CompareRoute
   '/contact': typeof ContactRoute
-  '/products': typeof ProductsRouteWithChildren
+  '/products': typeof ProductsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/wishlist': typeof WishlistRoute
   '/c/$': typeof CSplatRoute
@@ -128,11 +128,11 @@ export interface FileRoutesById {
   '/checkout': typeof CheckoutRoute
   '/compare': typeof CompareRoute
   '/contact': typeof ContactRoute
-  '/products': typeof ProductsRouteWithChildren
+  '/products': typeof ProductsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/wishlist': typeof WishlistRoute
   '/c/$': typeof CSplatRoute
-  '/products/$id': typeof ProductsIdRoute
+  '/products_/$id': typeof ProductsIdRoute
   '/browse/$facet/$value': typeof BrowseFacetValueRoute
 }
 export interface FileRouteTypes {
@@ -179,7 +179,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/wishlist'
     | '/c/$'
-    | '/products/$id'
+    | '/products_/$id'
     | '/browse/$facet/$value'
   fileRoutesById: FileRoutesById
 }
@@ -191,10 +191,11 @@ export interface RootRouteChildren {
   CheckoutRoute: typeof CheckoutRoute
   CompareRoute: typeof CompareRoute
   ContactRoute: typeof ContactRoute
-  ProductsRoute: typeof ProductsRouteWithChildren
+  ProductsRoute: typeof ProductsRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   WishlistRoute: typeof WishlistRoute
   CSplatRoute: typeof CSplatRoute
+  ProductsIdRoute: typeof ProductsIdRoute
   BrowseFacetValueRoute: typeof BrowseFacetValueRoute
 }
 
@@ -270,12 +271,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/products/$id': {
-      id: '/products/$id'
-      path: '/$id'
+    '/products_/$id': {
+      id: '/products_/$id'
+      path: '/products/$id'
       fullPath: '/products/$id'
       preLoaderRoute: typeof ProductsIdRouteImport
-      parentRoute: typeof ProductsRoute
+      parentRoute: typeof rootRouteImport
     }
     '/c/$': {
       id: '/c/$'
@@ -294,18 +295,6 @@ declare module '@tanstack/react-router' {
   }
 }
 
-interface ProductsRouteChildren {
-  ProductsIdRoute: typeof ProductsIdRoute
-}
-
-const ProductsRouteChildren: ProductsRouteChildren = {
-  ProductsIdRoute: ProductsIdRoute,
-}
-
-const ProductsRouteWithChildren = ProductsRoute._addFileChildren(
-  ProductsRouteChildren,
-)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
@@ -314,10 +303,11 @@ const rootRouteChildren: RootRouteChildren = {
   CheckoutRoute: CheckoutRoute,
   CompareRoute: CompareRoute,
   ContactRoute: ContactRoute,
-  ProductsRoute: ProductsRouteWithChildren,
+  ProductsRoute: ProductsRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   WishlistRoute: WishlistRoute,
   CSplatRoute: CSplatRoute,
+  ProductsIdRoute: ProductsIdRoute,
   BrowseFacetValueRoute: BrowseFacetValueRoute,
 }
 export const routeTree = rootRouteImport

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
 import { Mail, Phone, MessageCircle, MapPin } from "lucide-react";
+import { useT } from "@/i18n/LanguageContext";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -24,6 +25,7 @@ const schema = z.object({
 });
 
 function ContactPage() {
+  const t = useT();
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -38,32 +40,32 @@ function ContactPage() {
     }
     setErrors({});
     // BACKEND: POST /api/contact { name, email, message }
-    toast.success("Thanks! We'll get back to you within 24 hours.");
+    toast.success(t("contact.success"));
     setForm({ name: "", email: "", message: "" });
   };
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
       <header className="max-w-2xl">
-        <p className="text-xs font-semibold uppercase tracking-widest text-primary">Get in touch</p>
-        <h1 className="mt-2 font-display text-4xl font-semibold tracking-tight sm:text-5xl">
-          We'd love to hear from you.
-        </h1>
-        <p className="mt-3 text-muted-foreground">
-          Questions about a plant, an order, or just want to share a photo? Our team is here.
+        <p className="text-xs font-semibold uppercase tracking-widest text-primary">
+          {t("contact.eyebrow")}
         </p>
+        <h1 className="mt-2 font-display text-4xl font-semibold tracking-tight sm:text-5xl">
+          {t("contact.title")}
+        </h1>
+        <p className="mt-3 text-muted-foreground">{t("contact.subtitle")}</p>
       </header>
 
       <div className="mt-12 grid gap-10 lg:grid-cols-[1fr_1.2fr]">
         <div className="space-y-4">
           <Info
             icon={<Mail className="h-5 w-5" />}
-            title="Email us"
+            title={t("contact.email")}
             lines={["hello@verdura.shop", "support@verdura.shop"]}
           />
           <Info
             icon={<Phone className="h-5 w-5" />}
-            title="Call us"
+            title={t("contact.call")}
             lines={["+1 (555) 010-9090", "Mon–Sat · 9am–6pm"]}
           />
           <a
@@ -76,13 +78,13 @@ function ContactPage() {
               <MessageCircle className="h-5 w-5" />
             </span>
             <div>
-              <p className="font-semibold">Chat on WhatsApp</p>
-              <p className="text-sm text-muted-foreground">Fastest way to reach us</p>
+              <p className="font-semibold">{t("contact.whatsapp")}</p>
+              <p className="text-sm text-muted-foreground">{t("contact.whatsappHint")}</p>
             </div>
           </a>
           <Info
             icon={<MapPin className="h-5 w-5" />}
-            title="Visit us"
+            title={t("contact.visit")}
             lines={["88 Greenhouse Lane", "Portland, OR 97204"]}
           />
 
@@ -97,15 +99,15 @@ function ContactPage() {
           onSubmit={submit}
           className="space-y-4 rounded-3xl border border-border/60 bg-card p-6 sm:p-8"
         >
-          <h2 className="font-display text-2xl font-semibold">Send us a message</h2>
-          <Field label="Name" error={errors.name}>
+          <h2 className="font-display text-2xl font-semibold">{t("contact.form")}</h2>
+          <Field label={t("contact.name")} error={errors.name}>
             <input
               className={inputCls}
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
             />
           </Field>
-          <Field label="Email" error={errors.email}>
+          <Field label={t("checkout.field.email")} error={errors.email}>
             <input
               type="email"
               className={inputCls}
@@ -113,7 +115,7 @@ function ContactPage() {
               onChange={(e) => setForm({ ...form, email: e.target.value })}
             />
           </Field>
-          <Field label="Message" error={errors.message}>
+          <Field label={t("contact.message")} error={errors.message}>
             <textarea
               rows={6}
               className={`${inputCls} resize-none`}
@@ -125,7 +127,7 @@ function ContactPage() {
             type="submit"
             className="inline-flex w-full items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:opacity-90"
           >
-            Send Message
+            {t("contact.send")}
           </button>
         </form>
       </div>

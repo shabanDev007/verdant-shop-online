@@ -4,6 +4,8 @@ import { ChevronRight } from "lucide-react";
 import { getProductsByFacet } from "@/services/api";
 import { facets, type FacetKey } from "@/data/mockData";
 import { ProductCard } from "@/components/ProductCard";
+import { useLanguage, useT } from "@/i18n/LanguageContext";
+import { localizeLabel } from "@/lib/localizeData";
 
 const isFacetKey = (v: string): v is FacetKey =>
   ["room", "light", "water", "difficulty", "benefit", "occasion"].includes(v);
@@ -35,6 +37,8 @@ export const Route = createFileRoute("/browse/$facet/$value")({
 });
 
 function BrowsePage() {
+  const t = useT();
+  const { lang } = useLanguage();
   const { facet, value } = Route.useParams();
   if (!isFacetKey(facet)) throw notFound();
   const facetMeta = facets[facet];
@@ -50,16 +54,16 @@ function BrowsePage() {
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
       <nav className="mb-6 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
         <Link to="/" className="hover:text-primary">
-          Home
+          {t("nav.home")}
         </Link>
         <ChevronRight className="h-3 w-3" />
         <Link to="/products" className="hover:text-primary">
-          Shop
+          {t("nav.shop")}
         </Link>
         <ChevronRight className="h-3 w-3" />
         <span className="capitalize">{facet}</span>
         <ChevronRight className="h-3 w-3" />
-        <span className="text-foreground">{valueMeta.label}</span>
+        <span className="text-foreground">{localizeLabel(valueMeta.label, lang)}</span>
       </nav>
 
       <header className="mb-8 max-w-2xl">
@@ -67,7 +71,7 @@ function BrowsePage() {
           Browse by {facet}
         </p>
         <h1 className="mt-2 font-display text-4xl font-semibold tracking-tight sm:text-5xl">
-          {valueMeta.label}
+          {localizeLabel(valueMeta.label, lang)}
         </h1>
         <p className="mt-3 text-muted-foreground">
           {products.length} product{products.length === 1 ? "" : "s"} matched this filter.
@@ -86,7 +90,7 @@ function BrowsePage() {
                 : "border-border hover:border-primary"
             }`}
           >
-            {f.label}
+            {localizeLabel(f.label, lang)}
           </Link>
         ))}
       </div>

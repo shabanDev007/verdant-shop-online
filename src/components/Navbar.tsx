@@ -73,7 +73,8 @@ export function Navbar() {
           </button>
           <Link
             to="/compare"
-            aria-label="Compare"
+            aria-label={t("nav.compare")}
+            title={t("nav.compare")}
             className="relative hidden h-10 w-10 place-items-center rounded-full text-foreground/70 transition hover:bg-accent hover:text-primary sm:grid"
           >
             <GitCompareArrows className="h-5 w-5" />

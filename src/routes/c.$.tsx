@@ -5,6 +5,8 @@ import { filterProductsByCategory, getCategories } from "@/services/api";
 import { ProductCard } from "@/components/ProductCard";
 import { CategoryCard } from "@/components/CategoryCard";
 import type { Category } from "@/types";
+import { useLanguage, useT } from "@/i18n/LanguageContext";
+import { localizeDescription, localizeLabel } from "@/lib/localizeData";
 
 export const Route = createFileRoute("/c/$")({
   head: ({ params }) => ({
@@ -35,6 +37,8 @@ export const Route = createFileRoute("/c/$")({
 });
 
 function CategoryPage() {
+  const t = useT();
+  const { lang } = useLanguage();
   const { _splat } = Route.useParams();
   const slug = (_splat ?? "").replace(/\/$/, "");
   const { data: cats = [] } = useQuery({ queryKey: ["categories"], queryFn: getCategories });
@@ -68,17 +72,17 @@ function CategoryPage() {
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
       <nav className="mb-6 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
         <Link to="/" className="hover:text-primary">
-          Home
+          {t("nav.home")}
         </Link>
         <ChevronRight className="h-3 w-3" />
         <Link to="/categories" className="hover:text-primary">
-          Categories
+          {t("nav.categories")}
         </Link>
         {breadcrumb.map((c) => (
           <span key={c.id} className="flex items-center gap-2">
             <ChevronRight className="h-3 w-3" />
             <Link to="/c/$" params={{ _splat: c.slug }} className="hover:text-primary">
-              {c.name}
+              {localizeLabel(c.name, lang)}
             </Link>
           </span>
         ))}
@@ -87,14 +91,16 @@ function CategoryPage() {
       <header className="mb-8 max-w-2xl">
         <p className="text-xs font-semibold uppercase tracking-widest text-primary">Category</p>
         <h1 className="mt-2 font-display text-4xl font-semibold tracking-tight sm:text-5xl">
-          {category.name}
+          {localizeLabel(category.name, lang)}
         </h1>
-        <p className="mt-3 text-muted-foreground">{category.description}</p>
+        <p className="mt-3 text-muted-foreground">
+          {localizeDescription(category.description, lang, localizeLabel(category.name, lang))}
+        </p>
       </header>
 
       {children.length > 0 && (
         <section className="mb-12">
-          <h2 className="mb-4 font-display text-xl font-semibold">Browse subcategories</h2>
+          <h2 className="mb-4 font-display text-xl font-semibold">{t("categories.all")}</h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {children.map((c) => (
               <CategoryCard key={c.id} category={c} />

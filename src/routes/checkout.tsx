@@ -7,6 +7,7 @@ import { useCart, deliveryFor } from "@/context/CartContext";
 import { OrderSummary } from "@/components/OrderSummary";
 import { createOrder } from "@/services/api";
 import { usePrice } from "@/lib/usePrice";
+import { useT } from "@/i18n/LanguageContext";
 
 export const Route = createFileRoute("/checkout")({
   head: () => ({ meta: [{ title: "Checkout — Verdura" }] }),
@@ -29,6 +30,7 @@ function CheckoutPage() {
   const { items, subtotal, clear } = useCart();
   const delivery = deliveryFor(subtotal);
   const price = usePrice();
+  const t = useT();
   const [form, setForm] = useState<FormState>({
     fullName: "",
     email: "",
@@ -44,13 +46,13 @@ function CheckoutPage() {
   if (items.length === 0 && !orderId) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-20 text-center sm:px-6">
-        <h1 className="font-display text-3xl font-semibold">Your cart is empty</h1>
-        <p className="mt-3 text-muted-foreground">Add a few plants before checking out.</p>
+        <h1 className="font-display text-3xl font-semibold">{t("checkout.empty.title")}</h1>
+        <p className="mt-3 text-muted-foreground">{t("checkout.empty.subtitle")}</p>
         <Link
           to="/products"
           className="mt-6 inline-flex rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground"
         >
-          Shop plants
+          {t("checkout.empty.action")}
         </Link>
       </div>
     );
@@ -62,23 +64,22 @@ function CheckoutPage() {
         <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-accent text-primary">
           <CheckCircle2 className="h-8 w-8" />
         </div>
-        <h1 className="mt-6 font-display text-4xl font-semibold tracking-tight">Order placed!</h1>
-        <p className="mt-3 text-muted-foreground">
-          Thank you. Your order <span className="font-semibold text-foreground">{orderId}</span> is
-          confirmed. We'll deliver fresh, healthy plants right to your door.
-        </p>
+        <h1 className="mt-6 font-display text-4xl font-semibold tracking-tight">
+          {t("checkout.success.title")}
+        </h1>
+        <p className="mt-3 text-muted-foreground">{t("checkout.success.body", { id: orderId })}</p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <Link
             to="/"
             className="rounded-full border border-border px-6 py-3 text-sm font-semibold hover:bg-accent"
           >
-            Back home
+            {t("checkout.success.backHome")}
           </Link>
           <Link
             to="/products"
             className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground"
           >
-            Keep shopping <ArrowRight className="h-4 w-4" />
+            {t("checkout.success.keepShopping")} <ArrowRight className="h-4 w-4 rtl:rotate-180" />
           </Link>
         </div>
       </div>
@@ -95,7 +96,7 @@ function CheckoutPage() {
         fieldErrors[key] = issue.message;
       }
       setErrors(fieldErrors);
-      toast.error("Please fix the form errors");
+      toast.error(t("checkout.toast.fix"));
       return;
     }
     setErrors({});
@@ -118,9 +119,9 @@ function CheckoutPage() {
       });
       clear();
       setOrderId(order.id ?? "ORD-NEW");
-      toast.success("Order placed successfully");
+      toast.success(t("checkout.toast.success"));
     } catch {
-      toast.error("Something went wrong. Try again.");
+      toast.error(t("checkout.toast.error"));
     } finally {
       setSubmitting(false);
     }
@@ -132,19 +133,19 @@ function CheckoutPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-      <h1 className="font-display text-4xl font-semibold tracking-tight sm:text-5xl">Checkout</h1>
-      <p className="mt-2 text-muted-foreground">
-        Almost there. Just a few details to deliver your plants.
-      </p>
+      <h1 className="font-display text-4xl font-semibold tracking-tight sm:text-5xl">
+        {t("checkout.title")}
+      </h1>
+      <p className="mt-2 text-muted-foreground">{t("checkout.subtitle")}</p>
 
       <form onSubmit={handleSubmit} className="mt-10 grid gap-8 lg:grid-cols-[1fr_360px]">
         <div className="space-y-6 rounded-3xl border border-border/60 bg-card p-6 sm:p-8">
-          <Section title="Customer Information">
+          <Section title={t("checkout.section.customer")}>
             <div className="grid gap-4 sm:grid-cols-2">
-              <Field label="Full name" error={errors.fullName}>
+              <Field label={t("checkout.field.fullName")} error={errors.fullName}>
                 <input className={inputCls} value={form.fullName} onChange={update("fullName")} />
               </Field>
-              <Field label="Email" error={errors.email}>
+              <Field label={t("checkout.field.email")} error={errors.email}>
                 <input
                   type="email"
                   className={inputCls}
@@ -152,36 +153,38 @@ function CheckoutPage() {
                   onChange={update("email")}
                 />
               </Field>
-              <Field label="Phone" error={errors.phone}>
+              <Field label={t("checkout.field.phone")} error={errors.phone}>
                 <input className={inputCls} value={form.phone} onChange={update("phone")} />
               </Field>
-              <Field label="City" error={errors.city}>
+              <Field label={t("checkout.field.city")} error={errors.city}>
                 <input className={inputCls} value={form.city} onChange={update("city")} />
               </Field>
-              <Field label="Address" error={errors.address} className="sm:col-span-2">
+              <Field
+                label={t("checkout.field.address")}
+                error={errors.address}
+                className="sm:col-span-2"
+              >
                 <input className={inputCls} value={form.address} onChange={update("address")} />
               </Field>
             </div>
           </Section>
 
-          <Section title="Order Notes (optional)">
+          <Section title={t("checkout.section.notes")}>
             <textarea
               rows={3}
               className={`${inputCls} resize-none`}
-              placeholder="Anything we should know? Gate code, gift message, delivery instructions..."
+              placeholder={t("checkout.notes.placeholder")}
               value={form.notes}
               onChange={update("notes")}
             />
           </Section>
 
-          <Section title="Payment Method">
+          <Section title={t("checkout.section.payment")}>
             <label className="flex cursor-pointer items-start gap-3 rounded-2xl border-2 border-primary bg-accent/30 p-4">
               <input type="radio" name="payment" checked readOnly className="mt-1 accent-primary" />
               <div>
-                <p className="font-semibold">Cash on Delivery</p>
-                <p className="text-sm text-muted-foreground">
-                  Pay when your plants arrive at your door.
-                </p>
+                <p className="font-semibold">{t("checkout.cod.title")}</p>
+                <p className="text-sm text-muted-foreground">{t("checkout.cod.subtitle")}</p>
               </div>
             </label>
           </Section>
@@ -189,7 +192,9 @@ function CheckoutPage() {
 
         <div className="space-y-4">
           <div className="rounded-3xl border border-border/60 bg-card p-6">
-            <h3 className="font-display text-lg font-semibold">Items ({items.length})</h3>
+            <h3 className="font-display text-lg font-semibold">
+              {t("checkout.items", { count: items.length })}
+            </h3>
             <ul className="mt-4 space-y-3">
               {items.map((it) => (
                 <li key={it.product.id} className="flex items-center gap-3 text-sm">
@@ -200,7 +205,9 @@ function CheckoutPage() {
                   />
                   <div className="min-w-0 flex-1">
                     <p className="truncate font-medium">{it.product.name}</p>
-                    <p className="text-xs text-muted-foreground">Qty {it.quantity}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {t("checkout.quantity", { count: it.quantity })}
+                    </p>
                   </div>
                   <span className="text-sm font-semibold">
                     {price(it.product.price * it.quantity)}
@@ -215,7 +222,7 @@ function CheckoutPage() {
               disabled={submitting}
               className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:opacity-90 disabled:opacity-50"
             >
-              {submitting ? "Placing order..." : "Place Order"}
+              {submitting ? t("checkout.placing") : t("checkout.placeOrder")}
             </button>
           </OrderSummary>
         </div>

@@ -7,6 +7,7 @@ import { z } from "zod";
 import { getCategories, getProducts } from "@/services/api";
 import { ProductCard } from "@/components/ProductCard";
 import { facets } from "@/data/mockData";
+import { useT } from "@/i18n/LanguageContext";
 
 const searchSchema = z.object({
   category: fallback(z.string(), "all").default("all"),
@@ -42,6 +43,7 @@ function ProductsPage() {
   const search = Route.useSearch();
   const navigate = Route.useNavigate();
   const [drawer, setDrawer] = useState(false);
+  const t = useT();
 
   const { data: products = [], isLoading } = useQuery({
     queryKey: ["products"],
@@ -54,7 +56,24 @@ function ProductsPage() {
 
   const filtered = useMemo(() => {
     let list = products;
-    if (search.category !== "all") list = list.filter((p) => p.categoryId === search.category);
+    if (search.category !== "all") {
+      const categoryIds = new Set([search.category]);
+      let foundChild = true;
+      while (foundChild) {
+        foundChild = false;
+        for (const category of categories) {
+          if (
+            category.parentId &&
+            categoryIds.has(category.parentId) &&
+            !categoryIds.has(category.id)
+          ) {
+            categoryIds.add(category.id);
+            foundChild = true;
+          }
+        }
+      }
+      list = list.filter((product) => categoryIds.has(product.categoryId));
+    }
     if (search.q.trim()) {
       const q = search.q.toLowerCase();
       list = list.filter(
@@ -83,7 +102,7 @@ function ProductsPage() {
         (a, b) => (b.badges.includes("new") ? 1 : 0) - (a.badges.includes("new") ? 1 : 0),
       );
     return list;
-  }, [products, search]);
+  }, [categories, products, search]);
 
   const activeCount =
     (search.category !== "all" ? 1 : 0) +
@@ -121,13 +140,13 @@ function ProductsPage() {
 
   const filtersPanel = (
     <div className="space-y-6 text-sm">
-      <FilterSection title="Category">
+      <FilterSection title={t("catalog.category")}>
         <select
           value={search.category}
           onChange={(e) => setP({ category: e.target.value })}
           className="w-full rounded-full border border-input bg-background px-4 py-2 text-sm outline-none focus:border-primary"
         >
-          <option value="all">All categories</option>
+          <option value="all">{t("catalog.allCategories")}</option>
           {rootCategories.map((c) => (
             <option key={c.id} value={c.id}>
               {c.name}
@@ -136,12 +155,12 @@ function ProductsPage() {
         </select>
       </FilterSection>
 
-      <FilterSection title="Price (EGP)">
+      <FilterSection title={t("catalog.price")}>
         <div className="flex items-center gap-2">
           <input
             type="number"
             min={0}
-            placeholder="Min"
+            placeholder={t("catalog.min")}
             value={search.min || ""}
             onChange={(e) => setP({ min: Number(e.target.value) || 0 })}
             className="w-full rounded-full border border-input bg-background px-3 py-2 text-sm outline-none focus:border-primary"
@@ -150,7 +169,7 @@ function ProductsPage() {
           <input
             type="number"
             min={0}
-            placeholder="Max"
+            placeholder={t("catalog.max")}
             value={search.max || ""}
             onChange={(e) => setP({ max: Number(e.target.value) || 0 })}
             className="w-full rounded-full border border-input bg-background px-3 py-2 text-sm outline-none focus:border-primary"
@@ -158,7 +177,7 @@ function ProductsPage() {
         </div>
       </FilterSection>
 
-      <FilterSection title="Light">
+      <FilterSection title={t("catalog.light")}>
         <ChipGroup
           value={search.light}
           onChange={(v) => setP({ light: v })}
@@ -166,7 +185,7 @@ function ProductsPage() {
         />
       </FilterSection>
 
-      <FilterSection title="Water">
+      <FilterSection title={t("catalog.water")}>
         <ChipGroup
           value={search.water}
           onChange={(v) => setP({ water: v })}
@@ -174,7 +193,7 @@ function ProductsPage() {
         />
       </FilterSection>
 
-      <FilterSection title="Difficulty">
+      <FilterSection title={t("catalog.difficulty")}>
         <ChipGroup
           value={search.difficulty}
           onChange={(v) => setP({ difficulty: v })}
@@ -182,19 +201,27 @@ function ProductsPage() {
         />
       </FilterSection>
 
-      <FilterSection title="Attributes">
+      <FilterSection title={t("catalog.attributes")}>
         <div className="flex flex-col gap-2">
-          <Toggle checked={search.pet} onChange={(v) => setP({ pet: v })} label="Pet friendly" />
-          <Toggle checked={search.air} onChange={(v) => setP({ air: v })} label="Air purifying" />
+          <Toggle
+            checked={search.pet}
+            onChange={(v) => setP({ pet: v })}
+            label={t("catalog.petFriendly")}
+          />
+          <Toggle
+            checked={search.air}
+            onChange={(v) => setP({ air: v })}
+            label={t("catalog.airPurifying")}
+          />
           <Toggle
             checked={search.inStock}
             onChange={(v) => setP({ inStock: v })}
-            label="In stock only"
+            label={t("catalog.inStock")}
           />
           <Toggle
             checked={search.featured}
             onChange={(v) => setP({ featured: v })}
-            label="Featured"
+            label={t("catalog.featured")}
           />
         </div>
       </FilterSection>
@@ -214,9 +241,11 @@ function ProductsPage() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
       <header className="mb-8">
-        <p className="text-xs font-semibold uppercase tracking-widest text-primary">Shop</p>
+        <p className="text-xs font-semibold uppercase tracking-widest text-primary">
+          {t("catalog.eyebrow")}
+        </p>
         <h1 className="mt-2 font-display text-4xl font-semibold tracking-tight sm:text-5xl">
-          All Products
+          {t("catalog.title")}
         </h1>
         <p className="mt-2 max-w-xl text-muted-foreground">
           {filtered.length} product{filtered.length === 1 ? "" : "s"} · ready to ship across Egypt.
@@ -228,7 +257,7 @@ function ProductsPage() {
           <Search className="pointer-events-none absolute start-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <input
             type="search"
-            placeholder="Search products..."
+            placeholder={t("catalog.search")}
             value={search.q}
             onChange={(e) => setP({ q: e.target.value })}
             className="w-full rounded-full border border-input bg-background py-2.5 ps-10 pe-4 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
@@ -239,18 +268,19 @@ function ProductsPage() {
           onChange={(e) => setP({ sort: e.target.value })}
           className="rounded-full border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-primary"
         >
-          <option value="featured">Sort: Featured</option>
-          <option value="newest">Newest</option>
-          <option value="rating">Top rated</option>
-          <option value="price-asc">Price: Low → High</option>
-          <option value="price-desc">Price: High → Low</option>
+          <option value="featured">{t("catalog.sort.featured")}</option>
+          <option value="newest">{t("catalog.sort.newest")}</option>
+          <option value="rating">{t("catalog.sort.rating")}</option>
+          <option value="price-asc">{t("catalog.sort.lowHigh")}</option>
+          <option value="price-desc">{t("catalog.sort.highLow")}</option>
         </select>
         <button
           type="button"
           onClick={() => setDrawer(true)}
           className="inline-flex items-center gap-2 rounded-full border border-input bg-background px-4 py-2.5 text-sm hover:border-primary lg:hidden"
         >
-          <SlidersHorizontal className="h-4 w-4" /> Filters {activeCount > 0 && `(${activeCount})`}
+          <SlidersHorizontal className="h-4 w-4" /> {t("catalog.filters")}{" "}
+          {activeCount > 0 && `(${activeCount})`}
         </button>
       </div>
 
@@ -269,12 +299,8 @@ function ProductsPage() {
           ) : filtered.length === 0 ? (
             <div className="rounded-3xl border border-dashed border-border bg-card/50 p-16 text-center">
               <SlidersHorizontal className="mx-auto h-8 w-8 text-muted-foreground" />
-              <p className="mt-4 font-display text-xl font-semibold">
-                No products match your filters
-              </p>
-              <p className="mt-2 text-sm text-muted-foreground">
-                Try clearing search or another category.
-              </p>
+              <p className="mt-4 font-display text-xl font-semibold">{t("catalog.noResults")}</p>
+              <p className="mt-2 text-sm text-muted-foreground">{t("catalog.noResultsHint")}</p>
               <button
                 type="button"
                 onClick={clearAll}
@@ -319,7 +345,7 @@ function ProductsPage() {
           <div className="absolute inset-0 bg-black/40" onClick={() => setDrawer(false)} />
           <div className="absolute end-0 top-0 h-full w-[85%] max-w-sm overflow-y-auto bg-background p-6 shadow-xl">
             <div className="mb-4 flex items-center justify-between">
-              <h2 className="font-display text-lg font-semibold">Filters</h2>
+              <h2 className="font-display text-lg font-semibold">{t("catalog.filters")}</h2>
               <button type="button" onClick={() => setDrawer(false)} aria-label="Close">
                 <X className="h-5 w-5" />
               </button>

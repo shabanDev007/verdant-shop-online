@@ -26,8 +26,12 @@ import { useCompare } from "@/context/CompareContext";
 import { useRecentlyViewed } from "@/context/RecentlyViewedContext";
 import { ProductCard } from "@/components/ProductCard";
 import { usePrice } from "@/lib/usePrice";
+import { useLanguage, useT } from "@/i18n/LanguageContext";
+import { localizeDescription, localizeLabel } from "@/lib/localizeData";
 
-export const Route = createFileRoute("/products/$id")({
+// The trailing underscore in this file's name keeps this detail route independent
+// from the /products list component while preserving the /products/$id URL.
+export const Route = createFileRoute("/products_/$id")({
   component: ProductDetailPage,
   head: () => ({ meta: [{ title: "Product Details — Verdura" }] }),
 });
@@ -52,6 +56,8 @@ function ProductDetailPage() {
   const { toggle: toggleCmp, has: hasCmp } = useCompare();
   const { add: addRecent, ids: recentIds } = useRecentlyViewed();
   const price = usePrice();
+  const tr = useT();
+  const { lang } = useLanguage();
   const [qty, setQty] = useState(1);
   const [activeImg, setActiveImg] = useState(0);
   const [tab, setTab] = useState<"specs" | "care" | "delivery" | "faq" | "reviews">("specs");
@@ -80,14 +86,17 @@ function ProductDetailPage() {
   const wished = hasWish(product.id);
   const compared = hasCmp(product.id);
   const gallery = product.gallery ?? [product.image];
+  const productName = localizeLabel(product.name, lang);
+  const categoryName = localizeLabel(product.categoryName, lang);
+  const description = localizeDescription(product.description, lang, productName);
 
   const share = async () => {
     try {
       if (navigator.share) {
-        await navigator.share({ title: product.name, url: window.location.href });
+        await navigator.share({ title: productName, url: window.location.href });
       } else {
         await navigator.clipboard.writeText(window.location.href);
-        toast.success("Link copied to clipboard");
+        toast.success(tr("product.linkCopied"));
       }
     } catch {
       /* dismissed */
@@ -109,7 +118,7 @@ function ProductDetailPage() {
           <div className="overflow-hidden rounded-3xl border border-border/60 bg-card">
             <img
               src={gallery[activeImg]}
-              alt={product.name}
+              alt={productName}
               className="aspect-square w-full object-cover"
             />
           </div>
@@ -133,9 +142,9 @@ function ProductDetailPage() {
 
         {/* Info */}
         <div>
-          <p className="text-xs uppercase tracking-widest text-primary">{product.categoryName}</p>
+          <p className="text-xs uppercase tracking-widest text-primary">{categoryName}</p>
           <h1 className="mt-2 font-display text-4xl font-semibold tracking-tight sm:text-5xl">
-            {product.name}
+            {productName}
           </h1>
           {product.sku && <p className="mt-1 text-xs text-muted-foreground">SKU: {product.sku}</p>}
 
@@ -152,7 +161,9 @@ function ProductDetailPage() {
                   : "bg-destructive/15 text-destructive"
               }`}
             >
-              {product.stock > 0 ? `In stock · ${product.stock} left` : "Out of stock"}
+              {product.stock > 0
+                ? `${tr("product.inStock")} · ${tr("product.left", { count: product.stock })}`
+                : tr("product.outOfStock")}
             </span>
           </div>
 
@@ -172,29 +183,27 @@ function ProductDetailPage() {
             )}
           </div>
 
-          <p className="mt-5 text-base leading-relaxed text-muted-foreground">
-            {product.description}
-          </p>
+          <p className="mt-5 text-base leading-relaxed text-muted-foreground">{description}</p>
 
           <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
             <CareTile
               icon={<Droplets className="h-4 w-4" />}
-              label="Water"
+              label={tr("product.water")}
               value={product.care.water}
             />
             <CareTile
               icon={<Sun className="h-4 w-4" />}
-              label="Light"
+              label={tr("product.light")}
               value={product.care.sunlight}
             />
             <CareTile
               icon={<Thermometer className="h-4 w-4" />}
-              label="Temp"
+              label={tr("product.temperature")}
               value={product.care.temperature}
             />
             <CareTile
               icon={<Sprout className="h-4 w-4" />}
-              label="Level"
+              label={tr("product.level")}
               value={product.care.difficulty}
             />
           </div>
@@ -224,17 +233,19 @@ function ProductDetailPage() {
               disabled={product.stock === 0}
               onClick={() => {
                 add(product, qty);
-                toast.success(`${product.name} added to cart`);
+                toast.success(tr("product.addedToCart", { name: productName }));
               }}
               className="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:opacity-90 disabled:opacity-40 sm:flex-none"
             >
-              <ShoppingBag className="h-4 w-4" /> Add to cart
+              <ShoppingBag className="h-4 w-4" /> {tr("product.addToCart")}
             </button>
             <button
               type="button"
               onClick={() => {
                 toggleWish(product.id);
-                toast.success(wished ? "Removed from wishlist" : "Added to wishlist");
+                toast.success(
+                  wished ? tr("product.removedFromWishlist") : tr("product.addedToWishlist"),
+                );
               }}
               className="grid h-12 w-12 place-items-center rounded-full border border-border bg-background text-foreground/70 hover:text-clay"
               aria-label="Wishlist"
@@ -245,7 +256,9 @@ function ProductDetailPage() {
               type="button"
               onClick={() => {
                 toggleCmp(product.id);
-                toast.success(compared ? "Removed from compare" : "Added to compare");
+                toast.success(
+                  compared ? tr("product.removedFromCompare") : tr("product.addedToCompare"),
+                );
               }}
               className={`grid h-12 w-12 place-items-center rounded-full border border-border bg-background hover:text-primary ${
                 compared ? "text-primary" : "text-foreground/70"
@@ -269,17 +282,15 @@ function ProductDetailPage() {
             <div className="flex items-start gap-3 rounded-2xl border border-border/60 bg-card p-4 text-sm">
               <Truck className="mt-0.5 h-5 w-5 text-primary" />
               <div>
-                <p className="font-semibold">Free delivery over 2,000 EGP</p>
-                <p className="text-xs text-muted-foreground">Arrives in 2–5 business days.</p>
+                <p className="font-semibold">{tr("product.freeDelivery")}</p>
+                <p className="text-xs text-muted-foreground">{tr("product.deliveryTime")}</p>
               </div>
             </div>
             <div className="flex items-start gap-3 rounded-2xl border border-border/60 bg-card p-4 text-sm">
               <RotateCcw className="mt-0.5 h-5 w-5 text-primary" />
               <div>
-                <p className="font-semibold">30-day plant guarantee</p>
-                <p className="text-xs text-muted-foreground">
-                  Healthy on arrival, or we replace it.
-                </p>
+                <p className="font-semibold">{tr("product.guarantee")}</p>
+                <p className="text-xs text-muted-foreground">{tr("product.guaranteeText")}</p>
               </div>
             </div>
           </div>
@@ -300,7 +311,7 @@ function ProductDetailPage() {
                   : "border-transparent text-muted-foreground hover:text-foreground"
               }`}
             >
-              {t === "faq" ? "FAQ" : t}
+              {tr(`product.tab.${t}`)}
               {t === "reviews" && ` (${reviews.length})`}
             </button>
           ))}
@@ -309,16 +320,31 @@ function ProductDetailPage() {
         <div className="py-6">
           {tab === "specs" && (
             <dl className="grid gap-3 sm:grid-cols-2">
-              <SpecRow label="SKU" value={product.sku ?? "—"} />
-              <SpecRow label="Category" value={product.categoryName} />
-              <SpecRow label="Plant height" value={product.specs?.plantHeight ?? "—"} />
-              <SpecRow label="Pot size" value={product.specs?.potSize ?? "—"} />
-              <SpecRow label="Humidity" value={product.specs?.humidity ?? "—"} />
-              <SpecRow label="Temperature" value={product.specs?.temperature ?? "—"} />
-              <SpecRow label="Growth rate" value={product.specs?.growthRate ?? "—"} />
-              <SpecRow label="Pet safe" value={product.petSafe ? "Yes" : "No"} />
-              <SpecRow label="Air purifying" value={product.airPurifying ? "Yes" : "No"} />
-              <SpecRow label="Indoor/Outdoor" value={product.indoorOutdoor ?? "—"} />
+              <SpecRow label={tr("product.spec.sku")} value={product.sku ?? "—"} />
+              <SpecRow label={tr("product.spec.category")} value={categoryName} />
+              <SpecRow
+                label={tr("product.spec.height")}
+                value={product.specs?.plantHeight ?? "—"}
+              />
+              <SpecRow label={tr("product.spec.potSize")} value={product.specs?.potSize ?? "—"} />
+              <SpecRow label={tr("product.spec.humidity")} value={product.specs?.humidity ?? "—"} />
+              <SpecRow
+                label={tr("product.temperature")}
+                value={product.specs?.temperature ?? "—"}
+              />
+              <SpecRow
+                label={tr("product.spec.growthRate")}
+                value={product.specs?.growthRate ?? "—"}
+              />
+              <SpecRow
+                label={tr("product.spec.petSafe")}
+                value={product.petSafe ? tr("product.yes") : tr("product.no")}
+              />
+              <SpecRow
+                label={tr("product.spec.airPurifying")}
+                value={product.airPurifying ? tr("product.yes") : tr("product.no")}
+              />
+              <SpecRow label={tr("product.spec.location")} value={product.indoorOutdoor ?? "—"} />
             </dl>
           )}
           {tab === "care" && (
@@ -332,10 +358,12 @@ function ProductDetailPage() {
           {tab === "delivery" && (
             <div className="space-y-4 text-sm text-muted-foreground">
               <p>
-                <strong className="text-foreground">Delivery:</strong> {product.deliveryInfo}
+                <strong className="text-foreground">{tr("product.deliveryLabel")}</strong>{" "}
+                {product.deliveryInfo}
               </p>
               <p>
-                <strong className="text-foreground">Returns:</strong> {product.returnPolicy}
+                <strong className="text-foreground">{tr("product.returnsLabel")}</strong>{" "}
+                {product.returnPolicy}
               </p>
             </div>
           )}
@@ -355,7 +383,7 @@ function ProductDetailPage() {
           {tab === "reviews" && (
             <div className="space-y-4">
               {reviews.length === 0 ? (
-                <p className="text-sm text-muted-foreground">No reviews yet. Be the first!</p>
+                <p className="text-sm text-muted-foreground">{tr("product.noReviews")}</p>
               ) : (
                 reviews.map((r) => (
                   <div key={r.id} className="rounded-2xl border border-border/60 bg-card p-5">
@@ -393,7 +421,7 @@ function ProductDetailPage() {
       {related.length > 0 && (
         <section className="mt-16">
           <h2 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">
-            You may also love
+            {tr("product.related")}
           </h2>
           <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {related.map((p) => (
@@ -406,7 +434,7 @@ function ProductDetailPage() {
       {recentProducts.length > 0 && (
         <section className="mt-16">
           <h2 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">
-            Recently viewed
+            {tr("product.recent")}
           </h2>
           <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {recentProducts.map((p) => (

@@ -1,13 +1,6 @@
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-  type ReactNode,
-} from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, type ReactNode } from "react";
 import { LANGUAGES, translations, type Language, type TranslationKey } from "./translations";
+import { usePersistentState } from "@/hooks/usePersistentState";
 
 interface LanguageContextValue {
   lang: Language;
@@ -19,19 +12,10 @@ interface LanguageContextValue {
 const LanguageContext = createContext<LanguageContextValue | null>(null);
 const STORAGE_KEY = "verdura.lang";
 
-function getInitialLang(): Language {
-  if (typeof window === "undefined") return "en";
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY) as Language | null;
-    if (stored === "en" || stored === "ar") return stored;
-  } catch {
-    // Fall back to English when browser storage is unavailable.
-  }
-  return "en";
-}
+const isLanguage = (value: unknown): value is Language => value === "en" || value === "ar";
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [lang, setLangState] = useState<Language>(getInitialLang);
+  const [lang, setLangState] = usePersistentState<Language>(STORAGE_KEY, "en", isLanguage);
 
   const dir = LANGUAGES.find((l) => l.code === lang)?.dir ?? "ltr";
 
@@ -42,14 +26,12 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     document.documentElement.classList.toggle("rtl", dir === "rtl");
   }, [lang, dir]);
 
-  const setLang = useCallback((next: Language) => {
-    setLangState(next);
-    try {
-      localStorage.setItem(STORAGE_KEY, next);
-    } catch {
-      // Language switching still works when browser storage is unavailable.
-    }
-  }, []);
+  const setLang = useCallback(
+    (next: Language) => {
+      setLangState(next);
+    },
+    [setLangState],
+  );
 
   const t = useCallback(
     (key: TranslationKey, vars?: Record<string, string | number>) => {
