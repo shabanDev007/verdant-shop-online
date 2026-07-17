@@ -2,7 +2,7 @@ import { useState } from "react";
 import { usePrice } from "@/lib/usePrice";
 import { useT } from "@/i18n/LanguageContext";
 import { useCoupon } from "@/context/CouponContext";
-import { validateCoupon } from "@/data/reviewsCoupons";
+import { validateCoupon } from "@/services/api";
 import { toast } from "sonner";
 import { Tag, X } from "lucide-react";
 
@@ -18,19 +18,24 @@ export function OrderSummary({ subtotal, delivery, showCoupon = true, children }
   const price = usePrice();
   const { applied, discount, apply, clear } = useCoupon();
   const [code, setCode] = useState("");
+  const [checking, setChecking] = useState(false);
 
   const effectiveDiscount = applied ? Math.min(discount, subtotal) : 0;
   const total = Math.max(0, subtotal - effectiveDiscount) + delivery;
 
-  const handleApply = () => {
-    const res = validateCoupon(code, subtotal);
-    if (!res.ok) {
-      toast.error(res.reason);
-      return;
+  const handleApply = async () => {
+    if (!code.trim()) return;
+    setChecking(true);
+    try {
+      const res = await validateCoupon(code, subtotal);
+      apply(res.coupon, res.discount + res.deliveryDiscount);
+      toast.success(t("summary.couponApplied", { code: res.coupon.code }));
+      setCode("");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : t("summary.couponInvalid"));
+    } finally {
+      setChecking(false);
     }
-    apply(res.coupon, res.discount);
-    toast.success(`Coupon ${res.coupon.code} applied`);
-    setCode("");
   };
 
   return (
@@ -66,7 +71,7 @@ export function OrderSummary({ subtotal, delivery, showCoupon = true, children }
         <div className="mt-4 flex items-center gap-2">
           <input
             type="text"
-            placeholder="Coupon code"
+            placeholder={t("summary.couponPlaceholder")}
             value={code}
             onChange={(e) => setCode(e.target.value)}
             onKeyDown={(e) => {
@@ -76,10 +81,11 @@ export function OrderSummary({ subtotal, delivery, showCoupon = true, children }
           />
           <button
             type="button"
-            onClick={handleApply}
+            onClick={() => void handleApply()}
+            disabled={checking}
             className="rounded-full border border-primary px-3 py-2 text-xs font-semibold text-primary hover:bg-primary hover:text-primary-foreground"
           >
-            Apply
+            {checking ? t("summary.checking") : t("summary.apply")}
           </button>
         </div>
       )}

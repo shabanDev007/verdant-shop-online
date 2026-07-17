@@ -47,7 +47,7 @@ function HomePage() {
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 -z-10" style={{ background: "var(--gradient-hero)" }} />
         <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-16 sm:px-6 md:grid-cols-2 md:py-24 lg:px-8 lg:py-28">
-          <div>
+          <div className="motion-safe:animate-[reveal-up_650ms_ease-out_both]">
             <span className="inline-flex items-center gap-2 rounded-full bg-accent/70 px-3 py-1 text-xs font-medium text-accent-foreground">
               <Sparkles className="h-3.5 w-3.5" /> {t("home.badge")}
             </span>
@@ -79,7 +79,7 @@ function HomePage() {
               <span>{t("home.hero.stat3")}</span>
             </div>
           </div>
-          <div className="relative">
+          <div className="relative motion-safe:animate-[reveal-up_750ms_120ms_ease-out_both]">
             <div className="absolute -inset-6 -z-10 rounded-[3rem] bg-primary/10 blur-2xl" />
             <div className="overflow-hidden rounded-[2.5rem] border border-border/60 bg-card shadow-[var(--shadow-soft)]">
               <img
@@ -87,7 +87,7 @@ function HomePage() {
                 alt="Lush monstera plant in soft natural light"
                 width={1024}
                 height={1024}
-                className="aspect-square w-full object-cover"
+                className="aspect-square w-full object-cover transition duration-700 motion-safe:hover:scale-[1.025]"
               />
             </div>
             {featured[0] && (

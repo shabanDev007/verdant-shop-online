@@ -128,6 +128,11 @@ export const translations = {
     "summary.free": "Free",
     "summary.total": "Total",
     "summary.freeUnlocked": "🌿 You unlocked free delivery!",
+    "summary.couponPlaceholder": "Coupon code",
+    "summary.apply": "Apply",
+    "summary.checking": "Checking…",
+    "summary.couponApplied": "Coupon {code} applied",
+    "summary.couponInvalid": "This coupon is not valid",
 
     // Checkout
     "checkout.title": "Checkout",
@@ -384,6 +389,11 @@ export const translations = {
     "summary.free": "مجاني",
     "summary.total": "الإجمالي",
     "summary.freeUnlocked": "🌿 لقد حصلت على توصيل مجاني!",
+    "summary.couponPlaceholder": "كود الخصم",
+    "summary.apply": "تطبيق",
+    "summary.checking": "جاري التحقق…",
+    "summary.couponApplied": "تم تطبيق الكوبون {code}",
+    "summary.couponInvalid": "كود الخصم غير صالح",
 
     // Checkout
     "checkout.title": "إتمام الشراء",

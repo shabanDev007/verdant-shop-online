@@ -7,7 +7,7 @@ import { getProductsByIds } from "@/services/api";
 import { usePrice } from "@/lib/usePrice";
 import { toast } from "sonner";
 import { useLanguage, useT } from "@/i18n/LanguageContext";
-import { localizeLabel } from "@/lib/localizeData";
+import { getProductText, localizeLabel } from "@/lib/localizeData";
 
 export const Route = createFileRoute("/compare")({
   head: () => ({
@@ -83,7 +83,7 @@ function ComparePage() {
                       <div className="relative w-full">
                         <img
                           src={p.image}
-                          alt={localizeLabel(p.name, lang)}
+                          alt={getProductText(p, lang).name}
                           className="aspect-square w-full rounded-2xl object-cover"
                         />
                         <button
@@ -100,14 +100,14 @@ function ComparePage() {
                         params={{ id: p.id }}
                         className="font-display text-base font-semibold hover:text-primary"
                       >
-                        {localizeLabel(p.name, lang)}
+                        {getProductText(p, lang).name}
                       </Link>
                       <button
                         type="button"
                         onClick={() => {
                           add(p);
                           toast.success(
-                            t("product.addedToCart", { name: localizeLabel(p.name, lang) }),
+                            t("product.addedToCart", { name: getProductText(p, lang).name }),
                           );
                         }}
                         className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground hover:opacity-90"
@@ -133,7 +133,7 @@ function ComparePage() {
               />
               <Row
                 label={t("product.spec.category")}
-                values={products.map((p) => localizeLabel(p.categoryName, lang))}
+                values={products.map((p) => getProductText(p, lang).categoryName)}
               />
               <Row
                 label={t("product.light")}

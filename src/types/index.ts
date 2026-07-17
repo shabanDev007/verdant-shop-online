@@ -43,6 +43,8 @@ export interface Category {
   type?: CategoryType;
   icon?: string;
   featured?: boolean;
+  nameAr?: string;
+  descriptionAr?: string;
 }
 
 // Legacy interface for older ProductCard code paths. Kept alive.
@@ -115,6 +117,9 @@ export interface Product {
   occasions?: Occasion[];
   collections?: SmartCollection[];
   colors?: string[];
+  nameAr?: string;
+  descriptionAr?: string;
+  categoryNameAr?: string;
 }
 
 export interface Review {
@@ -156,7 +161,7 @@ export interface Customer {
 
 export interface Coupon {
   code: string;
-  type: "percent" | "fixed";
+  type: "percent" | "fixed" | "free_shipping";
   value: number;
   minSubtotal?: number;
   expiresAt?: string;

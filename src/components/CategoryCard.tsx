@@ -2,12 +2,11 @@ import { Link } from "@tanstack/react-router";
 import { ArrowUpRight } from "lucide-react";
 import type { Category } from "@/types";
 import { useLanguage } from "@/i18n/LanguageContext";
-import { localizeDescription, localizeLabel } from "@/lib/localizeData";
+import { getCategoryText } from "@/lib/localizeData";
 
 export function CategoryCard({ category }: { category: Category }) {
   const { lang } = useLanguage();
-  const name = localizeLabel(category.name, lang);
-  const description = localizeDescription(category.description, lang, name);
+  const { name, description } = getCategoryText(category, lang);
   return (
     <Link
       to="/c/$"

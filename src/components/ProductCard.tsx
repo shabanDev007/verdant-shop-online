@@ -7,7 +7,7 @@ import { useWishlist } from "@/context/WishlistContext";
 import { useCompare } from "@/context/CompareContext";
 import { usePrice } from "@/lib/usePrice";
 import { useLanguage, useT } from "@/i18n/LanguageContext";
-import { localizeLabel } from "@/lib/localizeData";
+import { getProductText } from "@/lib/localizeData";
 
 const badgeStyles: Record<string, string> = {
   new: "bg-leaf text-primary-foreground",
@@ -18,8 +18,7 @@ const badgeStyles: Record<string, string> = {
 export function ProductCard({ product }: { product: Product }) {
   const t = useT();
   const { lang } = useLanguage();
-  const productName = localizeLabel(product.name, lang);
-  const categoryName = localizeLabel(product.categoryName, lang);
+  const { name: productName, categoryName } = getProductText(product, lang);
   const price = usePrice();
   const { add } = useCart();
   const { toggle, has } = useWishlist();
@@ -34,7 +33,7 @@ export function ProductCard({ product }: { product: Product }) {
   };
 
   return (
-    <article className="group relative flex flex-col overflow-hidden rounded-3xl border border-border/60 bg-card transition hover:shadow-[var(--shadow-card)]">
+    <article className="group relative flex flex-col overflow-hidden rounded-3xl border border-border/60 bg-card transition duration-300 motion-safe:hover:-translate-y-1 hover:shadow-[var(--shadow-card)]">
       <Link
         to="/products/$id"
         params={{ id: product.id }}

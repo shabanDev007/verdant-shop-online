@@ -8,6 +8,7 @@ import { OrderSummary } from "@/components/OrderSummary";
 import { createOrder } from "@/services/api";
 import { usePrice } from "@/lib/usePrice";
 import { useT } from "@/i18n/LanguageContext";
+import { useCoupon } from "@/context/CouponContext";
 
 export const Route = createFileRoute("/checkout")({
   head: () => ({ meta: [{ title: "Checkout — Verdura" }] }),
@@ -31,6 +32,7 @@ function CheckoutPage() {
   const delivery = deliveryFor(subtotal);
   const price = usePrice();
   const t = useT();
+  const { applied, discount, clear: clearCoupon } = useCoupon();
   const [form, setForm] = useState<FormState>({
     fullName: "",
     email: "",
@@ -116,8 +118,11 @@ function CheckoutPage() {
         subtotal,
         deliveryFee: delivery,
         total: subtotal + delivery,
+        couponCode: applied?.code,
+        discount,
       });
       clear();
+      clearCoupon();
       setOrderId(order.id ?? "ORD-NEW");
       toast.success(t("checkout.toast.success"));
     } catch {

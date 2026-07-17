@@ -6,7 +6,7 @@ import { ProductCard } from "@/components/ProductCard";
 import { CategoryCard } from "@/components/CategoryCard";
 import type { Category } from "@/types";
 import { useLanguage, useT } from "@/i18n/LanguageContext";
-import { localizeDescription, localizeLabel } from "@/lib/localizeData";
+import { getCategoryText } from "@/lib/localizeData";
 
 export const Route = createFileRoute("/c/$")({
   head: ({ params }) => ({
@@ -82,7 +82,7 @@ function CategoryPage() {
           <span key={c.id} className="flex items-center gap-2">
             <ChevronRight className="h-3 w-3" />
             <Link to="/c/$" params={{ _splat: c.slug }} className="hover:text-primary">
-              {localizeLabel(c.name, lang)}
+              {getCategoryText(c, lang).name}
             </Link>
           </span>
         ))}
@@ -91,11 +91,9 @@ function CategoryPage() {
       <header className="mb-8 max-w-2xl">
         <p className="text-xs font-semibold uppercase tracking-widest text-primary">Category</p>
         <h1 className="mt-2 font-display text-4xl font-semibold tracking-tight sm:text-5xl">
-          {localizeLabel(category.name, lang)}
+          {getCategoryText(category, lang).name}
         </h1>
-        <p className="mt-3 text-muted-foreground">
-          {localizeDescription(category.description, lang, localizeLabel(category.name, lang))}
-        </p>
+        <p className="mt-3 text-muted-foreground">{getCategoryText(category, lang).description}</p>
       </header>
 
       {children.length > 0 && (

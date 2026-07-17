@@ -4,7 +4,7 @@ import { getCategories } from "@/services/api";
 import { CategoryCard } from "@/components/CategoryCard";
 import { facets } from "@/data/mockData";
 import { useLanguage, useT } from "@/i18n/LanguageContext";
-import { localizeLabel } from "@/lib/localizeData";
+import { getCategoryText, localizeLabel } from "@/lib/localizeData";
 
 export const Route = createFileRoute("/categories")({
   head: () => ({
@@ -93,7 +93,7 @@ function CategoriesPage() {
                   params={{ _splat: root.slug }}
                   className="font-display text-base font-semibold uppercase tracking-wide text-foreground hover:text-primary"
                 >
-                  {localizeLabel(root.name, lang)}
+                  {getCategoryText(root, lang).name}
                 </Link>
                 <ul className="mt-3 space-y-1.5 text-sm">
                   {branches.map((b) => (
@@ -103,7 +103,7 @@ function CategoriesPage() {
                         params={{ _splat: b.slug }}
                         className="text-muted-foreground hover:text-primary"
                       >
-                        {localizeLabel(b.name, lang)}
+                        {getCategoryText(b, lang).name}
                       </Link>
                     </li>
                   ))}

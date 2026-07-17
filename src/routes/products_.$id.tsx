@@ -27,7 +27,7 @@ import { useRecentlyViewed } from "@/context/RecentlyViewedContext";
 import { ProductCard } from "@/components/ProductCard";
 import { usePrice } from "@/lib/usePrice";
 import { useLanguage, useT } from "@/i18n/LanguageContext";
-import { localizeDescription, localizeLabel } from "@/lib/localizeData";
+import { getProductText } from "@/lib/localizeData";
 
 // The trailing underscore in this file's name keeps this detail route independent
 // from the /products list component while preserving the /products/$id URL.
@@ -86,9 +86,7 @@ function ProductDetailPage() {
   const wished = hasWish(product.id);
   const compared = hasCmp(product.id);
   const gallery = product.gallery ?? [product.image];
-  const productName = localizeLabel(product.name, lang);
-  const categoryName = localizeLabel(product.categoryName, lang);
-  const description = localizeDescription(product.description, lang, productName);
+  const { name: productName, categoryName, description } = getProductText(product, lang);
 
   const share = async () => {
     try {
@@ -117,9 +115,10 @@ function ProductDetailPage() {
         <div>
           <div className="overflow-hidden rounded-3xl border border-border/60 bg-card">
             <img
+              key={gallery[activeImg]}
               src={gallery[activeImg]}
               alt={productName}
-              className="aspect-square w-full object-cover"
+              className="aspect-square w-full animate-[gallery-in_350ms_ease-out] object-cover"
             />
           </div>
           {gallery.length > 1 && (
@@ -133,7 +132,12 @@ function ProductDetailPage() {
                     activeImg === i ? "border-primary" : "border-transparent"
                   }`}
                 >
-                  <img src={src} alt="" className="aspect-square w-full object-cover" />
+                  <img
+                    src={src}
+                    alt=""
+                    loading="lazy"
+                    className="aspect-square w-full object-cover transition duration-300 hover:scale-105"
+                  />
                 </button>
               ))}
             </div>

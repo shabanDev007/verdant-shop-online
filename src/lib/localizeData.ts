@@ -1,4 +1,5 @@
 import type { Language } from "@/i18n/translations";
+import type { Category, Product } from "@/types";
 
 const arabicLabels: Record<string, string> = {
   Plants: "النباتات",
@@ -131,4 +132,28 @@ export function localizeDescription(
 ): string {
   if (language !== "ar") return description;
   return `${localizedName} مختار بعناية وخاضع لفحص الجودة قبل الشحن.`;
+}
+
+export function getCategoryText(category: Category, language: Language) {
+  const name =
+    language === "ar" && category.nameAr ? category.nameAr : localizeLabel(category.name, language);
+  const description =
+    language === "ar" && category.descriptionAr
+      ? category.descriptionAr
+      : localizeDescription(category.description, language, name);
+  return { name, description };
+}
+
+export function getProductText(product: Product, language: Language) {
+  const name =
+    language === "ar" && product.nameAr ? product.nameAr : localizeLabel(product.name, language);
+  const categoryName =
+    language === "ar" && product.categoryNameAr
+      ? product.categoryNameAr
+      : localizeLabel(product.categoryName, language);
+  const description =
+    language === "ar" && product.descriptionAr
+      ? product.descriptionAr
+      : localizeDescription(product.description, language, name);
+  return { name, categoryName, description };
 }
