@@ -4,8 +4,14 @@ import { useMemo, useState } from "react";
 import { Search, SlidersHorizontal, X } from "lucide-react";
 import { zodValidator, fallback } from "@tanstack/zod-adapter";
 import { z } from "zod";
-import { getCategories, getProducts } from "@/services/api";
+import {
+  getCatalogPlantPotCombinations,
+  getCategories,
+  getProducts,
+  productMatchesSearch,
+} from "@/services/api";
 import { ProductCard } from "@/components/ProductCard";
+import { CombinationProductCard } from "@/components/CombinationProductCard";
 import { facets } from "@/data/mockData";
 import { useT } from "@/i18n/LanguageContext";
 
@@ -28,7 +34,7 @@ export const Route = createFileRoute("/products")({
   validateSearch: zodValidator(searchSchema),
   head: () => ({
     meta: [
-      { title: "Shop All Plants & Gardening — Verdura" },
+      { title: "Shop All Plants & Gardening — Jothour | جذور" },
       {
         name: "description",
         content:
@@ -50,6 +56,10 @@ function ProductsPage() {
     queryFn: getProducts,
   });
   const { data: categories = [] } = useQuery({ queryKey: ["categories"], queryFn: getCategories });
+  const { data: catalogCombinations = [] } = useQuery({
+    queryKey: ["catalog-plant-pot-options"],
+    queryFn: getCatalogPlantPotCombinations,
+  });
 
   const setP = (patch: Partial<typeof search>) =>
     navigate({ search: (prev: typeof search) => ({ ...prev, ...patch }), replace: true });
@@ -75,13 +85,7 @@ function ProductsPage() {
       list = list.filter((product) => categoryIds.has(product.categoryId));
     }
     if (search.q.trim()) {
-      const q = search.q.toLowerCase();
-      list = list.filter(
-        (p) =>
-          p.name.toLowerCase().includes(q) ||
-          p.description.toLowerCase().includes(q) ||
-          p.categoryName.toLowerCase().includes(q),
-      );
+      list = list.filter((product) => productMatchesSearch(product, search.q));
     }
     if (search.min > 0) list = list.filter((p) => p.price >= search.min);
     if (search.max > 0) list = list.filter((p) => p.price <= search.max);
@@ -116,6 +120,16 @@ function ProductsPage() {
     (search.light ? 1 : 0) +
     (search.water ? 1 : 0) +
     (search.difficulty ? 1 : 0);
+
+  const visibleCombinationMap = useMemo(() => {
+    const map = new Map<string, typeof catalogCombinations>();
+    catalogCombinations.forEach((combination) => {
+      const current = map.get(combination.plant.id) ?? [];
+      current.push(combination);
+      map.set(combination.plant.id, current);
+    });
+    return map;
+  }, [catalogCombinations]);
 
   const clearAll = () =>
     navigate({
@@ -312,7 +326,12 @@ function ProductsPage() {
           ) : (
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {filtered.map((p) => (
-                <ProductCard key={p.id} product={p} />
+                <div key={p.id} className="contents">
+                  <ProductCard product={p} />
+                  {(visibleCombinationMap.get(p.id) ?? []).map((combination) => (
+                    <CombinationProductCard key={combination.id} combination={combination} />
+                  ))}
+                </div>
               ))}
             </div>
           )}

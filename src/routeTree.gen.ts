@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WishlistRouteImport } from './routes/wishlist'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as ProductsRouteImport } from './routes/products'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CompareRouteImport } from './routes/compare'
@@ -19,6 +20,7 @@ import { Route as CategoriesRouteImport } from './routes/categories'
 import { Route as CartRouteImport } from './routes/cart'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ProjectsIdRouteImport } from './routes/projects_.$id'
 import { Route as ProductsIdRouteImport } from './routes/products_.$id'
 import { Route as CSplatRouteImport } from './routes/c.$'
 import { Route as BrowseFacetValueRouteImport } from './routes/browse.$facet.$value'
@@ -31,6 +33,11 @@ const WishlistRoute = WishlistRouteImport.update({
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProjectsRoute = ProjectsRouteImport.update({
+  id: '/projects',
+  path: '/projects',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProductsRoute = ProductsRouteImport.update({
@@ -73,6 +80,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProjectsIdRoute = ProjectsIdRouteImport.update({
+  id: '/projects_/$id',
+  path: '/projects/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProductsIdRoute = ProductsIdRouteImport.update({
   id: '/products_/$id',
   path: '/products/$id',
@@ -98,10 +110,12 @@ export interface FileRoutesByFullPath {
   '/compare': typeof CompareRoute
   '/contact': typeof ContactRoute
   '/products': typeof ProductsRoute
+  '/projects': typeof ProjectsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/wishlist': typeof WishlistRoute
   '/c/$': typeof CSplatRoute
   '/products/$id': typeof ProductsIdRoute
+  '/projects/$id': typeof ProjectsIdRoute
   '/browse/$facet/$value': typeof BrowseFacetValueRoute
 }
 export interface FileRoutesByTo {
@@ -113,10 +127,12 @@ export interface FileRoutesByTo {
   '/compare': typeof CompareRoute
   '/contact': typeof ContactRoute
   '/products': typeof ProductsRoute
+  '/projects': typeof ProjectsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/wishlist': typeof WishlistRoute
   '/c/$': typeof CSplatRoute
   '/products/$id': typeof ProductsIdRoute
+  '/projects/$id': typeof ProjectsIdRoute
   '/browse/$facet/$value': typeof BrowseFacetValueRoute
 }
 export interface FileRoutesById {
@@ -129,10 +145,12 @@ export interface FileRoutesById {
   '/compare': typeof CompareRoute
   '/contact': typeof ContactRoute
   '/products': typeof ProductsRoute
+  '/projects': typeof ProjectsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/wishlist': typeof WishlistRoute
   '/c/$': typeof CSplatRoute
   '/products_/$id': typeof ProductsIdRoute
+  '/projects_/$id': typeof ProjectsIdRoute
   '/browse/$facet/$value': typeof BrowseFacetValueRoute
 }
 export interface FileRouteTypes {
@@ -146,10 +164,12 @@ export interface FileRouteTypes {
     | '/compare'
     | '/contact'
     | '/products'
+    | '/projects'
     | '/sitemap.xml'
     | '/wishlist'
     | '/c/$'
     | '/products/$id'
+    | '/projects/$id'
     | '/browse/$facet/$value'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -161,10 +181,12 @@ export interface FileRouteTypes {
     | '/compare'
     | '/contact'
     | '/products'
+    | '/projects'
     | '/sitemap.xml'
     | '/wishlist'
     | '/c/$'
     | '/products/$id'
+    | '/projects/$id'
     | '/browse/$facet/$value'
   id:
     | '__root__'
@@ -176,10 +198,12 @@ export interface FileRouteTypes {
     | '/compare'
     | '/contact'
     | '/products'
+    | '/projects'
     | '/sitemap.xml'
     | '/wishlist'
     | '/c/$'
     | '/products_/$id'
+    | '/projects_/$id'
     | '/browse/$facet/$value'
   fileRoutesById: FileRoutesById
 }
@@ -192,10 +216,12 @@ export interface RootRouteChildren {
   CompareRoute: typeof CompareRoute
   ContactRoute: typeof ContactRoute
   ProductsRoute: typeof ProductsRoute
+  ProjectsRoute: typeof ProjectsRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   WishlistRoute: typeof WishlistRoute
   CSplatRoute: typeof CSplatRoute
   ProductsIdRoute: typeof ProductsIdRoute
+  ProjectsIdRoute: typeof ProjectsIdRoute
   BrowseFacetValueRoute: typeof BrowseFacetValueRoute
 }
 
@@ -213,6 +239,13 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/projects': {
+      id: '/projects'
+      path: '/projects'
+      fullPath: '/projects'
+      preLoaderRoute: typeof ProjectsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/products': {
@@ -271,6 +304,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/projects_/$id': {
+      id: '/projects_/$id'
+      path: '/projects/$id'
+      fullPath: '/projects/$id'
+      preLoaderRoute: typeof ProjectsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/products_/$id': {
       id: '/products_/$id'
       path: '/products/$id'
@@ -304,10 +344,12 @@ const rootRouteChildren: RootRouteChildren = {
   CompareRoute: CompareRoute,
   ContactRoute: ContactRoute,
   ProductsRoute: ProductsRoute,
+  ProjectsRoute: ProjectsRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   WishlistRoute: WishlistRoute,
   CSplatRoute: CSplatRoute,
   ProductsIdRoute: ProductsIdRoute,
+  ProjectsIdRoute: ProjectsIdRoute,
   BrowseFacetValueRoute: BrowseFacetValueRoute,
 }
 export const routeTree = rootRouteImport

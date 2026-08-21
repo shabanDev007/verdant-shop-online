@@ -12,11 +12,11 @@ export const Route = createFileRoute("/c/$")({
   head: ({ params }) => ({
     meta: [
       {
-        title: `${(params._splat ?? "").split("/").pop()?.replace(/-/g, " ") || "Category"} — Verdura`,
+        title: `${(params._splat ?? "").split("/").pop()?.replace(/-/g, " ") || "Category"} — Jothour | جذور`,
       },
       {
         name: "description",
-        content: "Shop premium plants, pots, tools, and gardening essentials at Verdura.",
+        content: "Shop premium plants, pots, tools, and gardening essentials at Jothour.",
       },
     ],
   }),
@@ -119,7 +119,7 @@ function CategoryPage() {
           </div>
         ) : (
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {products.slice(0, 48).map((p) => (
+            {products.map((p) => (
               <ProductCard key={p.id} product={p} />
             ))}
           </div>

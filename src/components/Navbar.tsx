@@ -1,5 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Leaf, Menu, Search, ShoppingBag, X, Heart, GitCompareArrows } from "lucide-react";
+import { Menu, Search, ShoppingBag, X, Heart, GitCompareArrows } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
@@ -26,20 +26,20 @@ export function Navbar() {
     { to: "/", label: t("nav.home") },
     { to: "/products", label: t("nav.shop") },
     { to: "/categories", label: t("nav.categories") },
+    { to: "/projects", label: t("nav.projects") },
     { to: "/about", label: t("nav.about") },
     { to: "/contact", label: t("nav.contact") },
   ] as const;
 
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur-md">
-      <div className="mx-auto grid max-w-7xl grid-cols-[auto_1fr_auto] items-center gap-4 px-4 py-4 sm:px-6 lg:px-8">
-        <Link to="/" className="flex items-center gap-2">
-          <span className="grid h-9 w-9 place-items-center rounded-full bg-primary text-primary-foreground">
-            <Leaf className="h-5 w-5" />
-          </span>
-          <span className="font-display text-xl font-semibold tracking-tight">
-            {t("brand.name")}
-          </span>
+      <div className="mx-auto grid max-w-7xl grid-cols-[auto_1fr_auto] items-center gap-4 px-4 py-2 sm:px-6 lg:px-8">
+        <Link to="/" className="flex items-center" aria-label={t("brand.name")}>
+          <img
+            src="/brand/jothour-logo.png"
+            alt={t("brand.name")}
+            className="h-14 w-auto max-w-[112px] object-contain sm:h-16 sm:max-w-[130px]"
+          />
         </Link>
 
         <nav className="hidden items-center justify-center gap-8 md:flex">

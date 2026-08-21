@@ -19,13 +19,13 @@ import { usePrice } from "@/lib/usePrice";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Verdura — Premium Plants Delivered to Your Door" },
+      { title: "Jothour | جذور — Premium Plants Delivered to Your Door" },
       {
         name: "description",
         content:
           "Shop curated indoor, outdoor, succulents, and flowering plants. Healthy plants, fast delivery across Egypt, and lifetime care support.",
       },
-      { property: "og:title", content: "Verdura — Premium Plants Delivered" },
+      { property: "og:title", content: "Jothour | جذور — Premium Plants Delivered" },
       { property: "og:description", content: "Greener homes, happier humans." },
     ],
   }),
@@ -189,7 +189,7 @@ function HomePage() {
               },
               {
                 quote:
-                  "Three orders in. Every plant has thrived. Verdura is now my only plant shop.",
+                  "Three orders in. Every plant has thrived. Jothour is now my only plant shop.",
                 name: "Priya M.",
               },
             ].map((tt) => (

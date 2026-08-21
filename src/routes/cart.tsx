@@ -6,7 +6,7 @@ import { OrderSummary } from "@/components/OrderSummary";
 import { useT } from "@/i18n/LanguageContext";
 
 export const Route = createFileRoute("/cart")({
-  head: () => ({ meta: [{ title: "Your Cart — Verdura" }] }),
+  head: () => ({ meta: [{ title: "Your Cart — Jothour | جذور" }] }),
   component: CartPage,
 });
 
@@ -46,7 +46,7 @@ function CartPage() {
         <div className="mt-10 grid gap-8 lg:grid-cols-[1fr_360px]">
           <div className="flex flex-col gap-3">
             {items.map((it) => (
-              <CartItemRow key={it.product.id} item={it} />
+              <CartItemRow key={it.key ?? it.product.id} item={it} />
             ))}
           </div>
           <OrderSummary subtotal={subtotal} delivery={delivery}>

@@ -13,7 +13,7 @@ type OrderRequest = {
     address?: string;
     city?: string;
   };
-  items?: Array<{ productId?: string; quantity?: number }>;
+  items?: Array<{ productId?: string; combinationId?: string; quantity?: number }>;
   notes?: string;
   couponCode?: string;
 };
@@ -38,7 +38,7 @@ Deno.serve(async (request) => {
     const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
     const resendApiKey = Deno.env.get("RESEND_API_KEY");
     const notificationEmail = Deno.env.get("ORDER_NOTIFICATION_EMAIL");
-    const fromEmail = Deno.env.get("ORDER_FROM_EMAIL") ?? "Verdura Orders <onboarding@resend.dev>";
+    const fromEmail = Deno.env.get("ORDER_FROM_EMAIL") ?? "Jothour Orders <onboarding@resend.dev>";
 
     if (!supabaseUrl || !serviceRoleKey) throw new Error("Supabase server secrets are missing");
     if (!resendApiKey || !notificationEmail) throw new Error("Email secrets are missing");
@@ -56,6 +56,7 @@ Deno.serve(async (request) => {
     const requestedItems = (body.items ?? [])
       .map((item) => ({
         productId: clean(item.productId, 100),
+        combinationId: clean(item.combinationId, 100) || null,
         quantity: Number.isInteger(item.quantity) ? Number(item.quantity) : 0,
       }))
       .filter((item) => item.productId && item.quantity > 0 && item.quantity <= 99);
@@ -71,10 +72,33 @@ Deno.serve(async (request) => {
     }
     if (requestedItems.length === 0) throw new Error("The order has no valid items");
 
-    const productIds = [...new Set(requestedItems.map((item) => item.productId))];
     const supabase = createClient(supabaseUrl, serviceRoleKey, {
       auth: { persistSession: false, autoRefreshToken: false },
     });
+    const combinationIds = [
+      ...new Set(
+        requestedItems
+          .map((item) => item.combinationId)
+          .filter((id): id is string => typeof id === "string"),
+      ),
+    ];
+    const { data: combinations, error: combinationsError } =
+      combinationIds.length > 0
+        ? await supabase
+            .from("plant_pot_combinations")
+            .select("id,plant_id,pot_id,name_en,name_ar,total_price,active")
+            .in("id", combinationIds)
+        : { data: [], error: null };
+    if (combinationsError) throw combinationsError;
+    if ((combinations?.length ?? 0) !== combinationIds.length) {
+      throw new Error("One or more plant options no longer exist");
+    }
+    const productIds = [
+      ...new Set([
+        ...requestedItems.map((item) => item.productId),
+        ...(combinations ?? []).map((combination) => combination.pot_id),
+      ]),
+    ];
     const { data: products, error: productsError } = await supabase
       .from("products")
       .select("id,name_en,name_ar,price,stock,active")
@@ -86,15 +110,35 @@ Deno.serve(async (request) => {
     }
 
     const productsById = new Map(products.map((product) => [product.id, product]));
+    const combinationsById = new Map(
+      (combinations ?? []).map((combination) => [combination.id, combination]),
+    );
     const calculatedItems = requestedItems.map((requestedItem) => {
       const product = productsById.get(requestedItem.productId);
       if (!product?.active) throw new Error("One or more products are unavailable");
       if (product.stock < requestedItem.quantity) {
         throw new Error(`${product.name_en} does not have enough stock`);
       }
-      const unitPrice = Number(product.price);
+      const combination = requestedItem.combinationId
+        ? combinationsById.get(requestedItem.combinationId)
+        : null;
+      if (
+        requestedItem.combinationId &&
+        (!combination?.active ||
+          combination.plant_id !== product.id ||
+          combination.total_price == null)
+      ) {
+        throw new Error("The selected pot option is unavailable");
+      }
+      const pot = combination ? productsById.get(combination.pot_id) : null;
+      if (combination && (!pot?.active || pot.stock < requestedItem.quantity)) {
+        throw new Error("The selected pot does not have enough stock");
+      }
+      const unitPrice = combination ? Number(combination.total_price) : Number(product.price);
+      const itemName = combination?.name_en || product.name_en;
       return {
         product,
+        itemName,
         quantity: requestedItem.quantity,
         unitPrice,
         total: unitPrice * requestedItem.quantity,
@@ -159,7 +203,7 @@ Deno.serve(async (request) => {
       calculatedItems.map((item) => ({
         order_id: order.id,
         product_id: item.product.id,
-        product_name: item.product.name_en,
+        product_name: item.itemName,
         unit_price: item.unitPrice,
         quantity: item.quantity,
         total: item.total,
@@ -182,7 +226,7 @@ Deno.serve(async (request) => {
     const itemRows = calculatedItems
       .map(
         (item) =>
-          `<tr><td>${escapeHtml(item.product.name_en)}</td><td>${item.quantity}</td><td>${item.total.toFixed(2)} EGP</td></tr>`,
+          `<tr><td>${escapeHtml(item.itemName)}</td><td>${item.quantity}</td><td>${item.total.toFixed(2)} EGP</td></tr>`,
       )
       .join("");
     const emailResponse = await fetch("https://api.resend.com/emails", {
@@ -194,7 +238,7 @@ Deno.serve(async (request) => {
       body: JSON.stringify({
         from: fromEmail,
         to: [notificationEmail],
-        subject: `New Verdura order #${order.order_number}`,
+        subject: `New Jothour order #${order.order_number}`,
         html: `<h1>New order #${order.order_number}</h1>
           <p><strong>Customer:</strong> ${escapeHtml(customer.fullName)}</p>
           <p><strong>Phone:</strong> ${escapeHtml(customer.phone)}</p>

@@ -17,9 +17,16 @@ import {
   RotateCcw,
   GitCompareArrows,
   ChevronDown,
+  Info,
 } from "lucide-react";
 import { toast } from "sonner";
-import { getProductById, getRelatedProducts, getReviews, getProductsByIds } from "@/services/api";
+import {
+  getPlantPotCombinations,
+  getProductById,
+  getRelatedProducts,
+  getReviews,
+  getProductsByIds,
+} from "@/services/api";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { useCompare } from "@/context/CompareContext";
@@ -29,15 +36,21 @@ import { usePrice } from "@/lib/usePrice";
 import { useLanguage, useT } from "@/i18n/LanguageContext";
 import { getProductText } from "@/lib/localizeData";
 
+type ProductSearch = { combo?: string };
+
 // The trailing underscore in this file's name keeps this detail route independent
 // from the /products list component while preserving the /products/$id URL.
 export const Route = createFileRoute("/products_/$id")({
+  validateSearch: (search: Record<string, unknown>): ProductSearch => ({
+    combo: typeof search.combo === "string" ? search.combo : undefined,
+  }),
   component: ProductDetailPage,
-  head: () => ({ meta: [{ title: "Product Details — Verdura" }] }),
+  head: () => ({ meta: [{ title: "Product Details — Jothour | جذور" }] }),
 });
 
 function ProductDetailPage() {
   const { id } = Route.useParams();
+  const { combo: requestedCombinationId } = Route.useSearch();
   const { data: product, isLoading } = useQuery({
     queryKey: ["product", id],
     queryFn: () => getProductById(id),
@@ -50,6 +63,10 @@ function ProductDetailPage() {
     queryKey: ["reviews", id],
     queryFn: () => getReviews(id),
   });
+  const { data: combinations = [] } = useQuery({
+    queryKey: ["plant-pot-combinations", id],
+    queryFn: () => getPlantPotCombinations(id),
+  });
 
   const { add } = useCart();
   const { toggle: toggleWish, has: hasWish } = useWishlist();
@@ -60,12 +77,20 @@ function ProductDetailPage() {
   const { lang } = useLanguage();
   const [qty, setQty] = useState(1);
   const [activeImg, setActiveImg] = useState(0);
+  const [combinationId, setCombinationId] = useState("");
   const [tab, setTab] = useState<"specs" | "care" | "delivery" | "faq" | "reviews">("specs");
 
   useEffect(() => {
     if (product) addRecent(product.id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [product?.id]);
+
+  useEffect(() => {
+    if (requestedCombinationId && combinations.some((item) => item.id === requestedCombinationId)) {
+      setCombinationId(requestedCombinationId);
+      setActiveImg(0);
+    }
+  }, [combinations, requestedCombinationId]);
 
   const recentOthers = recentIds.filter((i) => i !== id).slice(0, 4);
   const { data: recentProducts = [] } = useQuery({
@@ -86,6 +111,11 @@ function ProductDetailPage() {
   const wished = hasWish(product.id);
   const compared = hasCmp(product.id);
   const gallery = product.gallery ?? [product.image];
+  const selectedCombination = combinations.find((item) => item.id === combinationId);
+  const mainImage = selectedCombination?.previewImage ?? gallery[activeImg];
+  const selectedPot = selectedCombination?.pot;
+  const displayedPrice = selectedCombination?.totalPrice ?? product.price;
+  const availableStock = selectedPot ? Math.min(product.stock, selectedPot.stock) : product.stock;
   const { name: productName, categoryName, description } = getProductText(product, lang);
 
   const share = async () => {
@@ -115,13 +145,13 @@ function ProductDetailPage() {
         <div>
           <div className="overflow-hidden rounded-3xl border border-border/60 bg-card">
             <img
-              key={gallery[activeImg]}
-              src={gallery[activeImg]}
+              key={mainImage}
+              src={mainImage}
               alt={productName}
               className="aspect-square w-full animate-[gallery-in_350ms_ease-out] object-cover"
             />
           </div>
-          {gallery.length > 1 && (
+          {!selectedCombination && gallery.length > 1 && (
             <div className="mt-3 grid grid-cols-4 gap-2">
               {gallery.map((src, i) => (
                 <button
@@ -171,11 +201,117 @@ function ProductDetailPage() {
             </span>
           </div>
 
+          {combinations.length > 0 && (
+            <section className="mt-6">
+              <div className="flex items-end justify-between gap-3">
+                <div>
+                  <h2 className="font-display text-xl font-semibold">{tr("product.choosePot")}</h2>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {tr("product.choosePotHint")}
+                  </p>
+                </div>
+                {product.sizeCode && (
+                  <span className="rounded-full bg-accent px-3 py-1 text-xs font-medium text-accent-foreground">
+                    {tr("builder.size", { size: product.sizeCode })}
+                  </span>
+                )}
+              </div>
+              <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setCombinationId("");
+                    setActiveImg(0);
+                  }}
+                  className={`overflow-hidden rounded-2xl border-2 bg-card text-start transition hover:shadow-[var(--shadow-card)] ${
+                    !selectedCombination ? "border-primary" : "border-border/60"
+                  }`}
+                >
+                  <img
+                    src={product.image}
+                    alt={productName}
+                    className="aspect-square w-full object-cover"
+                  />
+                  <span className="block p-3">
+                    <span className="block truncate text-sm font-semibold">
+                      {tr("product.originalPot")}
+                    </span>
+                    <span className="mt-1 block text-xs text-primary">{price(product.price)}</span>
+                  </span>
+                </button>
+                {combinations.map((combination) => {
+                  const potName = getProductText(combination.pot, lang).name;
+                  const selected = combination.id === selectedCombination?.id;
+                  const unavailable = combination.pot.stock <= 0 || product.stock <= 0;
+                  return (
+                    <button
+                      key={combination.id}
+                      type="button"
+                      disabled={unavailable}
+                      onClick={() => {
+                        setCombinationId(combination.id);
+                        setActiveImg(0);
+                      }}
+                      className={`overflow-hidden rounded-2xl border-2 bg-card text-start transition hover:shadow-[var(--shadow-card)] disabled:opacity-40 ${
+                        selected ? "border-primary" : "border-border/60"
+                      }`}
+                    >
+                      <img
+                        src={combination.previewImage}
+                        alt=""
+                        className="aspect-square w-full object-cover"
+                      />
+                      <span className="block p-3">
+                        <span className="block truncate text-sm font-semibold">{potName}</span>
+                        <span className="mt-1 block text-xs text-primary">
+                          {price(combination.totalPrice ?? product.price)}
+                        </span>
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+              {selectedCombination && selectedPot && (
+                <div className="mt-4 rounded-2xl border border-primary/20 bg-primary/5 p-4">
+                  <div className="flex flex-wrap items-start justify-between gap-3">
+                    <div>
+                      <p className="font-semibold">
+                        {(lang === "ar" ? selectedCombination.nameAr : selectedCombination.name) ??
+                          `${productName} + ${getProductText(selectedPot, lang).name}`}
+                      </p>
+                      {(lang === "ar"
+                        ? selectedCombination.descriptionAr
+                        : selectedCombination.description) && (
+                        <p className="mt-1 text-sm text-muted-foreground">
+                          {lang === "ar"
+                            ? selectedCombination.descriptionAr
+                            : selectedCombination.description}
+                        </p>
+                      )}
+                    </div>
+                    <span className="rounded-full bg-background px-3 py-1 text-sm font-semibold text-primary">
+                      {price(displayedPrice)}
+                    </span>
+                  </div>
+                  <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-xs text-muted-foreground">
+                    <span>
+                      {tr("product.totalWithPot")}: {price(displayedPrice)}
+                    </span>
+                    {selectedPot.sizeCode && (
+                      <span>{tr("builder.size", { size: selectedPot.sizeCode })}</span>
+                    )}
+                    <span>{tr("product.left", { count: selectedPot.stock })}</span>
+                  </div>
+                </div>
+              )}
+            </section>
+          )}
+
           <div className="mt-5 flex items-baseline gap-3">
             <span className="font-display text-3xl font-semibold text-primary">
-              {price(product.price)}
+              {price(displayedPrice)}
             </span>
-            {product.oldPrice && (
+            {!selectedPot && product.oldPrice && (
               <>
                 <span className="text-base text-muted-foreground line-through">
                   {price(product.oldPrice)}
@@ -188,6 +324,12 @@ function ProductDetailPage() {
           </div>
 
           <p className="mt-5 text-base leading-relaxed text-muted-foreground">{description}</p>
+          {product.productType === "plant" && (
+            <p className="mt-4 flex items-start gap-2 rounded-2xl bg-accent/55 px-4 py-3 text-xs leading-relaxed text-accent-foreground">
+              <Info className="mt-0.5 h-4 w-4 shrink-0" />
+              <span>{tr("product.livingDisclaimer")}</span>
+            </p>
+          )}
 
           <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
             <CareTile
@@ -226,7 +368,7 @@ function ProductDetailPage() {
               <button
                 type="button"
                 aria-label="Increase"
-                onClick={() => setQty((q) => Math.min(product.stock || 99, q + 1))}
+                onClick={() => setQty((q) => Math.min(availableStock || 99, q + 1))}
                 className="grid h-9 w-9 place-items-center rounded-full text-foreground/70 hover:bg-accent"
               >
                 <Plus className="h-4 w-4" />
@@ -234,14 +376,31 @@ function ProductDetailPage() {
             </div>
             <button
               type="button"
-              disabled={product.stock === 0}
+              disabled={availableStock === 0}
               onClick={() => {
-                add(product, qty);
-                toast.success(tr("product.addedToCart", { name: productName }));
+                if (selectedCombination && selectedPot) {
+                  const selectedName =
+                    (lang === "ar" ? selectedCombination.nameAr : selectedCombination.name) ??
+                    `${productName} + ${getProductText(selectedPot, lang).name}`;
+                  add(product, qty, {
+                    combinationId: selectedCombination.id,
+                    name: selectedName,
+                    image: selectedCombination.previewImage,
+                    unitPrice: displayedPrice,
+                  });
+                } else {
+                  add(product, qty);
+                }
+                toast.success(
+                  selectedPot
+                    ? tr("product.comboAdded")
+                    : tr("product.addedToCart", { name: productName }),
+                );
               }}
               className="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:opacity-90 disabled:opacity-40 sm:flex-none"
             >
-              <ShoppingBag className="h-4 w-4" /> {tr("product.addToCart")}
+              <ShoppingBag className="h-4 w-4" />
+              {selectedPot ? tr("product.addCombo") : tr("product.addToCart")}
             </button>
             <button
               type="button"
@@ -354,7 +513,7 @@ function ProductDetailPage() {
           {tab === "care" && (
             <div className="prose prose-sm max-w-none text-muted-foreground">
               <p>
-                {product.careInstructions ??
+                {(lang === "ar" ? product.careInstructionsAr : product.careInstructions) ??
                   "Follow the care summary above. Rotate weekly, wipe leaves monthly, and repot when roots outgrow the pot."}
               </p>
             </div>
@@ -363,11 +522,11 @@ function ProductDetailPage() {
             <div className="space-y-4 text-sm text-muted-foreground">
               <p>
                 <strong className="text-foreground">{tr("product.deliveryLabel")}</strong>{" "}
-                {product.deliveryInfo}
+                {lang === "ar" ? product.deliveryInfoAr : product.deliveryInfo}
               </p>
               <p>
                 <strong className="text-foreground">{tr("product.returnsLabel")}</strong>{" "}
-                {product.returnPolicy}
+                {lang === "ar" ? product.returnPolicyAr : product.returnPolicy}
               </p>
             </div>
           )}
@@ -376,10 +535,12 @@ function ProductDetailPage() {
               {(product.faq ?? []).map((f, i) => (
                 <details key={i} className="group rounded-2xl border border-border/60 bg-card p-4">
                   <summary className="flex cursor-pointer items-center justify-between font-medium">
-                    {f.q}
+                    {lang === "ar" ? (f.qAr ?? f.q) : f.q}
                     <ChevronDown className="h-4 w-4 transition group-open:rotate-180" />
                   </summary>
-                  <p className="mt-3 text-sm text-muted-foreground">{f.a}</p>
+                  <p className="mt-3 text-sm text-muted-foreground">
+                    {lang === "ar" ? (f.aAr ?? f.a) : f.a}
+                  </p>
                 </details>
               ))}
             </div>
@@ -396,7 +557,7 @@ function ProductDetailPage() {
                         {r.userName}{" "}
                         {r.verified && (
                           <span className="ms-1 text-[10px] font-medium uppercase tracking-wide text-primary">
-                            Verified
+                            {tr("product.verified")}
                           </span>
                         )}
                       </p>

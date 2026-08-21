@@ -12,7 +12,7 @@ import { getProductText, localizeLabel } from "@/lib/localizeData";
 export const Route = createFileRoute("/compare")({
   head: () => ({
     meta: [
-      { title: "Compare Products — Verdura" },
+      { title: "Compare Products — Jothour | جذور" },
       { name: "description", content: "Compare specs, care needs, and prices side-by-side." },
     ],
   }),

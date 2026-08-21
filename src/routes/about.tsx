@@ -5,11 +5,11 @@ import { useT } from "@/i18n/LanguageContext";
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "Our Story — Verdura" },
+      { title: "Our Story — Jothour | جذور" },
       {
         name: "description",
         content:
-          "Verdura is a family-run plant shop with a 30-day plant promise and a passion for healthy greenery.",
+          "Jothour is a family-run plant shop with a 30-day plant promise and a passion for healthy greenery.",
       },
     ],
   }),

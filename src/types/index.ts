@@ -67,7 +67,12 @@ export interface ProductSpecs {
 export interface ProductFAQ {
   q: string;
   a: string;
+  qAr?: string;
+  aAr?: string;
 }
+
+export type ProductType = "plant" | "pot" | "other";
+export type ProductSize = "S" | "M" | "L";
 
 export type Room = "bedroom" | "living-room" | "office" | "bathroom" | "balcony" | "kitchen";
 export type LightTag = "low-light" | "medium-light" | "bright-light" | "direct-sun";
@@ -104,6 +109,15 @@ export interface Product {
   deliveryInfo?: string;
   returnPolicy?: string;
   careInstructions?: string;
+  careInstructionsAr?: string;
+  deliveryInfoAr?: string;
+  returnPolicyAr?: string;
+  productType?: ProductType;
+  sizeCode?: ProductSize;
+  builderImage?: string;
+  builderScale?: number;
+  builderOffsetX?: number;
+  builderOffsetY?: number;
 
   // Facet tags for Browse By + filters
   rooms?: Room[];
@@ -122,6 +136,44 @@ export interface Product {
   categoryNameAr?: string;
 }
 
+export interface PlantPotCombination {
+  id: string;
+  plant: Product;
+  pot: Product;
+  previewImage: string;
+  name?: string;
+  nameAr?: string;
+  description?: string;
+  descriptionAr?: string;
+  totalPrice?: number;
+  sortOrder: number;
+}
+
+export interface ProjectRequestInput {
+  fullName: string;
+  email: string;
+  phone: string;
+  city: string;
+  projectType: "balcony" | "villa" | "landscape" | "office" | "garden" | "maintenance";
+  spaceSize?: string;
+  budget?: string;
+  preferredContactTime?: string;
+  details: string;
+}
+
+export interface PortfolioProject {
+  id: string;
+  title: string;
+  titleAr?: string;
+  description: string;
+  descriptionAr?: string;
+  projectType: ProjectRequestInput["projectType"];
+  location?: string;
+  locationAr?: string;
+  completedAt?: string;
+  images: string[];
+}
+
 export interface Review {
   id: string;
   productId: string;
@@ -137,6 +189,11 @@ export interface Review {
 export interface CartItem {
   product: Product;
   quantity: number;
+  key?: string;
+  combinationId?: string;
+  selectedName?: string;
+  selectedImage?: string;
+  unitPrice?: number;
 }
 
 export interface Address {

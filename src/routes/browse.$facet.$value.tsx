@@ -13,7 +13,7 @@ const isFacetKey = (v: string): v is FacetKey =>
 export const Route = createFileRoute("/browse/$facet/$value")({
   head: ({ params }) => ({
     meta: [
-      { title: `Browse by ${params.facet}: ${params.value} — Verdura` },
+      { title: `Browse by ${params.facet}: ${params.value} — Jothour | جذور` },
       {
         name: "description",
         content: `Plants and products filtered by ${params.facet}: ${params.value}.`,

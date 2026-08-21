@@ -2,7 +2,12 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { Search, X, TrendingUp, Clock } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { getProducts, getCategories } from "@/services/api";
+import {
+  getProducts,
+  getCategories,
+  normalizeSearchText,
+  productMatchesSearch,
+} from "@/services/api";
 import { popularSearches } from "@/data/reviewsCoupons";
 
 const RECENT_KEY = "verdura.recentSearches";
@@ -28,16 +33,17 @@ export function SearchDropdown({ onClose }: { onClose?: () => void }) {
   }, []);
 
   const suggestions = useMemo(() => {
-    const query = q.toLowerCase().trim();
+    const query = normalizeSearchText(q);
     if (!query) return { products: [], categories: [] };
     return {
-      products: products
-        .filter(
-          (p) =>
-            p.name.toLowerCase().includes(query) || p.categoryName.toLowerCase().includes(query),
+      products: products.filter((product) => productMatchesSearch(product, query)).slice(0, 6),
+      categories: categories
+        .filter((category) =>
+          [category.name, category.nameAr, category.description, category.descriptionAr].some(
+            (value) => normalizeSearchText(value).includes(query),
+          ),
         )
-        .slice(0, 6),
-      categories: categories.filter((c) => c.name.toLowerCase().includes(query)).slice(0, 4),
+        .slice(0, 4),
     };
   }, [q, products, categories]);
 

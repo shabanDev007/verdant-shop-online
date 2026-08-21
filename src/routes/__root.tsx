@@ -81,22 +81,35 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Verdura — Premium Plants Delivered" },
+      { title: "Jothour | جذور — Premium Plants Delivered" },
       {
         name: "description",
         content:
-          "Verdura is a premium plant shop with indoor, outdoor, succulents, and flowering plants. Fast delivery, healthy plants, and lifetime care support.",
+          "Jothour is a premium plant shop with indoor, outdoor, succulents, and flowering plants. Fast delivery, healthy plants, and lifetime care support.",
       },
-      { property: "og:title", content: "Verdura — Premium Plants Delivered" },
+      { property: "og:title", content: "Jothour | جذور — Premium Plants Delivered" },
       {
         property: "og:description",
         content: "Greener homes, happier humans. Shop premium plants online.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "theme-color", content: "#315f49" },
+      { name: "apple-mobile-web-app-capable", content: "yes" },
+      { name: "apple-mobile-web-app-status-bar-style", content: "default" },
+      { name: "apple-mobile-web-app-title", content: "جذور" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
+      { rel: "manifest", href: "/manifest.webmanifest" },
+      { rel: "icon", href: "/favicon-jothour.ico?v=2", sizes: "any" },
+      {
+        rel: "icon",
+        href: "/jothour-icon-192.png?v=2",
+        type: "image/png",
+        sizes: "192x192",
+      },
+      { rel: "apple-touch-icon", href: "/jothour-apple-touch-icon.png?v=2" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
@@ -130,6 +143,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <PwaRegistration />
       <LanguageProvider>
         <WishlistProvider>
           <CompareProvider>
@@ -145,6 +159,17 @@ function RootComponent() {
       </LanguageProvider>
     </QueryClientProvider>
   );
+}
+
+function PwaRegistration() {
+  useEffect(() => {
+    if (import.meta.env.PROD && "serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/sw.js").catch((error) => {
+        console.error("Could not register the service worker:", error);
+      });
+    }
+  }, []);
+  return null;
 }
 
 function AppShell() {

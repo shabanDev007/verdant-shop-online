@@ -9,7 +9,7 @@ import { useT } from "@/i18n/LanguageContext";
 export const Route = createFileRoute("/wishlist")({
   head: () => ({
     meta: [
-      { title: "Your Wishlist — Verdura" },
+      { title: "Your Wishlist — Jothour | جذور" },
       { name: "description", content: "Save your favorite plants and accessories for later." },
     ],
   }),

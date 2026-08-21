@@ -8,10 +8,10 @@ import { useT } from "@/i18n/LanguageContext";
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Contact Us — Verdura" },
+      { title: "Contact Us — Jothour | جذور" },
       {
         name: "description",
-        content: "Get in touch with the Verdura plant team. Email, phone, WhatsApp, or visit us.",
+        content: "Get in touch with the Jothour plant team. Email, phone, WhatsApp, or visit us.",
       },
     ],
   }),

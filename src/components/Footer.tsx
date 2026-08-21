@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Leaf, Instagram, Facebook, Twitter, Mail } from "lucide-react";
+import { Instagram, Facebook, Twitter, Mail } from "lucide-react";
 import { useT } from "@/i18n/LanguageContext";
 
 export function Footer() {
@@ -8,11 +8,12 @@ export function Footer() {
     <footer className="mt-24 border-t border-border bg-secondary/50">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-4 lg:px-8">
         <div>
-          <Link to="/" className="flex items-center gap-2">
-            <span className="grid h-9 w-9 place-items-center rounded-full bg-primary text-primary-foreground">
-              <Leaf className="h-5 w-5" />
-            </span>
-            <span className="font-display text-xl font-semibold">{t("brand.name")}</span>
+          <Link to="/" className="inline-flex" aria-label={t("brand.name")}>
+            <img
+              src="/brand/jothour-logo.png"
+              alt={t("brand.name")}
+              className="h-28 w-auto max-w-[210px] object-contain"
+            />
           </Link>
           <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
             {t("footer.tagline")}

@@ -9,7 +9,7 @@ import { getCategoryText, localizeLabel } from "@/lib/localizeData";
 export const Route = createFileRoute("/categories")({
   head: () => ({
     meta: [
-      { title: "Shop by Category — Verdura" },
+      { title: "Shop by Category — Jothour | جذور" },
       {
         name: "description",
         content:

@@ -1,4 +1,4 @@
-# 🌿 Verdura — Premium Plant E-commerce
+# 🌿 Jothour | جذور — Premium Plant E-commerce
 
 A modern, production-ready plant store built with **React + TypeScript + TanStack Start + Tailwind v4**. Bilingual (English / Arabic with full RTL), Egyptian Pound pricing, and a clean API layer ready for a Spring Boot backend.
 

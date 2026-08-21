@@ -11,7 +11,7 @@ import { useT } from "@/i18n/LanguageContext";
 import { useCoupon } from "@/context/CouponContext";
 
 export const Route = createFileRoute("/checkout")({
-  head: () => ({ meta: [{ title: "Checkout — Verdura" }] }),
+  head: () => ({ meta: [{ title: "Checkout — Jothour | جذور" }] }),
   component: CheckoutPage,
 });
 
