@@ -16,6 +16,12 @@ dist-ssr
 .nitro
 *.local
 
+# Local project artifacts not needed in repo
+cookies.txt
+Ahmed_Shapan_Java_Backend_CV.html
+portfolio-covers.html
+public/generated-products/
+
 # Wrangler / Cloudflare
 .wrangler/
 .dev.vars
