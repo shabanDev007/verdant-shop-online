@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
-import { Mail, Phone, MessageCircle, MapPin } from "lucide-react";
+import { Phone, MessageCircle, MapPin } from "lucide-react";
 import { useT } from "@/i18n/LanguageContext";
 
 export const Route = createFileRoute("/contact")({
@@ -11,7 +11,7 @@ export const Route = createFileRoute("/contact")({
       { title: "Contact Us — Jothour | جذور" },
       {
         name: "description",
-        content: "Get in touch with the Jothour plant team. Email, phone, WhatsApp, or visit us.",
+        content: "Get in touch with the Jothour plant team by phone, WhatsApp, or visit us.",
       },
     ],
   }),
@@ -59,17 +59,12 @@ function ContactPage() {
       <div className="mt-12 grid gap-10 lg:grid-cols-[1fr_1.2fr]">
         <div className="space-y-4">
           <Info
-            icon={<Mail className="h-5 w-5" />}
-            title={t("contact.email")}
-            lines={["hello@verdura.shop", "support@verdura.shop"]}
-          />
-          <Info
             icon={<Phone className="h-5 w-5" />}
             title={t("contact.call")}
-            lines={["+1 (555) 010-9090", "Mon–Sat · 9am–6pm"]}
+            lines={["01555613249"]}
           />
           <a
-            href="https://wa.me/15550109090"
+            href="https://wa.me/201555613249"
             target="_blank"
             rel="noreferrer"
             className="flex items-center gap-4 rounded-3xl border border-border/60 bg-leaf/15 p-5 transition hover:bg-leaf/25"
@@ -85,13 +80,17 @@ function ContactPage() {
           <Info
             icon={<MapPin className="h-5 w-5" />}
             title={t("contact.visit")}
-            lines={["88 Greenhouse Lane", "Portland, OR 97204"]}
+            lines={[t("contact.address")]}
           />
 
           <div className="overflow-hidden rounded-3xl border border-border/60">
-            <div className="grid h-56 place-items-center bg-gradient-to-br from-accent to-secondary text-sm text-muted-foreground">
-              🗺️ Google Maps placeholder
-            </div>
+            <iframe
+              title={t("contact.visit")}
+              src="https://www.google.com/maps?q=%D8%A7%D9%84%D9%82%D9%86%D8%A7%D8%B7%D8%B1%20%D8%A7%D9%84%D8%AE%D9%8A%D8%B1%D9%8A%D8%A9&output=embed"
+              className="h-56 w-full border-0"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
           </div>
         </div>
 

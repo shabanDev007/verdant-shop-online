@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Instagram, Facebook, Twitter, Mail } from "lucide-react";
+import { Instagram, Music2 } from "lucide-react";
 import { useT } from "@/i18n/LanguageContext";
 
 export function Footer() {
@@ -19,11 +19,24 @@ export function Footer() {
             {t("footer.tagline")}
           </p>
           <div className="mt-5 flex gap-2">
-            {[Instagram, Facebook, Twitter, Mail].map((Icon, i) => (
+            {[
+              {
+                Icon: Instagram,
+                label: "Instagram",
+                href: "https://www.instagram.com/juthoor_plants?stkn=MXVod3ZydjU0d3U1Ng==",
+              },
+              {
+                Icon: Music2,
+                label: "TikTok",
+                href: "https://www.tiktok.com/@juthoor_plants",
+              },
+            ].map(({ Icon, label, href }) => (
               <a
-                key={i}
-                href="#"
-                aria-label="Social link"
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={label}
                 className="grid h-9 w-9 place-items-center rounded-full bg-background text-foreground/70 transition hover:bg-primary hover:text-primary-foreground"
               >
                 <Icon className="h-4 w-4" />
@@ -45,9 +58,8 @@ export function Footer() {
           <FLink to="/contact">{t("footer.company.help")}</FLink>
         </FooterCol>
         <FooterCol title={t("footer.col.support")}>
-          <p className="text-sm text-muted-foreground">hello@verdura.shop</p>
           <p className="text-sm text-muted-foreground" dir="ltr">
-            +20 100 000 0000
+            01555613249
           </p>
           <p className="text-sm text-muted-foreground">{t("footer.support.hours")}</p>
         </FooterCol>
